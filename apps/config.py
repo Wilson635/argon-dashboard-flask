@@ -6,8 +6,8 @@ Copyright (c) 2019 - present AppSeed.us
 import os
 from decouple import config
 
-class Config(object):
 
+class Config(object):
     basedir = os.path.abspath(os.path.dirname(__file__))
 
     # Set up the App SECRET_KEY
@@ -26,14 +26,14 @@ class ProductionConfig(Config):
     REMEMBER_COOKIE_HTTPONLY = True
     REMEMBER_COOKIE_DURATION = 3600
 
-    # PostgreSQL database
+    # PostgresSQL database
     SQLALCHEMY_DATABASE_URI = '{}://{}:{}@{}:{}/{}'.format(
         config('DB_ENGINE', default='postgresql'),
-        config('DB_USERNAME', default='appseed'),
-        config('DB_PASS', default='pass'),
+        config('DB_USERNAME', default='postgres'),
+        config('DB_PASS', default='wilson715'),
         config('DB_HOST', default='localhost'),
         config('DB_PORT', default=5432),
-        config('DB_NAME', default='appseed-flask')
+        config('DB_NAME', default='mutuelle-ftsl')
     )
 
 

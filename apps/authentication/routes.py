@@ -61,8 +61,9 @@ def register():
 
         username = request.form['username']
         email = request.form['email']
+        role = request.form['role']
 
-        # Check usename exists
+        # Check username exists
         user = Users.query.filter_by(username=username).first()
         if user:
             return render_template('accounts/register.html',
@@ -75,6 +76,12 @@ def register():
         if user:
             return render_template('accounts/register.html',
                                    msg='Email already registered',
+                                   success=False,
+                                   form=create_account_form)
+
+        if not role:
+            return render_template('accounts/register.html',
+                                   msg='Role not registered',
                                    success=False,
                                    form=create_account_form)
 

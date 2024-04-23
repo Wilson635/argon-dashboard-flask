@@ -18,9 +18,9 @@ class Users(db.Model, UserMixin):
     username = db.Column(db.String(64), unique=True)
     email = db.Column(db.String(64), unique=True)
     password = db.Column(db.LargeBinary)
+    role = db.Column(db.String(64), unique=True)
 
-    def __init__(self, *args: Any, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, **kwargs):
         for property, value in kwargs.items():
             # depending on whether value is an iterable or not, we must
             # unpack it's value (when **kwargs is request.form, some values
