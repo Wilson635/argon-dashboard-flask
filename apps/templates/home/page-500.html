@@ -7,37 +7,153 @@
 
 {% block content %}
 
+    <style>
+        .btn {
+            font-family: inherit;
+            font-size: 20px;
+            background: #212121;
+            color: white;
+            fill: rgb(155, 153, 153);
+            padding: 0.7em 1em;
+            padding-left: 0.9em;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+            border-radius: 500px;
+            font-weight: 1000;
+        }
+
+        .btn span {
+            display: block;
+            margin-left: 0.3em;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn i {
+            display: block;
+            transform-origin: center center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .btn:hover {
+            background: #000;
+        }
+
+        .btn:hover .svg-wrapper {
+            transform: scale(1.25);
+            transition: 0.5s linear;
+        }
+
+        .btn:hover i {
+            transform: translateX(1.2em) scale(1.1);
+            fill: #fff;
+        }
+
+        .btn:hover span {
+            opacity: 0;
+            transition: 0.5s linear;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .button {
+            font-family: inherit;
+            font-size: 20px;
+            background: #e8e8e8;
+            color: red;
+            fill: rgb(155, 153, 153);
+            padding: 0.7em 1em;
+            padding-left: 0.9em;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+            border-radius: 500px;
+            font-weight: 1000;
+        }
+
+        .button span {
+            display: block;
+            margin-left: 0.3em;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .button i {
+            display: block;
+            transform-origin: center center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .button:hover {
+            background: #e8e8e8;
+        }
+
+        .button:hover .svg-wrapper {
+            transform: scale(1.25);
+            transition: 0.5s linear;
+
+        }
+
+        .button:hover i {
+            transform: translateX(1.2em) scale(1.1);
+            fill: #fff;
+        }
+
+        .button:hover span {
+            opacity: 0;
+            transition: 0.5s linear;
+        }
+
+        .button:active {
+            transform: scale(0.95);
+        }
+
+    </style>
+
     <!-- Page content -->
     <div class="container mt--8 pb-5">
-      <div class="row justify-content-center">
-        <div class="col-lg-5 col-md-7">
-          <div class="card bg-secondary shadow border-0">
-            <div class="card-header bg-transparent pb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-7">
+                <div class="card bg-secondary shadow border-0">
+                    <div class="card-header bg-transparent pb-5">
 
-              <div class="text-muted text-center mt-2 mb-3">
-                Oups! Error 500      
-              </div>
+                        <div class="text-muted text-center mt-2 mb-3">
+                            Oups! Error 500
+                        </div>
 
-              <div class="text-center mb-4">
-                Server error, please contact support - <a href="/">Home</a>.
-              </div>
+                        <div class="text-center mb-4">
+                            Server error, please contact support - Home.
+                        </div>
 
+                        <div class="d-flex justify-content-between items-center">
+                            <a class="btn" href="/">
+                                <div class="svg-wrapper-1">
+                                    <div class="svg-wrapper">
+                                        <i class="fa fa-home"></i>
+                                    </div>
+                                </div>
+                                <span>Home</span>
+                            </a>
+                            <a class="button" href="/support">
+                                <div class="svg-wrapper-1">
+                                    <div class="svg-wrapper">
+                                        <i class="fa fa-headphones-alt"></i>
+                                    </div>
+                                </div>
+                                <span>Support</span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-6">
-              <a href="/" class="text-light"><small>Home</small></a>
-            </div>
-            <div class="col-6 text-right">
-              <a target="_blank" 
-                 href="https://appseed.us/support" class="text-light"><small>Get Support</small></a>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
 
 {% endblock content %}
 
-<!-- Specific JS goes HERE --> 
+<!-- Specific JS goes HERE -->
 {% block javascripts %}{% endblock javascripts %}
