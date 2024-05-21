@@ -40,6 +40,18 @@
                 <ul class="navbar-nav mb-md-3">
 
                     <li class="nav-item">
+                        <a class="nav-link {% if 'settings' in segment %} active {% endif %}" href="/settings.html">
+                            <i class="ni ni-settings-gear-65 text-violet font-weight-bold"></i>
+                            <span class="nav-link-text">Settings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'support' in segment %} active {% endif %}" href="/support.html">
+                            <i class="ni ni-headphones text-red font-weight-bold"></i>
+                            <span class="nav-link-text">Support</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link active active-pro"
                            href="{{ url_for('authentication_blueprint.logout') }}">
                             <i class="ni ni-user-run text-red font-weight-bold"></i>
