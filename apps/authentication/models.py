@@ -1,7 +1,8 @@
 # -*- encoding: utf-8 -*-
 """
-Copyright (c) 2019 - present AppSeed.us
+Copyright (c) 2024 - present Wilson635
 """
+
 from typing import Any
 
 from flask_login import UserMixin

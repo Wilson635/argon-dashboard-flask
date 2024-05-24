@@ -1,7 +1,7 @@
 /*
 
 =========================================================
-* AppSeed - Simple SCSS compiler via Gulp
+* Wilson635 - Simple SCSS compiler via Gulp
 =========================================================
 
 */

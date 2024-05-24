@@ -1,7 +1,8 @@
 # -*- encoding: utf-8 -*-
 """
-Copyright (c) 2019 - present AppSeed.us
+Copyright (c) 2024 - present Wilson635
 """
+
 
 from apps.home import blueprint
 from flask import render_template, request
