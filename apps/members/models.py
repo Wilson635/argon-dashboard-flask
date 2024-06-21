@@ -2,7 +2,7 @@
 """
 Copyright (c) 2024 - present Wilson635
 """
-from apps import db
+from apps import db, login_manager
 
 
 class Members(db.Model):
@@ -30,3 +30,15 @@ class Children(db.Model):
 
     def __repr__(self):
         return '<Children %r>' % self.name
+
+
+@login_manager.member_loader
+def member_loader(id):
+    return Members.query.filter_by(idMember=id).first()
+
+
+@login_manager.request_loader
+def request_loader(request):
+    name = request.form.get('name')
+    member = Members.query.filter_by(name=name).first()
+    return member if member else None
