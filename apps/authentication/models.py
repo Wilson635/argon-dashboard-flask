@@ -16,10 +16,10 @@ class Users(db.Model, UserMixin):
     __tablename__ = 'Users'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), unique=True)
+    username = db.Column(db.String(64), unique=False)
     email = db.Column(db.String(64), unique=True)
     password = db.Column(db.LargeBinary)
-    role = db.Column(db.String(64), unique=True)
+    role = db.Column(db.String(64), unique=False)
 
     def __init__(self, **kwargs):
         for property, value in kwargs.items():
@@ -39,23 +39,53 @@ class Users(db.Model, UserMixin):
         return str(self.username)
 
 
-class Member(db.Model):
-    __tablename__ = 'members'
+class Status(db.Model):
+    __tablename__ = 'Status'
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)  # Last name of the member
-    first_name = db.Column(db.String(100), nullable=False)  # First name of the member
-    date_of_birth = db.Column(db.Date, nullable=False)  # Date of birth of the member
-    email = db.Column(db.String(100), unique=True, nullable=False)  # Email of the member
-    address = db.Column(db.String(200), nullable=False)  # Address of the member
-    city = db.Column(db.String(100), nullable=False)  # City of the member
-    postal_code = db.Column(db.String(10), nullable=False)  # Postal code of the member
-    phone = db.Column(db.String(20), nullable=False)  # Phone number of the member
-    member_card_number = db.Column(db.String(20), unique=True, nullable=False)  # Member card number
-    join_date = db.Column(db.Date, nullable=False)  # Date when the member joined
+    idStatus = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True, nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Foreign key to link with user
-    user = db.relationship('Users', backref=db.backref('members', lazy=True))  # Relationship with the user table
+    def __repr__(self):
+        return '<Status %r>' % self.name
+
+
+class Roles(db.Model):
+    __tablename__ = 'Roles'
+
+    idRole = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True, nullable=False)
+
+    def __repr__(self):
+        return '<Roles %r>' % self.name
+
+
+class Members(db.Model):
+    __tablename__ = 'Members'
+
+    idMember = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=False, nullable=False)
+    familySituation = db.Column(db.String(64), nullable=False)
+    occupation = db.Column(db.String(64), nullable=False)
+    dateBirth = db.Column(db.DateTime)
+    status_id = db.Column(db.Integer, db.ForeignKey('Status.idStatus'))
+    role_id = db.Column(db.Integer, db.ForeignKey('Roles.idRole'))
+    children = db.relationship('Children', backref='member')
+
+    def __repr__(self):
+        return '<Members %r>' % self.name
+
+
+class Children(db.Model):
+    __tablename__ = 'Children'
+
+    idChild = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    firstName = db.Column(db.String(64), nullable=False)
+    dateBirth = db.Column(db.DateTime)
+    member_id = db.Column(db.Integer, db.ForeignKey('Members.idMember'))
+
+    def __repr__(self):
+        return '<Children %r>' % self.name
 
 
 @login_manager.user_loader
