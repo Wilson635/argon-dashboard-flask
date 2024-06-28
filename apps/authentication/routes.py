@@ -7,14 +7,14 @@ from flask import render_template, redirect, request, url_for
 from flask_login import (
     current_user,
     login_user,
-    logout_user
+    logout_user,
+    login_required
 )
 
 from apps import db, login_manager
 from apps.authentication import blueprint
 from apps.authentication.forms import LoginForm, CreateAccountForm
 from apps.authentication.models import Users
-
 from apps.authentication.util import verify_pass
 
 
@@ -39,7 +39,6 @@ def login():
 
         # Check the password
         if user and verify_pass(password, user.password):
-
             login_user(user)
             return redirect(url_for('authentication_blueprint.route_default'))
 
@@ -72,8 +71,8 @@ def register():
                                    form=create_account_form)
 
         # Check email exists
-        user = Users.query.filter_by(email=email).first()
-        if user:
+        email = Users.query.filter_by(email=email).first()
+        if email:
             return render_template('accounts/register.html',
                                    msg='Email already registered',
                                    success=False,

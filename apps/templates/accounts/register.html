@@ -38,7 +38,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-single-02"></i></span>
                                         </div>
-                                        {{ form.username(placeholder="Username",class="form-control") }}
+                                        {{ form.username(placeholder="Username",class="form-control",id="username") }}
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
@@ -46,7 +46,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                                         </div>
-                                        {{ form.email(placeholder="Email",class="form-control") }}
+                                        {{ form.email(placeholder="Email",class="form-control",id="email") }}
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -54,7 +54,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                                         </div>
-                                        {{ form.password(placeholder="Password",class="form-control",type="password") }}
+                                        {{ form.password(placeholder="Password",class="form-control",type="password",id="password") }}
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -62,13 +62,13 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-badge"></i></span>
                                         </div>
-                                        <input class="form-control" placeholder="Role" type="text" name="role">
+                                        <input class="form-control" id="role" placeholder="Role" type="text" name="role">
                                     </div>
                                 </div>
 
 
                                 <div class="text-center">
-                                    <button type="submit" name="register" class="btn btn-primary my-4">Register</button>
+                                    <button type="submit" id="submit-btn" name="register" class="btn btn-primary my-4">Register</button>
                                 </div>
                             </form>
                         {% endif %}
@@ -88,4 +88,6 @@
 {% endblock content %}
 
 <!-- Specific JS goes HERE -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+{% endblock javascripts %}
