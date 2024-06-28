@@ -2,7 +2,7 @@
 """
 Copyright (c) 2024 - present Wilson635
 """
-
+from apps.authentication.models import Members
 from apps.members import blueprint
 from flask import render_template, redirect, url_for
 
@@ -10,3 +10,6 @@ from flask import render_template, redirect, url_for
 @blueprint.route('/support-members')
 def route_default():
     return render_template('./home/support.html')
+
+
+

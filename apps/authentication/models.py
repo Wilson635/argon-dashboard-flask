@@ -3,12 +3,9 @@
 Copyright (c) 2024 - present Wilson635
 """
 
-from typing import Any
-
 from flask_login import UserMixin
 
 from apps import db, login_manager
-
 from apps.authentication.util import hash_pass
 
 
@@ -64,15 +61,21 @@ class Members(db.Model):
 
     idMember = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=False, nullable=False)
+    firstName = db.Column(db.String(64), nullable=False)
+    local = db.Column(db.String(64), nullable=False)
     familySituation = db.Column(db.String(64), nullable=False)
     occupation = db.Column(db.String(64), nullable=False)
     dateBirth = db.Column(db.DateTime)
     status_id = db.Column(db.Integer, db.ForeignKey('Status.idStatus'))
     role_id = db.Column(db.Integer, db.ForeignKey('Roles.idRole'))
     children = db.relationship('Children', backref='member')
+    parents = db.relationship('Parents', backref='member')
+    partners = db.relationship('Partners', backref='member')
+    emergency_contacts = db.relationship('EmergencyContact', backref='member')
 
     def __repr__(self):
         return '<Members %r>' % self.name
+
 
 
 class Children(db.Model):
@@ -86,6 +89,49 @@ class Children(db.Model):
 
     def __repr__(self):
         return '<Children %r>' % self.name
+
+
+class Parents(db.Model):
+    __tablename__ = 'Parents'
+
+    idParent = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    firstName = db.Column(db.String(64), nullable=False)
+    mobileNumber = db.Column(db.String(20), nullable=False)
+    member_id = db.Column(db.Integer, db.ForeignKey('Members.idMember'))
+
+    def __repr__(self):
+        return '<Parents %r>' % self.name
+
+
+class Partners(db.Model):
+    __tablename__ = 'Partners'
+
+    idPartner = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    firstName = db.Column(db.String(64), nullable=False)
+    dateBirth = db.Column(db.DateTime)
+    member_id = db.Column(db.Integer, db.ForeignKey('Members.idMember'))
+
+    def __repr__(self):
+        return '<Partners %r>' % self.name
+
+
+class EmergencyContact(db.Model):
+    __tablename__ = 'EmergencyContact'
+
+    idEmergency = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    firstName = db.Column(db.String(64), nullable=False)
+    address = db.Column(db.String(128), nullable=False)
+    mobileNumber = db.Column(db.String(20), nullable=False)
+    quality = db.Column(db.String(64), nullable=False)
+    others = db.Column(db.String(128), nullable=True)
+    member_id = db.Column(db.Integer, db.ForeignKey('Members.idMember'))
+
+    def __repr__(self):
+        return '<EmergencyContact %r>' % self.name
+
 
 
 @login_manager.user_loader

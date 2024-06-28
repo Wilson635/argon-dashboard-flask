@@ -7,150 +7,148 @@
 
 {% block content %}
 
-    <!-- Header -->
-    <div class="header bg-primary pb-6" style="background-image: url(/static/assets/img/theme/bg1.jpg);">
-        <div class="container-fluid">
-            <div class="header-body">
-                <h1 class="text-white d-inline-block mt-3 display-2 text-[150px] font-weight-800">Dashboard</h1>
-                <div class="row align-items-center py-4">
-                    <div class="col-lg-6 col-7">
-                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
-                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                            </ol>
-                        </nav>
+<!-- Header -->
+<div class="header bg-primary pb-6" style="background-image: url(/static/assets/img/theme/bg1.jpg);">
+    <div class="container-fluid">
+        <div class="header-body">
+            <h1 class="text-white d-inline-block mt-3 display-2 text-[150px] font-weight-800">Dashboard</h1>
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page content -->
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-header rounded-bottom p-3 pt-2">
+                    <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center rounded mt-n4 position-absolute">
+                        <i class="fa fa-user-shield text-white opacity-10"></i>
+                    </div>
+                    <div class="text-right pt-1">
+                        <p class="text-xl mb-0 text-capitalize font-weight-800">Users</p>
+                        <h4 class="mb-0">{{ user_count }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-header rounded-bottom p-3 pt-2">
+                    <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center rounded mt-n4 position-absolute">
+                        <i class="fa fa-chart-pie text-white opacity-10"></i>
+                    </div>
+                    <div class="text-right pt-1">
+                        <p class="text-xl mb-0 text-capitalize font-weight-800">Credit</p>
+                        <h4 class="mb-0">0</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-header rounded-bottom p-3 pt-2">
+                    <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center rounded mt-n4 position-absolute">
+                        <i class="fa fa-user-alt text-white opacity-10"></i>
+                    </div>
+                    <div class="text-right pt-1">
+                        <p class="text-xl mb-0 text-capitalize font-weight-800">Members</p>
+                        <h4 class="mb-0">{{ member_count }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+            <div class="card">
+                <div class="card-header rounded-bottom p-3 pt-2">
+                    <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center rounded mt-n4 position-absolute">
+                        <i class="fa fa-bookmark text-white opacity-10"></i>
+                    </div>
+                    <div class="text-right pt-1">
+                        <p class="text-xl mb-0 text-capitalize font-weight-800">Events</p>
+                        <h4 class="mb-0">0</h4>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="row sm:flex sm:flex-wrap sm: justify-content-end mb-3">
+        <div class="col-lg-6 col-5 text-right ">
+            <a href="/newUser" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#newuser"><i
+                    class="fa fa-plus-circle"></i> | New</a>
+            <a href="#" class="btn btn-white"><i class="fa fa-filter"></i> | Filter</a>
 
-    <!-- Page content -->
-    <div class="container-fluid mt--6">
-        <div class="row">
-            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                <div class="card">
-                    <div class="card-header rounded-bottom p-3 pt-2">
-                        <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center rounded mt-n4 position-absolute">
-                            <i class="fa fa-user-shield text-white opacity-10"></i>
-                        </div>
-                        <div class="text-right pt-1">
-                            <p class="text-xl mb-0 text-capitalize font-weight-800">Users</p>
-                            <h4 class="mb-0">0</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                <div class="card">
-                    <div class="card-header rounded-bottom p-3 pt-2">
-                        <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center rounded mt-n4 position-absolute">
-                            <i class="fa fa-chart-pie text-white opacity-10"></i>
-                        </div>
-                        <div class="text-right pt-1">
-                            <p class="text-xl mb-0 text-capitalize font-weight-800">Credit</p>
-                            <h4 class="mb-0">0</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                <div class="card">
-                    <div class="card-header rounded-bottom p-3 pt-2">
-                        <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center rounded mt-n4 position-absolute">
-                            <i class="fa fa-user-alt text-white opacity-10"></i>
-                        </div>
-                        <div class="text-right pt-1">
-                            <p class="text-xl mb-0 text-capitalize font-weight-800">Members</p>
-                            <h4 class="mb-0">0</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card">
-                    <div class="card-header rounded-bottom p-3 pt-2">
-                        <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center rounded mt-n4 position-absolute">
-                            <i class="fa fa-bookmark text-white opacity-10"></i>
-                        </div>
-                        <div class="text-right pt-1">
-                            <p class="text-xl mb-0 text-capitalize font-weight-800">Events</p>
-                            <h4 class="mb-0">0</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-        <div class="row justify-content-end mb-3">
-            <div class="col-lg-6 col-5 text-right ">
-                <a href="/newUser" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#newuser"><i
-                        class="fa fa-plus-circle"></i> | New</a>
-                <a href="#" class="btn btn-white"><i class="fa fa-filter"></i> | Filter</a>
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card">
-                    <div class="card-header border-0">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h3 class="mb-0">User List</h3>
-                            </div>
-                            <div class="col text-right">
-                                <a href="#" class="btn btn-primary"><i class="fa fa-eye"></i> | See All</a>
-                            </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-header border-0">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h3 class="mb-0">User List</h3>
+                        </div>
+                        <div class="col text-right">
+                            <a href="#" class="btn btn-primary"><i class="fa fa-eye"></i> | See All</a>
                         </div>
                     </div>
-                    <div class="table-responsive">
-                        <!-- Projects table -->
-                        <table class="table align-items-center table-flush">
-                            <thead class="thead-light">
+                </div>
+                <div class="table-responsive">
+                    <!-- Projects table -->
+                    <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                        <tr>
+                            <th scope="col">User Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
                             <tr>
-                                <th scope="col">User Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Role</th>
+                                <th scope="row">
+                                    {{ user.username }}
+                                </th>
+                                <td>
+                                    {{ user.email }}
+                                </td>
+                                <td>
+                                    {{ user.role }}
+                                </td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            {% for User in Users %}
-                                <tr>
-                                    <th scope="row">
-                                        {{ User.username }}
-                                    </th>
-                                    <td>
-                                        {{ User.email }}
-                                    </td>
-                                    <td>
-                                        {{ User.role }}
-                                    </td>
-                                </tr>
                             {% endfor %}
-
-
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-
-        <!-- Scrollable modal -->
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="newuser">
-            ...
-        </div>
-
-        {% include "includes/footer.html" %}
-
     </div>
+
+    <!-- Scrollable modal -->
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="newuser">
+        ...
+    </div>
+
+    {% include "includes/footer.html" %}
+
+</div>
 
 {% endblock content %}
 
 <!-- Specific JS goes HERE -->
 {% block javascripts %}
 
-    <script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
-    <script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
+<script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
+<script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
 
 {% endblock javascripts %}

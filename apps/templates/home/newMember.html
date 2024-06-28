@@ -4,11 +4,12 @@
 
 {% block content %}
 
+    <!--suppress ALL -->
     <style>
         .container {
             position: relative;
             width: 100%;
-            height: 100%;
+            height: 1050px;
             border-radius: 6px;
             padding: 30px;
             background-color: #fff;
@@ -36,7 +37,7 @@
         .container form {
             position: relative;
             margin-top: 16px;
-            min-height: 560px;
+            min-height: 930px;
             background-color: #fff;
             overflow: hidden;
         }
@@ -196,8 +197,8 @@
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                 <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                                <li class="breadcrumb-item"><a href="#">Members</a></li>
+                                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="/members">Members</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">New Member</li>
                             </ol>
                         </nav>
@@ -213,7 +214,7 @@
         <div class="container">
             <header>Member Information</header>
 
-            <form action="#">
+            <form method="POST" action="/newMember">
                 <div class="form first">
                     <div class="details personal">
                         <span class="title">Personal Details</span>
@@ -221,27 +222,27 @@
                         <div class="fields">
                             <div class="input-field">
                                 <label>Name</label>
-                                <input type="text" placeholder="Enter your name" required>
+                                <input type="text" placeholder="Enter your name" name="name_members" />
                             </div>
 
                             <div class="input-field">
                                 <label>First Name</label>
-                                <input type="text" placeholder="Enter your name" required>
+                                <input type="text" placeholder="Enter your name" name="first_name_members" />
                             </div>
 
                             <div class="input-field">
                                 <label>Date of Birth</label>
-                                <input type="date" placeholder="Enter birth date" required>
+                                <input type="date" placeholder="Enter birth date" name="birthday_members" />
                             </div>
 
                             <div class="input-field">
                                 <label>Local</label>
-                                <input type="text" placeholder="Enter a local" required>
+                                <input type="text" placeholder="Enter a local" name="local_members" />
                             </div>
 
                             <div class="input-field">
                                 <label>Family situation</label>
-                                <select required>
+                                <select name="family_situation_members">
                                     <option disabled selected>Select your situation</option>
                                     <option value="married">Married</option>
                                     <option value="bachelor">Bachelor</option>
@@ -252,7 +253,7 @@
 
                             <div class="input-field">
                                 <label>Occupation</label>
-                                <input type="text" placeholder="Enter your ccupation" required>
+                                <input type="text" placeholder="Enter your occupation" name="occupation_members" />
                             </div>
                         </div>
                     </div>
@@ -263,17 +264,17 @@
                         <div class="fields">
                             <div class="input-field">
                                 <label>Name</label>
-                                <input type="text" placeholder="Enter a name of child" required>
+                                <input type="text" placeholder="Enter a name of child" name="name_children" />
                             </div>
 
                             <div class="input-field">
                                 <label>First Name</label>
-                                <input type="text" placeholder="Enter a first name of child" required>
+                                <input type="text" placeholder="Enter a first name of child" name="first_name_children" />
                             </div>
 
                             <div class="input-field">
                                 <label>Date of Birth</label>
-                                <input type="date" placeholder="Enter date of birth" required>
+                                <input type="date" placeholder="Enter date of birth" name="birthday_children" />
                             </div>
 
 
@@ -284,114 +285,86 @@
                         <div class="fields">
                             <div class="input-field">
                                 <label>Name</label>
-                                <input type="text" placeholder="Enter a name of child" required>
+                                <input type="text" placeholder="Enter a name of parents" name="name_parents" />
                             </div>
 
                             <div class="input-field">
                                 <label>First Name</label>
-                                <input type="text" placeholder="Enter a first name of child" required>
+                                <input type="text" placeholder="Enter a first name of parents" name="first_name_parents" />
                             </div>
 
                             <div class="input-field">
                                 <label>Mobile number</label>
-                                <input type="number" placeholder="Enter mobile number" required>
+                                <input type="number" placeholder="Enter mobile number" name="mobile_parents" />
                             </div>
 
 
                         </div>
 
-                        <button class="nextBtn mb-5">
-                            <span class="btnText">Next</span>
+                        <span class="title">Identification of partners</span>
+
+                        <div class="fields">
+                            <div class="input-field">
+                                <label>Name</label>
+                                <input type="text" placeholder="Enter a name of partner" name="name_partners" />
+                            </div>
+
+                            <div class="input-field">
+                                <label>First Name</label>
+                                <input type="text" placeholder="Enter a first name of partner" name="first_name_partners" />
+                            </div>
+
+                            <div class="input-field">
+                                <label>Date of both</label>
+                                <input type="date" placeholder="Enter a birthday" name="birthday_partners" />
+                            </div>
+
+
+                        </div>
+
+                        <span class="title">Emergency contact person</span>
+
+                        <div class="fields">
+                            <div class="input-field">
+                                <label>Name</label>
+                                <input type="text" placeholder="Enter a name" name="name_emergency" />
+                            </div>
+
+                            <div class="input-field">
+                                <label>First Name</label>
+                                <input type="text" placeholder="Enter a first name" name="first_name_emergency" />
+                            </div>
+
+                            <div class="input-field">
+                                <label>Address</label>
+                                <input type="text" placeholder="Enter an address" name="address_emergency" />
+                            </div>
+
+                            <div class="input-field">
+                                <label>Mobile number</label>
+                                <input type="number" placeholder="Enter mobile number" name="mobile_emergency" />
+                            </div>
+
+                            <div class="input-field">
+                                <label>Quality</label>
+                                <input type="text" placeholder="Enter a quality" name="quality_emergency" />
+                            </div>
+
+                            <div class="input-field">
+                                <label>Others</label>
+                                <input type="text" placeholder="others" name="others_emergency" />
+                            </div>
+
+
+                        </div>
+
+                        <button type="submit" class="nextBtn mb-5">
+                            <span class="btnText">Create a member</span>
                             <i class="uil uil-navigator"></i>
                         </button>
                     </div>
                 </div>
 
-                <div class="form second">
-                    <div class="details address">
-                        <span class="title">Address Details</span>
-
-                        <div class="fields">
-                            <div class="input-field">
-                                <label>Address Type</label>
-                                <input type="text" placeholder="Permanent or Temporary" required>
-                            </div>
-
-                            <div class="input-field">
-                                <label>Nationality</label>
-                                <input type="text" placeholder="Enter nationality" required>
-                            </div>
-
-                            <div class="input-field">
-                                <label>State</label>
-                                <input type="text" placeholder="Enter your state" required>
-                            </div>
-
-                            <div class="input-field">
-                                <label>District</label>
-                                <input type="text" placeholder="Enter your district" required>
-                            </div>
-
-                            <div class="input-field">
-                                <label>Block Number</label>
-                                <input type="number" placeholder="Enter block number" required>
-                            </div>
-
-                            <div class="input-field">
-                                <label>Ward Number</label>
-                                <input type="number" placeholder="Enter ward number" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="details family">
-                        <span class="title">Family Details</span>
-
-                        <div class="fields">
-                            <div class="input-field">
-                                <label>Father Name</label>
-                                <input type="text" placeholder="Enter father name" required>
-                            </div>
-
-                            <div class="input-field">
-                                <label>Mother Name</label>
-                                <input type="text" placeholder="Enter mother name" required>
-                            </div>
-
-                            <div class="input-field">
-                                <label>Grandfather</label>
-                                <input type="text" placeholder="Enter grandfther name" required>
-                            </div>
-
-                            <div class="input-field">
-                                <label>Spouse Name</label>
-                                <input type="text" placeholder="Enter spouse name" required>
-                            </div>
-
-                            <div class="input-field">
-                                <label>Father in Law</label>
-                                <input type="text" placeholder="Father in law name" required>
-                            </div>
-
-                            <div class="input-field">
-                                <label>Mother in Law</label>
-                                <input type="text" placeholder="Mother in law name" required>
-                            </div>
-                        </div>
-
-                        <div class="buttons">
-                            <div class="backBtn">
-                                <i class="uil uil-navigator"></i>
-                                <span class="btnText">Back</span>
-                            </div>
-
-                            <button class="sumbit">
-                                <span class="btnText">Submit</span>
-                                <i class="uil uil-navigator"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </form>
         </div>
 
@@ -401,24 +374,4 @@
 
 {% endblock content %}
 
-<!-- Specific JS goes HERE -->
-<script>
-    const form = document.querySelector("form"),
-        nextBtn = form.querySelector(".nextBtn"),
-        backBtn = form.querySelector(".backBtn"),
-        allInput = form.querySelectorAll(".first input");
-
-
-    nextBtn.addEventListener("click", () => {
-        allInput.forEach(input => {
-            if (input.value != "") {
-                form.classList.add('secActive');
-            } else {
-                form.classList.remove('secActive');
-            }
-        })
-    })
-
-    backBtn.addEventListener("click", () => form.classList.remove('secActive'));
-</script>
 {% block javascripts %}{% endblock javascripts %}

@@ -4,6 +4,7 @@
 
 {% block content %}
 
+    <!--suppress ALL -->
     <style>
         .container {
             position: relative;
@@ -196,7 +197,7 @@
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                 <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">New Account</li>
                             </ol>
                         </nav>
@@ -211,7 +212,10 @@
 
         <div class="container">
             <header>Create a new account</header>
+            {% if msg %}
+                <span class="text-danger">{{ msg | safe }}</span>
 
+            {% endif %}
             <form role="form" method="post" action="">
                 <div class="form first">
                     <div class="details personal">
@@ -234,7 +238,13 @@
 
                             <div class="input-field">
                                 <label>Role</label>
-                                <input type="text" name="role" placeholder="Enter a role" required>
+                                <select name="role">
+                                    <option disabled selected>Select your role</option>
+                                    <option value="guest">Guest</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="rh">RH</option>
+                                    <option value="dsi">DSI</option>
+                                </select>
                             </div>
                         </div>
                     </div>
