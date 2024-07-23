@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="547deb67-374e-45f1-9c19-e1429dc96920" name="Changes" comment="updates files">
       <change beforePath="$PROJECT_DIR$/apps/home/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/home/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/templates/home/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/home/profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/templates/home/settings.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/home/settings.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/templates/includes/sidenav.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/includes/sidenav.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,6 +136,7 @@
       <workItem from="1717060776798" duration="9707000" />
       <workItem from="1717146727401" duration="37393000" />
       <workItem from="1718952373795" duration="104708000" />
+      <workItem from="1721645375483" duration="7830000" />
     </task>
     <task id="LOCAL-00001" summary="updates">
       <option name="closed" value="true" />
@@ -237,6 +235,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/argon_dashboard_flask_master$argon_dashboard_flask_master.coverage" NAME="argon-dashboard-flask-master Coverage Results" MODIFIED="1715328871665" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/argon_dashboard_flask$argon_dashboard_flask_master.coverage" NAME="argon-dashboard-flask-master Coverage Results" MODIFIED="1719485251488" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/argon_dashboard_flask$argon_dashboard_flask_master.coverage" NAME="argon-dashboard-flask-master Coverage Results" MODIFIED="1721750723027" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>
