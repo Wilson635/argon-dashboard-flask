@@ -17,6 +17,13 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'db.sqlite3')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    MAIL_SERVER = 'smtp.webmail.firsttrust.cm'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = 'wilson.ngahemeni@firsttrust.cm'
+    MAIL_PASSWORD = 'Ftsl2003'
+    MAIL_DEFAULT_SENDER = 'wilson.ngahemeni@firsttrust.cm'
+
 
 class ProductionConfig(Config):
     DEBUG = False

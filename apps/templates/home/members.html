@@ -3,44 +3,44 @@
 {% block title %} Members {% endblock title %}
 
 {% block content %}
-<div class="header bg-primary pb-6" style="background-image: url(/static/assets/img/theme/bg1.jpg);">
-    <div class="container-fluid">
-        <div class="header-body">
-            <h1 class="text-white d-inline-block mt-3 display-2 text-[150px] font-weight-800">Members</h1>
-            <div class="row align-items-center py-4">
-                <div class="col-lg-6 col-7">
-                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
-                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                            <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Members</li>
-                        </ol>
-                    </nav>
-                </div>
-                <div class="col-lg-6 col-5 text-right">
-                    <a href="/newMember" class="btn btn-info"><i class="fa fa-plus-circle"></i> | New</a>
-                    <a href="#" class="btn btn-danger"><i class="fa fa-upload"></i> | Export</a>
-                    <a href="#" class="btn btn-success"><i class="fa fa-download"></i> | Import</a>
-                    <a href="#" class="btn btn-dark"><i class="fa fa-filter"></i> | Filter</a>
+    <div class="header bg-primary pb-6" style="background-image: url(/static/assets/img/theme/bg1.jpg);">
+        <div class="container-fluid">
+            <div class="header-body">
+                <h1 class="text-white d-inline-block mt-3 display-2 text-[150px] font-weight-800">Members</h1>
+                <div class="row align-items-center py-4">
+                    <div class="col-lg-6 col-7">
+                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Members</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-lg-6 col-5 text-right">
+                        <a href="/newMember" class="btn btn-info"><i class="fa fa-plus-circle"></i> | New</a>
+                        <a href="#" class="btn btn-danger"><i class="fa fa-upload"></i> | Export</a>
+                        <a href="/upload_pdf" class="btn btn-success"><i class="fa fa-download"></i> | Import</a>
+                        <a href="#" class="btn btn-dark"><i class="fa fa-filter"></i> | Filter</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Page content -->
-<div class="container-fluid mt--6">
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <!-- Card header -->
-                <div class="card-header border-0">
-                    <h3 class="mb-0">List of Members</h3>
-                </div>
-                <!-- Table -->
-                <div class="table-responsive">
-                    <table class="table align-items-center table-flush">
-                        <thead class="thead-light">
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header border-0">
+                        <h3 class="mb-0">List of Members</h3>
+                    </div>
+                    <!-- Table Members -->
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead-light">
                             <tr>
                                 <th scope="col">Name</th>
                                 <th scope="col">First Name</th>
@@ -49,24 +49,42 @@
                                 <th scope="col">Family Situation</th>
                                 <th scope="col">Occupation</th>
                             </tr>
-                        </thead>
-                        <tbody>
+                            </thead>
+                            <tbody>
                             {% for member in members %}
-                            <tr>
-                                <td>{{ member.name }}</td>
-                                <td>{{ member.firstName }}</td>
-                                <td>{{ member.dateBirth.strftime('%Y-%m-%d') }}</td>
-                                <td>{{ member.local }}</td>
-                                <td>{{ member.familySituation }}</td>
-                                <td>{{ member.occupation }}</td>
-                            </tr>
+                                <tr>
+                                    <td>{{ member.name }}</td>
+                                    <td>{{ member.firstName }}</td>
+                                    <td>{{ member.dateBirth.strftime('%Y-%m-%d') }}</td>
+                                    <td>{{ member.local }}</td>
+                                    <td>{{ member.familySituation }}</td>
+                                    <td>{{ member.occupation }}</td>
+                                </tr>
                             {% endfor %}
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- End of table -->
+
+                    <!-- Table pdf -->
+                    <ul>
+                        {% for member in members %}
+                            <li>{{ member.name }} {{ member.firstName }}
+                                <ul>
+                                    {% for pdf in member.pdf_files %}
+                                        <li>
+                                            <a href="{{ url_for('home_blueprint.view_pdf', file_id=pdf.id) }}">View {{ pdf.filename }}</a>
+                                            |
+                                            <a href="{{ url_for('home_blueprint.download_pdf', file_id=pdf.id) }}">Download {{ pdf.filename }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <!-- End of table -->
                 </div>
-                <!-- End of table -->
             </div>
         </div>
     </div>
-</div>
 {% endblock content %}

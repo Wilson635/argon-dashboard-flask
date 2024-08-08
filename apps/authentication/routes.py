@@ -10,8 +10,9 @@ from flask_login import (
     logout_user,
     login_required
 )
+from flask_mail import Message
 
-from apps import db, login_manager
+from apps import db, login_manager, mail
 from apps.authentication import blueprint
 from apps.authentication.forms import LoginForm, CreateAccountForm
 from apps.authentication.models import Users
@@ -60,34 +61,26 @@ def register():
 
         username = request.form['username']
         email = request.form['email']
+        password = request.form['password']
         role = request.form['role']
 
-        # Check username exists
-        user = Users.query.filter_by(username=username).first()
-        if user:
-            return render_template('accounts/register.html',
-                                   msg='Username already registered',
-                                   success=False,
-                                   form=create_account_form)
-
         # Check email exists
-        email = Users.query.filter_by(email=email).first()
-        if email:
+        existing_email = Users.query.filter_by(email=email).first()
+        if existing_email:
             return render_template('accounts/register.html',
                                    msg='Email already registered',
                                    success=False,
                                    form=create_account_form)
 
-        if not role:
-            return render_template('accounts/register.html',
-                                   msg='Role not registered',
-                                   success=False,
-                                   form=create_account_form)
-
-        # else we can create the user
+        # Create the user
         user = Users(**request.form)
         db.session.add(user)
         db.session.commit()
+
+        # Envoyer l'email
+        msg = Message('Bienvenue à notre service', sender='wilson.ngahemeni@firsttrust.cm', recipients=[email])
+        msg.body = f"Bonjour {username},\n\nVotre compte a été créé avec succès. Voici vos identifiants:\n\nNom d'utilisateur: {username}\nMot de passe: {password}\n\nMerci de vous connecter à votre compte.\n\nCordialement,\nL'équipe"
+        mail.send(msg)
 
         return render_template('accounts/register.html',
                                msg='User created please <a href="/login">login</a>',

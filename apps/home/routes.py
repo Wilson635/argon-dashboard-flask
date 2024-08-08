@@ -2,13 +2,15 @@
 from datetime import datetime
 
 import httpagentparser
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for, send_file
 from flask_login import login_required
 from jinja2 import TemplateNotFound
 from toastify import notify
+from datetime import datetime
+import io
 
 from apps import db
-from apps.authentication.models import Users, Members, Children, Parents, Partners, EmergencyContact
+from apps.authentication.models import Users, Members, Children, Parents, Partners, EmergencyContact, PDFFile
 from apps.home import blueprint
 
 
@@ -16,8 +18,8 @@ from apps.home import blueprint
 @login_required
 def index():
     users = Users.query.all()  # Get all users
-    user_count = Users.query.count()
-    member_count = Members.query.count()
+    user_count = Users.query.count()   # Count all users
+    member_count = Members.query.count()    # Count all members
     return render_template('home/index.html', segment='index', users=users, user_count=user_count,
                            member_count=member_count)
 
@@ -51,6 +53,39 @@ def route_template(template):
 #     user_agent = request.headers.get('User-Agent')
 #     device_info = httpagentparser.simple_detect(user_agent)
 #     return render_template('home/settings.html', device_info=device_info, segment=segment)
+
+@blueprint.route('/upload_pdf', methods=['GET', 'POST'])
+@login_required
+def upload_pdf():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return redirect(request.url)
+        file = request.files['file']
+        member_id = request.form.get('member_id')
+        if file.filename == '':
+            return redirect(request.url)
+        if file:
+            new_file = PDFFile(filename=file.filename, data=file.read(), member_id=member_id)
+            db.session.add(new_file)
+            db.session.commit()
+            return 'File uploaded successfully!'
+    members = Members.query.all()
+    return render_template('home/upload_pdf.html', members=members, segment='upload_pdf')
+
+
+@blueprint.route('/view_pdf/<int:file_id>')
+@login_required
+def view_pdf(file_id):
+    file_data = PDFFile.query.get(file_id)
+    return send_file(io.BytesIO(file_data.data), attachment_filename=file_data.filename, as_attachment=False)
+
+
+@blueprint.route('/download_pdf/<int:file_id>')
+@login_required
+def download_pdf(file_id):
+    file_data = PDFFile.query.get(file_id)
+    return send_file(io.BytesIO(file_data.data), attachment_filename=file_data.filename, as_attachment=True)
+
 
 
 @blueprint.route('/members')
