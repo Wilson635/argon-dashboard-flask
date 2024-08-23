@@ -47,7 +47,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 
 // The Emitter class provides the ability to call `.on()` on Dropzone to listen
-// to events.
+// to guest.
 // It is strongly based on component's emitter class, and I removed the
 // functionality because of the dependency hell with different frameworks.
 var Emitter = function () {
@@ -151,7 +151,7 @@ var Dropzone = function (_Emitter) {
       this.prototype.Emitter = Emitter;
 
       /*
-       This is a list of all available events you can register on a dropzone object.
+       This is a list of all available guest you can register on a dropzone object.
         You can register an event handler like this:
         dropzone.on("dragEnter", function() { });
         */
@@ -192,7 +192,7 @@ var Dropzone = function (_Emitter) {
          * Whether to send multiple files in one request. If
          * this it set to true, then the fallback file input element will
          * have the `multiple` attribute as well. This option will
-         * also trigger additional events (like `processingmultiple`). See the events
+         * also trigger additional guest (like `processingmultiple`). See the guest
          * documentation section for more information.
          */
         uploadMultiple: false,
@@ -712,7 +712,7 @@ var Dropzone = function (_Emitter) {
 
 
         /*
-         Those functions register themselves to the events on init and handle all
+         Those functions register themselves to the guest on init and handle all
          the user interface specific stuff. Overwriting them won't break the upload
          but can break the way it's displayed.
          You can overwrite them if you don't like the default behavior. If you just

@@ -1,0 +1,31 @@
+<!-- Header -->
+<div class="header bg-primary pb-6" style="background-image: url(/static/assets/img/theme/bg1.jpg);">
+    <div class="container-fluid">
+        <div class="header-body">
+            <h1 class="text-white d-inline-block mt-3 display-2 text-[150px] font-weight-800">
+                Welcome {{ current_user.username }}👋
+            </h1>
+            <p class="text-white-50 mb-5">
+                Start the day with managing new activities
+            </p>
+            {#            <div class="row align-items-center py-4">#}
+            {#                <div class="col-lg-6 col-7">#}
+            {#                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">#}
+            {#                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">#}
+            {#                            <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>#}
+            {#                            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>#}
+            {#                        </ol>#}
+            {#                    </nav>#}
+            {#                </div>#}
+            {#            </div>#}
+        </div>
+    </div>
+</div>
+
+<!-- Page content -->
+<div class="container-fluid mt--6">
+
+
+    {% include "includes/footer.html" %}
+
+</div>

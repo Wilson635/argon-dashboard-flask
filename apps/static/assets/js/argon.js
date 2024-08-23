@@ -131,7 +131,7 @@ var Layout = (function() {
     })
 
 
-    // Add sidenav modifier classes on mouse events
+    // Add sidenav modifier classes on mouse guest
 
     $('.sidenav').on('mouseenter', function() {
         if(! $('body').hasClass('g-sidenav-pinned')) {

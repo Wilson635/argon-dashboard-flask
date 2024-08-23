@@ -5,24 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="547deb67-374e-45f1-9c19-e1429dc96920" name="Changes" comment="updates files">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copyright/Wilson635.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/templates/home/upload_pdf.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b7bbc81f-1107-4815-8519-0687189c753f.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b7bbc81f-1107-4815-8519-0687189c753f/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/templates/home/admin/event-admin.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/templates/home/admin/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/templates/home/guest/event-guest.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/templates/home/guest/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/authentication/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/authentication/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/authentication/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/authentication/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/home/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/home/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/templates/home/members.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/home/members.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/templates/home/settings.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/home/settings.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/templates/home/support.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/home/support.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/static/assets/js/argon.js" beforeDir="false" afterPath="$PROJECT_DIR$/apps/static/assets/js/argon.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/static/assets/scss/bootstrap/_button-group.scss" beforeDir="false" afterPath="$PROJECT_DIR$/apps/static/assets/scss/bootstrap/_button-group.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/static/assets/scss/bootstrap/_modal.scss" beforeDir="false" afterPath="$PROJECT_DIR$/apps/static/assets/scss/bootstrap/_modal.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/static/assets/scss/bootstrap/utilities/_stretched-link.scss" beforeDir="false" afterPath="$PROJECT_DIR$/apps/static/assets/scss/bootstrap/utilities/_stretched-link.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/static/assets/vendor/dropzone/dist/dropzone-amd-module.js" beforeDir="false" afterPath="$PROJECT_DIR$/apps/static/assets/vendor/dropzone/dist/dropzone-amd-module.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/static/assets/vendor/dropzone/dist/dropzone.js" beforeDir="false" afterPath="$PROJECT_DIR$/apps/static/assets/vendor/dropzone/dist/dropzone.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/static/assets/vendor/quill/dist/quill.core.js" beforeDir="false" afterPath="$PROJECT_DIR$/apps/static/assets/vendor/quill/dist/quill.core.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/templates/home/events.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/home/events.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/templates/home/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/home/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/templates/includes/sidenav.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/includes/sidenav.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,6 +108,11 @@
     ]
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Projects\argon-dashboard-flask\apps\templates\home\admin" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="argon-dashboard-flask-master" type="PythonConfigurationType" factoryName="Python">
       <module name="argon-dashboard-flask-master" />
@@ -171,7 +174,10 @@
       <workItem from="1721803504747" duration="15872000" />
       <workItem from="1721835982517" duration="6000000" />
       <workItem from="1721891381143" duration="8295000" />
-      <workItem from="1723099246221" duration="135000" />
+      <workItem from="1723099246221" duration="1273000" />
+      <workItem from="1723792898699" duration="2461000" />
+      <workItem from="1724321208169" duration="5155000" />
+      <workItem from="1724393679854" duration="6356000" />
     </task>
     <task id="LOCAL-00001" summary="updates">
       <option name="closed" value="true" />
@@ -245,7 +251,15 @@
       <option name="project" value="LOCAL" />
       <updated>1719562529756</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="updates files">
+      <option name="closed" value="true" />
+      <created>1723099572738</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1723099572738</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -270,6 +284,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/argon_dashboard_flask_master$argon_dashboard_flask_master.coverage" NAME="argon-dashboard-flask-master Coverage Results" MODIFIED="1715328871665" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/argon_dashboard_flask$argon_dashboard_flask_master.coverage" NAME="argon-dashboard-flask-master Coverage Results" MODIFIED="1723099341629" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/argon_dashboard_flask$argon_dashboard_flask_master.coverage" NAME="argon-dashboard-flask-master Coverage Results" MODIFIED="1724400653138" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

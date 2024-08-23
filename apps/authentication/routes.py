@@ -77,10 +77,10 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        # Envoyer l'email
-        msg = Message('Bienvenue à notre service', sender='wilson.ngahemeni@firsttrust.cm', recipients=[email])
-        msg.body = f"Bonjour {username},\n\nVotre compte a été créé avec succès. Voici vos identifiants:\n\nNom d'utilisateur: {username}\nMot de passe: {password}\n\nMerci de vous connecter à votre compte.\n\nCordialement,\nL'équipe"
-        mail.send(msg)
+        # Envoyer l'email msg = Message('Bienvenue à notre service', sender='wilson.ngahemeni@firsttrust.cm',
+        # recipients=[email]) msg.body = f"Bonjour {username},\n\nVotre compte a été créé avec succès. Voici vos
+        # identifiants:\n\nNom d'utilisateur: {username}\nMot de passe: {password}\n\nMerci de vous connecter à votre
+        # compte.\n\nCordialement,\nL'équipe" mail.send(msg)
 
         return render_template('accounts/register.html',
                                msg='User created please <a href="/login">login</a>',

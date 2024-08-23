@@ -1,0 +1,70 @@
+<div class="row">
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-header rounded-bottom p-3 pt-2">
+                <div class="icon icon-lg icon-shape bg-gradient-green shadow-dark text-center rounded mt-n4 position-absolute">
+                    <i class="fa fa-check-circle text-white opacity-10"></i>
+                </div>
+                <div class="text-right pt-1">
+                    <p class="text-xl mb-0 text-capitalize font-weight-800">0</p>
+                    <h4 class="mb-0">Scheduled events</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-header rounded-bottom p-3 pt-2">
+                <div class="icon icon-lg icon-shape bg-gradient-blue shadow-primary text-center rounded mt-n4 position-absolute">
+                    <i class="fa fa-hourglass-half text-white opacity-10"></i>
+                </div>
+                <div class="text-right pt-1">
+                    <p class="text-xl mb-0 text-capitalize font-weight-800">0</p>
+                    <h4 class="mb-0">Pending events</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-header rounded-bottom p-3 pt-2">
+                <div class="icon icon-lg icon-shape bg-gradient-danger shadow-success text-center rounded mt-n4 position-absolute">
+                    <i class="fa fa-exclamation-triangle text-white opacity-10"></i>
+                </div>
+                <div class="text-right pt-1">
+                    <p class="text-xl mb-0 text-capitalize font-weight-800">0</p>
+                    <h4 class="mb-0">Cancelled events</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Table Members -->
+<div class="table-responsive">
+    <table class="table align-items-center table-flush">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">status</th>
+            <th scope="col">Events</th>
+            <th scope="col">Events Date</th>
+            <th scope="col">Author</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {#                {% for member in members %}#}
+        <tr>
+            <td>1</td>
+            <td>Pending...</td>
+            <td>Naissance....</td>
+            <td>22/08/2024</td>
+            <td>Marie Engome</td>
+            <td>delete | schedule</td>
+        </tr>
+        {#                {% endfor %}#}
+        </tbody>
+    </table>
+</div>
+<!-- End of table -->

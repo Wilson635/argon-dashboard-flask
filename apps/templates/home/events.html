@@ -10,7 +10,10 @@
             <div class="header-body">
                 <div class="row align-items-center py-4">
                     <div class="col-lg-6 col-7 d-flex flex-lg-column">
-                        <h1 class="display-2 text-[150px] font-weight-800 text-white d-inline-block mb-5">Events</h1>
+                        <h1 class="display-2 text-[150px] font-weight-800 text-white d-inline-block mb-1">Welcome 👋</h1>
+                        <p class="text-white-50 mb-5">
+                            Start the day with managing new events
+                        </p>
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                 <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
@@ -26,7 +29,11 @@
 
     <!-- Page content -->
     <div class="container-fluid mt--6">
-
+        {% if current_user.role == 'admin' or current_user.role == 'dsi' %}
+            {% include "home/admin/event-admin.html" %}
+        {% else %}
+            {% include "home/guest/event-guest.html" %}
+        {% endif %}
 
         {% include "includes/footer.html" %}
 
