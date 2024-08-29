@@ -1,0 +1,55 @@
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open
+    New Events
+</button>
+
+
+{# Modal #}
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Event</h5>
+                {#                <p class="text-black-50"> Please fill in the form to create a new event </p>#}
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            {# Form modal body #}
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Sender:</label>
+                        <input type="text" class="form-control" id="recipient-name" value="{{ current_user.username }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="type-name" class="col-form-label">Type of events:</label>
+                        <select class="custom-select" id="type-name">
+                            <option selected>Open this select menu</option>
+                            <option value="1">Wedding</option>
+                            <option value="2">Birth</option>
+                            <option value="3">Death</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date-events" class="col-form-label">Date:</label>
+                        <input type="datetime-local" class="form-control" id="date-events">
+                    </div>
+                    <div class="form-group">
+                        <label for="location-name" class="col-form-label">Location:</label>
+                        <input type="text" class="form-control" id="location-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Message:</label>
+                        <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send message</button>
+            </div>
+        </div>
+    </div>
+</div>

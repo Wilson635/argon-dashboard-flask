@@ -1,0 +1,75 @@
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#declmodal">
+    Open New Déclaration
+</button>
+
+{# Modal #}
+<div class="modal fade" id="declmodal" tabindex="-1" role="dialog" aria-labelledby="declmodal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Déclaration</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            {# Form modal body #}
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Sender:</label>
+                        <input type="text" class="form-control" id="recipient-name" value="{{ current_user.username }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="type-name" class="col-form-label">Type of declaration:</label>
+                        <select class="custom-select" id="type-name" onchange="updateLabel()">
+                            <option selected>Open this select menu</option>
+                            <option value="wedding">Wedding</option>
+                            <option value="birth">Birth</option>
+                            <option value="death">Death</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="join-name" id="join-label" class="col-form-label">Join file:</label>
+                        <input type="file" class="form-control" id="join-name">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send message</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        /**
+         * Updates the label of the join input based on the selected type of declaration.
+         */
+        function updateLabel() {
+            // Get the select element and its selected value
+            const selectElement = document.getElementById("type-name");
+            const selectedValue = selectElement.value;
+
+            // Get the label element to update
+            const labelElement = document.getElementById("join-label");
+
+            // Update the label based on the selected value
+            if (selectedValue === "wedding") {
+                labelElement.textContent = "Wedding Certificate:";
+            } else if (selectedValue === "birth") {
+                labelElement.textContent = "Birth Certificate:";
+            } else if (selectedValue === "death") {
+                labelElement.textContent = "Death Certificate:";
+            } else {
+                labelElement.textContent = "Join file:";
+            }
+        }
+    </script>
+{% endblock javascripts %}

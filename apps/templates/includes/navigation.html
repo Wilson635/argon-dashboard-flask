@@ -43,7 +43,7 @@
               <span class="avatar avatar-sm rounded-circle bg-white">
                 <img alt="Image placeholder" src="/static/assets/img/theme/profile.jpg">
               </span>
-                            <div class="media-body ml-2 d-flex flex-lg-column">
+                            <div class="media-body ml-2 d-flex flex-lg-column flex-sm-column">
                 <span class="mb-0 text-sm  font-weight-bold">
                   {{ current_user.username }}
                 </span>
@@ -57,9 +57,13 @@
                         <div class="dropdown-header noti-title">
                             <h6 class="text-overflow m-0">Welcome!</h6>
                         </div>
-                        <a href="/profile.html" class="dropdown-item">
+                        <a href="/settings" class="dropdown-item">
                             <i class="ni ni-single-02"></i>
                             <span>My profile</span>
+                        </a>
+                        <a href="/docs" class="dropdown-item">
+                            <i class="fa fa-book-open"></i>
+                            <span>Documentation</span>
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="{{ url_for('authentication_blueprint.logout') }}" class="dropdown-item">

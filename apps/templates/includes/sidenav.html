@@ -11,28 +11,29 @@
             <div class="collapse navbar-collapse" id="sidenav-collapse-main">
                 <!-- Nav items -->
                 <ul class="navbar-nav">
-                    {% if current_user.role == 'admin' %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="/">
-                                <i class="ni ni-tv-2 text-primary"></i>
-                                <span class="nav-link-text">Dashboard</span>
-                            </a>
-                        </li>
-                        {#<li class="nav-item">
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="/">
+                            <i class="ni ni-tv-2 text-primary"></i>
+                            <span class="nav-link-text">Dashboard</span>
+                        </a>
+                    </li>
+                    {#<li class="nav-item">
                         <a class="nav-link {% if 'profile' in segment %} active {% endif %}" href="/profile.html">
                             <i class="ni ni-single-02 text-yellow"></i>
                             <span class="nav-link-text">Profile</span>
                         </a>
                     </li>#}
+                    {% if current_user.role == 'admin' %}
                         <li class="nav-item">
-                            <a class="nav-link {% if 'members' in segment %} active {% endif %}" href="/members.html">
+                            <a class="nav-link {% if 'members' in segment %} active {% endif %}" href="/members">
                                 <i class="fa fa-user-friends text-indigo"></i>
                                 <span class="nav-link-text">Members</span>
                             </a>
                         </li>
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link {% if 'guest' in segment %} active {% endif %}" href="/events.html">
+                        <a class="nav-link {% if 'events' in segment %} active {% endif %}" href="/events">
                             <i class="ni ni-book-bookmark text-green"></i>
                             <span class="nav-link-text">Events</span>
                         </a>
@@ -42,13 +43,13 @@
                 <ul class="navbar-nav mb-md-3">
 
                     <li class="nav-item">
-                        <a class="nav-link {% if 'settings' in segment %} active {% endif %}" href="/settings.html">
+                        <a class="nav-link {% if 'settings' in segment %} active {% endif %}" href="/settings">
                             <i class="ni ni-settings-gear-65 text-violet font-weight-bold"></i>
                             <span class="nav-link-text">Settings</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if 'support' in segment %} active {% endif %}" href="/support.html">
+                        <a class="nav-link {% if 'support' in segment %} active {% endif %}" href="/support">
                             <i class="ni ni-headphones text-red font-weight-bold"></i>
                             <span class="nav-link-text">Support</span>
                         </a>
