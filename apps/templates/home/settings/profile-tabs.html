@@ -1,0 +1,160 @@
+<div class="">
+    <div class="row">
+        <div class="col-xl-4 order-xl-2">
+            <div class="card card-profile">
+                <img src="/static/assets/img/theme/cover.jpg" alt="Image placeholder"
+                     class="card-img-top">
+                <div class="row justify-content-center">
+                    <div class="col-lg-3 order-lg-2">
+                        <div class="card-profile-image">
+                            <a href="#">
+                                <img src="/static/assets/img/theme/profile.jpg"
+                                     class="rounded-circle bg-white">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="text-center mt-7">
+                        <h5 class="h3">
+                            {{ current_user.username }} - {{ current_user.role }}
+                        </h5>
+                        <div class="h5 font-weight-300">
+                            {{ current_user.email }}
+                        </div>
+                        <div class="h5 mt-4">
+                            <i class="ni fc-business-container mr-2"></i>
+                            {{ current_user.position }}
+                        </div>
+                        <div>
+                            <i class="ni education_hat mr-2"></i>
+                            First Trust Saving and Loan
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 order-xl-1">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">Edit profile </h3>
+                        </div>
+                        <div class="col-4 text-right">
+                            <button type="submit" form="profile-form" class="btn py-2 px-5 btn-primary">Update Profile</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form id="profile-form" method="POST" action="/update_profile">
+                        <h6 class="heading-small text-muted mb-4">User information</h6>
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-username">Username</label>
+                                        <input type="text" id="input-username" name="username"
+                                               class="form-control"
+                                               placeholder="Username"
+                                               value="{{ current_user.username }}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-email">Email address</label>
+                                        <input type="email" id="input-email" name="email"
+                                               class="form-control"
+                                               placeholder="{{ current_user.email }}"
+                                               value="{{ current_user.email }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-first-name">First name</label>
+                                        <input type="text" id="input-first-name" name="first_name"
+                                               class="form-control"
+                                               placeholder="First name" value="{{ current_user.firstName }}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-last-name">Last name</label>
+                                        <input type="text" id="input-last-name" name="last_name"
+                                               class="form-control"
+                                               placeholder="Last name" value="{{ current_user.lastName }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4"/>
+                        <!-- Address -->
+                        <h6 class="heading-small text-muted mb-4">Contact information</h6>
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-address">Address</label>
+                                        <input id="input-address" name="address" class="form-control"
+                                               placeholder="Home Address"
+                                               value="{{ current_user.address }}" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-city">City</label>
+                                        <input type="text" id="input-city" name="city"
+                                               class="form-control" placeholder="City"
+                                               value="{{ current_user.city }}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-country">Country</label>
+                                        <input type="text" id="input-country" name="country"
+                                               class="form-control"
+                                               placeholder="Country"
+                                               value="{{ current_user.country }}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-postal-code">Postal code</label>
+                                        <input type="number" id="input-postal-code" name="postal_code"
+                                               class="form-control"
+                                               placeholder="Postal code"
+                                               value="{{ current_user.postalCode }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-occupation">Occupation</label>
+                                        <input id="input-occupation" name="occupation" class="form-control"
+                                               placeholder="Your current job or position"
+                                               value="{{ current_user.position }}" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4"/>
+                        <!-- Description -->
+                        <h6 class="heading-small text-muted mb-4">About me</h6>
+                        <div class="pl-lg-4">
+                            <div class="form-group">
+                                <label class="form-control-label">About Me</label>
+                                <textarea rows="4" class="form-control" name="about_me"
+                                          placeholder="A few words about you ...">{{ current_user.about }}</textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

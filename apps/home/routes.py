@@ -3,7 +3,7 @@ from datetime import datetime
 
 import httpagentparser
 from flask import render_template, request, redirect, url_for, send_file
-from flask_login import login_required
+from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
 from toastify import notify
 from datetime import datetime
@@ -18,8 +18,8 @@ from apps.home import blueprint
 @login_required
 def index():
     users = Users.query.all()  # Get all users
-    user_count = Users.query.count()   # Count all users
-    member_count = Members.query.count()    # Count all members
+    user_count = Users.query.count()  # Count all users
+    member_count = Members.query.count()  # Count all members
     return render_template('home/index.html', segment='index', users=users, user_count=user_count,
                            member_count=member_count)
 
@@ -85,7 +85,6 @@ def view_pdf(file_id):
 def download_pdf(file_id):
     file_data = PDFFile.query.get(file_id)
     return send_file(io.BytesIO(file_data.data), attachment_filename=file_data.filename, as_attachment=True)
-
 
 
 @blueprint.route('/members')
@@ -173,6 +172,45 @@ def new_account():
                                success=True, segment=segment)
     else:
         return render_template('home/newUser.html', segment=segment)
+
+
+@blueprint.route('/update_profile', methods=['GET', 'POST'])
+@login_required
+def update_profile():
+    segment = get_segment(request)
+    if request.method == 'POST':
+        # Récupérer l'utilisateur actuel
+        user = Users.query.get(current_user.id)
+
+        # Mettre à jour les informations de l'utilisateur avec les données du formulaire
+        user.username = request.form.get('username')
+        user.email = request.form.get('email')
+        user.firstName = request.form.get('first_name')
+        user.lastName = request.form.get('last_name')
+        user.address = request.form.get('address')
+        user.city = request.form.get('city')
+        user.country = request.form.get('country')
+        user.postalCode = request.form.get('postal_code')
+        user.position = request.form.get('occupation')
+        user.about = request.form.get('about_me')
+
+        # Met à jour le mot de passe si un nouveau mot de passe est fourni
+        if request.form.get('password'):
+            user.set_password(request.form.get('password'))
+
+        # Enregistrer les modifications dans la base de données
+        db.session.commit()
+
+        notify(
+            BodyText='Profile updated successfully!',
+            AppName='Mutuelle FTSL',
+            TitleText='Success',
+            ImagePath="/static/assets/img/brand/favicon.jpg"
+        )
+
+        return render_template('home/settings.html', segment=segment)
+
+    return render_template('home/settings.html', segment=segment)
 
 
 @blueprint.route('/newMember', methods=['GET', 'POST'])

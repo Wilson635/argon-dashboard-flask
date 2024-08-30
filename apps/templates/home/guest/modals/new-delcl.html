@@ -1,11 +1,30 @@
+<style>
+    .file-item {
+        padding: 5px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+    }
+
+    .file-item:hover {
+        background-color: #f0f0f0;
+    }
+
+    .file-item i {
+        margin-right: 10px;
+    }
+
+</style>
+
+
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#declmodal">
     Open New Déclaration
 </button>
 
 {# Modal #}
-<div class="modal fade" id="declmodal" tabindex="-1" role="dialog" aria-labelledby="declmodal"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="declmodal" tabindex="-1" role="dialog" aria-labelledby="declmodal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">New Déclaration</h5>
@@ -14,12 +33,11 @@
                 </button>
             </div>
 
-            {# Form modal body #}
             <div class="modal-body">
                 <form>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Sender:</label>
-                        <input type="text" class="form-control" id="recipient-name" value="{{ current_user.username }}">
+                        <input type="text" class="form-control" id="recipient-name" value="{{ current_user.firstName }} {{ current_user.lastName }} ">
                     </div>
                     <div class="form-group">
                         <label for="type-name" class="col-form-label">Type of declaration:</label>
@@ -31,36 +49,46 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="join-name" id="join-label" class="col-form-label">Join file:</label>
-                        <input type="file" class="form-control" id="join-name">
+                        <label for="join-name" id="join-label" class="col-form-label">Join files:</label>
+                        <p id="pdf-preview-title" class="text-black-50 z-4 text-sm"> Click on a file to preview after upload </p>
+                        <input type="file" class="form-control" id="join-name" accept="application/pdf" multiple
+                               onchange="previewFiles(event)">
+
+                        <div class="d-flex mt-3">
+                            <!-- Container for file list -->
+                            <div id="file-list" class="mr-3" style="width: 30%; max-height: 500px; overflow-y: auto;">
+                                <!-- File names will be inserted here -->
+                            </div>
+
+                            <!-- Container for PDF preview -->
+                            <div id="pdf-preview-container"
+                                 style="width: 70%; border: 1px solid #ddd; height: 500px; display: none;">
+                                <!-- PDF preview will be shown here -->
+                                <embed id="pdf-preview" src="" type="application/pdf" width="100%" height="100%"/>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="reset-button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Send message</button>
             </div>
         </div>
     </div>
 </div>
 
+
 {% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         /**
          * Updates the label of the join input based on the selected type of declaration.
          */
         function updateLabel() {
-            // Get the select element and its selected value
             const selectElement = document.getElementById("type-name");
             const selectedValue = selectElement.value;
-
-            // Get the label element to update
             const labelElement = document.getElementById("join-label");
 
-            // Update the label based on the selected value
             if (selectedValue === "wedding") {
                 labelElement.textContent = "Wedding Certificate:";
             } else if (selectedValue === "birth") {
@@ -71,5 +99,92 @@
                 labelElement.textContent = "Join file:";
             }
         }
+
+        /**
+         * Previews the selected PDF files and generates icons for each file.
+         * Clicking on an icon will show the PDF preview on the right side.
+         * @param {Event} event - The event triggered by file selection.
+         */
+        function previewFiles(event) {
+            const files = event.target.files;
+            const fileListDiv = document.getElementById("file-list");
+            const pdfPreviewContainer = document.getElementById("pdf-preview-container");
+            const pdfPreview = document.getElementById("pdf-preview");
+
+            fileListDiv.innerHTML = "";  // Clear previous list
+            pdfPreviewContainer.style.display = "none";  // Hide the preview initially
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                if (file && file.type === "application/pdf") {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        // Create file name entry and append it to the list
+                        const fileItem = document.createElement("div");
+                        fileItem.innerHTML = `
+                        <i class="fas fa-file-pdf fa-2x text-danger"></i>
+                        <span>${file.name}</span>
+                    `;
+                        fileItem.style.cursor = "pointer";
+                        fileItem.classList.add("file-item");
+
+                        // Add click event to show preview
+                        fileItem.addEventListener("click", function () {
+                            pdfPreview.src = e.target.result;  // Set the PDF preview source
+                            pdfPreviewContainer.style.display = "block";  // Show the preview container
+                        });
+
+                        fileListDiv.appendChild(fileItem);
+                    };
+
+                    reader.readAsDataURL(file);
+                } else {
+                    alert("Please select a valid PDF file.");
+                }
+            }
+        }
+
+        function resetFields() {
+            // Get the modal element
+            const modal = document.getElementById('declmodal');
+
+            // Get the form element inside the modal
+            const form = modal.querySelector('form');
+
+            // Get the input fields inside the form
+            const recipientNameInput = form.querySelector('#recipient-name');
+            const typeNameSelect = form.querySelector('#type-name');
+            const joinNameInput = form.querySelector('#join-name');
+
+            // Function to reset the fields
+            function resetFields() {
+                // Reset the recipient name input
+                recipientNameInput.value = '';
+
+                // Reset the type name select
+                typeNameSelect.value = 'Open this select menu';
+
+                // Reset the join name input
+                joinNameInput.value = '';
+
+                // Reset the file list and PDF preview
+                const fileListContainer = document.getElementById('file-list');
+                const pdfPreviewContainer = document.getElementById('pdf-preview-container');
+                const pdfPreview = document.getElementById('pdf-preview');
+
+                fileListContainer.innerHTML = '';
+                pdfPreviewContainer.style.display = 'none';
+                pdfPreview.src = '';
+            }
+
+            // Attach the resetFields function to the modal's show event
+            modal.addEventListener('show.bs.modal', resetFields);
+        }
+
+        const resetButton = document.querySelector('#reset-button');
+        resetButton.addEventListener('click', resetFields);
     </script>
 {% endblock javascripts %}
+

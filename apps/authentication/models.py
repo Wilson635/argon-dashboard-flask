@@ -23,6 +23,7 @@ class Users(db.Model, UserMixin):
     country = db.Column(db.String(64), unique=False)
     postalCode = db.Column(db.String(64), unique=False)
     about = db.Column(db.Text)
+    position = db.Column(db.String(64), unique=False)
     role = db.Column(db.String(64), unique=False)
 
     def __init__(self, **kwargs):
