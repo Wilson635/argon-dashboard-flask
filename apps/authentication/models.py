@@ -2,6 +2,7 @@
 """
 Copyright (c) 2024 - present Wilson635
 """
+from datetime import datetime
 
 from flask_login import UserMixin
 import uuid
@@ -65,11 +66,11 @@ class Members(db.Model):
     occupation = db.Column(db.String(64), nullable=False)
     dateBirth = db.Column(db.DateTime)
     status_id = db.Column(db.Integer, db.ForeignKey('Status.idStatus'))
-    children = db.Column(db.String(36), db.ForeignKey('Children.idChild'), nullable=False)
-    parents = db.Column(db.String(36), db.ForeignKey('Parents.idParent'), nullable=False)
-    partners = db.Column(db.String(36), db.ForeignKey('Partners.idPartner'), nullable=False)
-    emergency_contacts = db.Column(db.String(36), db.ForeignKey('EmergencyContact.idEmergency'), nullable=False)
-    pdf_files = db.Column(db.String(36), db.ForeignKey('PDFFile.id'), nullable=False)
+    children = db.relationship('Children', backref='member', lazy=True)
+    parents = db.relationship('Parents', backref='member', lazy=True)
+    partners = db.relationship('Partners', backref='member', lazy=True)
+    emergency_contacts = db.relationship('EmergencyContact', backref='member', lazy=True)
+    pdf_files = db.relationship('PDFFile', backref='member', lazy=True)
 
     def __repr__(self):
         return '<Members %r>' % self.name
@@ -95,7 +96,7 @@ class Parents(db.Model):
     name = db.Column(db.String(64), nullable=False)
     firstName = db.Column(db.String(64), nullable=False)
     mobileNumber = db.Column(db.String(20), nullable=False)
-    member_id = db.Column(db.Integer, db.ForeignKey('Members.idMember'))
+    member_id = db.Column(db.String(36), db.ForeignKey('Members.idMember'))
 
     def __repr__(self):
         return '<Parents %r>' % self.name
@@ -108,7 +109,7 @@ class Partners(db.Model):
     name = db.Column(db.String(64), nullable=False)
     firstName = db.Column(db.String(64), nullable=False)
     dateBirth = db.Column(db.DateTime)
-    member_id = db.Column(db.Integer, db.ForeignKey('Members.idMember'))
+    member_id = db.Column(db.String(36), db.ForeignKey('Members.idMember'))
 
     def __repr__(self):
         return '<Partners %r>' % self.name
@@ -124,7 +125,7 @@ class EmergencyContact(db.Model):
     mobileNumber = db.Column(db.String(20), nullable=False)
     quality = db.Column(db.String(64), nullable=False)
     others = db.Column(db.String(128), nullable=True)
-    member_id = db.Column(db.Integer, db.ForeignKey('Members.idMember'))
+    member_id = db.Column(db.String(36), db.ForeignKey('Members.idMember'))
 
     def __repr__(self):
         return '<EmergencyContact %r>' % self.name
@@ -140,6 +141,24 @@ class PDFFile(db.Model):
 
     def __repr__(self):
         return '<PDFFile %r>' % self.filename
+
+
+class Declaration(db.Model):
+    __tablename__ = 'Declarations'
+
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = db.Column(db.String(36), db.ForeignKey('Users.id'), nullable=False)
+    member_id = db.Column(db.String(36), db.ForeignKey('Members.idMember'), nullable=False)
+    declaration_type = db.Column(db.String(20), nullable=False)
+    file_name = db.Column(db.String(255), nullable=True)
+    declaration_text = db.Column(db.Text, nullable=False)  # Exemple de champ pour le texte de la déclaration
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user = db.relationship('Users', backref=db.backref('declarations', lazy=True))
+    member = db.relationship('Members', backref=db.backref('declarations', lazy=True))
+
+    def __repr__(self):
+        return f'<Declaration {self.id}>'
 
 
 @login_manager.user_loader

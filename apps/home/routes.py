@@ -2,7 +2,7 @@
 from datetime import datetime
 
 import httpagentparser
-from flask import render_template, request, redirect, url_for, send_file
+from flask import render_template, request, redirect, url_for, send_file, abort
 from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
 from toastify import notify
@@ -10,16 +10,35 @@ from datetime import datetime
 import io
 
 from apps import db
-from apps.authentication.models import Users, Members, Children, Parents, Partners, EmergencyContact, PDFFile
+from apps.authentication.models import Users, Members, Children, Parents, Partners, EmergencyContact, PDFFile, \
+    Declaration
 from apps.home import blueprint
 
 
 @blueprint.route('/index')
 @login_required
 def index():
-    users = Users.query.all()  # Get all users
-    user_count = Users.query.count()  # Count all users
-    member_count = Members.query.count()  # Count all members
+    """
+    This function is a route handler for the '/index' endpoint. It requires the user to be logged in.
+    It retrieves all users and members from the database and renders the 'home/index.html' template.
+
+    Returns:
+        The rendered 'home/index.html' template with the following variables:
+        - segment: 'index'
+        - users: All users from the database
+        - user_count: The count of all users from the database
+        - member_count: The count of all members from the database
+    """
+    # Retrieve all users from the database
+    users = Users.query.all()
+
+    # Count all users in the database
+    user_count = Users.query.count()
+
+    # Count all members in the database
+    member_count = Members.query.count()
+
+    # Render the 'home/index.html' template with the above variables
     return render_template('home/index.html', segment='index', users=users, user_count=user_count,
                            member_count=member_count)
 
@@ -27,6 +46,26 @@ def index():
 @blueprint.route('/<template>')
 @login_required
 def route_template(template):
+    """
+    Route for serving HTML templates.
+
+    This function serves HTML templates from the 'home' directory in the templates folder.
+    It first retrieves all members from the database. Then, it tries to render the template
+    specified by the 'template' parameter. If the template does not end with '.html', it
+    appends '.html' to the template name. Finally, it renders the template with the members
+    and the current page segment.
+
+    If the template is not found, it renders the 'page-404.html' template. If any other
+    exception occurs, it renders the 'page-500.html' template.
+
+    Parameters:
+        template (str): The name of the template to render.
+
+    Returns:
+        If the template is found and rendered successfully, it returns the rendered template.
+        If the template is not found, it returns the rendered 'page-404.html' template.
+        If any other exception occurs, it returns the rendered 'page-500.html' template.
+    """
     members = Members.query.all()  # Get all members
     try:
         if not template.endswith('.html'):
@@ -39,9 +78,11 @@ def route_template(template):
         return render_template("home/" + template, members=members, segment=segment)
 
     except TemplateNotFound:
+        # Render the 'page-404.html' template if the template is not found
         return render_template('home/page-404.html', segment='page-404'), 404
 
     except:
+        # Render the 'page-500.html' template if any other exception occurs
         return render_template('home/page-500.html', segment='page-500'), 500
 
 
@@ -57,18 +98,41 @@ def route_template(template):
 @blueprint.route('/upload_pdf', methods=['GET', 'POST'])
 @login_required
 def upload_pdf():
+    """
+    Route for handling file uploads.
+
+    If the request method is POST, checks if a file is present in the request.
+    If a file is present, creates a new PDFFile object with the file data and member ID.
+    Adds the new PDFFile object to the database and returns a success message.
+
+    If the request method is GET, retrieves all members from the database and renders the 'home/upload_pdf.html' template.
+
+    Returns:
+        If the request method is POST and a file is present:
+            - If the file has no name, redirects to the current URL.
+            - If the file has a name, creates a new PDFFile object with the file data and member ID.
+            - Adds the new PDFFile object to the database and commits the changes.
+            - Returns the success message 'File uploaded successfully!'.
+        If the request method is GET:
+            - Retrieves all members from the database.
+            - Renders the 'home/upload_pdf.html' template with the members and segment 'upload_pdf'.
+    """
     if request.method == 'POST':
+        # Check if a file is present in the request
         if 'file' not in request.files:
             return redirect(request.url)
         file = request.files['file']
         member_id = request.form.get('member_id')
+        # Check if the file has a name
         if file.filename == '':
             return redirect(request.url)
+        # If the file has a name, create a new PDFFile object with the file data and member ID
         if file:
             new_file = PDFFile(filename=file.filename, data=file.read(), member_id=member_id)
             db.session.add(new_file)
             db.session.commit()
             return 'File uploaded successfully!'
+    # If the request method is GET, retrieve all members from the database and render the 'home/upload_pdf.html' template
     members = Members.query.all()
     return render_template('home/upload_pdf.html', members=members, segment='upload_pdf')
 
@@ -76,15 +140,60 @@ def upload_pdf():
 @blueprint.route('/view_pdf/<int:file_id>')
 @login_required
 def view_pdf(file_id):
+    """
+    View a PDF file by its ID.
+
+    Args:
+        file_id (int): The ID of the PDF file to view.
+
+    Returns:
+        Response: The PDF file as a response, with the filename as the attachment name.
+    """
+    # Retrieve the PDF file data from the database
     file_data = PDFFile.query.get(file_id)
-    return send_file(io.BytesIO(file_data.data), attachment_filename=file_data.filename, as_attachment=False)
+
+    # Create a BytesIO object with the file data
+    file_bytes = io.BytesIO(file_data.data)
+
+    # Return the file as a response with the specified filename
+    return send_file(
+        file_bytes,
+        attachment_filename=file_data.filename,
+        as_attachment=False  # Set as_attachment to False to display the file in the browser
+    )
 
 
 @blueprint.route('/download_pdf/<int:file_id>')
 @login_required
 def download_pdf(file_id):
+    """
+    Download a PDF file by its ID.
+
+    Args:
+        file_id (int): The ID of the PDF file to download.
+
+    Returns:
+        Response: The downloaded PDF file as an attachment.
+
+    Raises:
+        NotFound: If the PDF file with the given ID is not found.
+    """
+    # Retrieve the PDF file data from the database
     file_data = PDFFile.query.get(file_id)
-    return send_file(io.BytesIO(file_data.data), attachment_filename=file_data.filename, as_attachment=True)
+
+    # If the file is not found, raise a 404 error
+    if file_data is None:
+        abort(404)
+
+    # Create a BytesIO object with the file data
+    file_bytes = io.BytesIO(file_data.data)
+
+    # Return the file as an attachment with the specified filename
+    return send_file(
+        file_bytes,
+        attachment_filename=file_data.filename,
+        as_attachment=True
+    )
 
 
 @blueprint.route('/members')
@@ -96,6 +205,18 @@ def show_members():
 
 @blueprint.route('/newUser', methods=['GET', 'POST'])
 def new_account():
+    """
+    Route for creating a new user account.
+
+    If the request method is POST and the form contains the 'register' field,
+    it validates the form data and creates a new user in the database.
+    If the email already exists, it displays an error message.
+    If any of the required fields are missing, it displays an error message.
+    If the role is not specified, it displays an error message.
+    Otherwise, it creates a new user and displays a success message.
+
+    If the request method is GET, it renders the 'newUser.html' template.
+    """
     segment = get_segment(request)  # Detect the current page
 
     if 'register' in request.form:
@@ -177,12 +298,24 @@ def new_account():
 @blueprint.route('/update_profile', methods=['GET', 'POST'])
 @login_required
 def update_profile():
+    """
+    Update the user profile with the data from the form.
+
+    If the request method is POST, update the user's information with the form data.
+    If a new password is provided, update the user's password.
+    Save the changes to the database.
+
+    Returns:
+        The rendered 'home/settings.html' template with the updated segment.
+
+    """
     segment = get_segment(request)
+
     if request.method == 'POST':
-        # Récupérer l'utilisateur actuel
+        # Get the current user
         user = Users.query.get(current_user.id)
 
-        # Mettre à jour les informations de l'utilisateur avec les données du formulaire
+        # Update the user's information with the form data
         user.username = request.form.get('username')
         user.email = request.form.get('email')
         user.firstName = request.form.get('first_name')
@@ -194,13 +327,14 @@ def update_profile():
         user.position = request.form.get('occupation')
         user.about = request.form.get('about_me')
 
-        # Met à jour le mot de passe si un nouveau mot de passe est fourni
+        # Update the user's password if a new password is provided
         if request.form.get('password'):
             user.set_password(request.form.get('password'))
 
-        # Enregistrer les modifications dans la base de données
+        # Save the changes to the database
         db.session.commit()
 
+        # Notify the user that the profile was updated successfully
         notify(
             BodyText='Profile updated successfully!',
             AppName='Mutuelle FTSL',
@@ -208,14 +342,24 @@ def update_profile():
             ImagePath="/static/assets/img/brand/favicon.jpg"
         )
 
-        return render_template('home/settings.html', segment=segment)
-
     return render_template('home/settings.html', segment=segment)
 
 
 @blueprint.route('/newMember', methods=['GET', 'POST'])
 def add_member():
+    """
+    Route for creating a new member.
+
+    If the request method is POST and the form contains the necessary fields,
+    a new member, children, parents, partners, and emergency contacts are created
+    and added to the database.
+
+    Returns:
+        If the request method is GET, renders the 'home/newMember.html' template.
+        If the request method is POST, redirects to the 'home/newMember.html' template.
+    """
     segment = get_segment(request)  # Detect the current page
+
     if request.method == 'POST':
         # Retrieve form data
         member_name = request.form.get('name_members')
@@ -303,6 +447,85 @@ def add_member():
                                segment=segment)  # Redirect to another page after adding the member
 
     return render_template('home/newMember.html', segment=segment)  # Replace with your template
+
+
+@blueprint.route('/newDeclaration', methods=['GET', 'POST'])
+@login_required
+def add_declaration():
+    """
+    This function handles the POST request for creating a new declaration.
+    It retrieves the necessary data from the request form and files,
+    finds the user and member based on the provided name and first name,
+    creates a new declaration, and notifies the user of the result.
+
+    Returns:
+        If the request method is POST, it redirects to the 'events' page.
+        Otherwise, it renders the 'new-delcl.html' template.
+    """
+    if request.method == 'POST':
+        # Retrieve the recipient name from the request form
+        recipient_name = request.form.get('recipient-name')
+        # user_first_name, user_last_name = recipient_name.split()[:2]
+        # member_first_name, member_name = recipient_name.split()[-2:]
+        # user_first_name, _, user_last_name = recipient_name.partition(' ')
+        # member_name, _, member_first_name = recipient_name.rpartition(' ')
+        if recipient_name is not None:
+            user_first_name, _, user_last_name = recipient_name.partition(' ')
+            member_name, _, member_first_name = recipient_name.rpartition(' ')
+        else:
+            # Handle the case when recipient_name is None
+            # You can raise an exception or handle it in some other way
+            raise ValueError("recipient_name is None")
+
+        # Retrieve the declaration type and file name from the request form and files
+        declaration_type = request.form.get('type-name')
+        file_name = request.files['join-name'].filename if 'join-name' in request.files else None
+
+        # Find the user based on the first name and last name
+        user = Users.query.filter_by(firstName=user_first_name, lastName=user_last_name).first()
+        if not user:
+            # Notify the user if the user is not found
+            notify(
+                BodyText='Utilisateur non trouvé',
+                AppName='Mutuelle FTSL',
+                TitleText='Erreur',
+                ImagePath="/static/assets/img/brand/favicon.jpg"
+            )
+            return render_template('home/guest/modals/new-delcl.html')
+
+        # Find the member based on the name and first name
+        member = Members.query.filter_by(name=member_name, firstName=member_first_name).first()
+        if not member:
+            # Notify the user if the member is not found
+            notify(
+                BodyText='Membre non trouvé',
+                AppName='Mutuelle FTSL',
+                TitleText='Erreur',
+                ImagePath="/static/assets/img/brand/favicon.jpg"
+            )
+            return render_template('home/guest/modals/new-delcl.html')
+
+        # Create a new declaration
+        declaration = Declaration(
+            user_id=user.id,
+            member_id=member.idMember,
+            declaration_type=declaration_type,
+            file_name=file_name
+        )
+        db.session.add(declaration)
+        db.session.commit()
+
+        # Notify the user of the successful declaration
+        notify(
+            BodyText='Déclaration ajoutée avec succès !',
+            AppName='Mutuelle FTSL',
+            TitleText='Succès',
+            ImagePath="/static/assets/img/brand/favicon.jpg"
+        )
+
+        return render_template('home/guest/modals/new-delcl.html')
+
+    return render_template('home/guest/modals/new-delcl.html')
 
 
 # Helper - Extract the current page name from the request
