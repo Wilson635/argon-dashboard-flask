@@ -150,15 +150,27 @@ class Declaration(db.Model):
     user_id = db.Column(db.String(36), db.ForeignKey('Users.id'), nullable=False)
     member_id = db.Column(db.String(36), db.ForeignKey('Members.idMember'), nullable=False)
     declaration_type = db.Column(db.String(20), nullable=False)
-    file_name = db.Column(db.String(255), nullable=True)
-    declaration_text = db.Column(db.Text, nullable=False)  # Exemple de champ pour le texte de la déclaration
+    declaration_text = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     user = db.relationship('Users', backref=db.backref('declarations', lazy=True))
     member = db.relationship('Members', backref=db.backref('declarations', lazy=True))
+    files = db.relationship('DeclarationFile', backref='declaration', lazy=True)
 
     def __repr__(self):
         return f'<Declaration {self.id}>'
+
+
+class DeclarationFile(db.Model):
+    __tablename__ = 'DeclarationFiles'
+
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    declaration_id = db.Column(db.String(36), db.ForeignKey('Declarations.id'), nullable=False)
+    file_name = db.Column(db.String(255), nullable=False)
+    file_data = db.Column(db.LargeBinary)
+
+    def __repr__(self):
+        return f'<DeclarationFile {self.id}>'
 
 
 @login_manager.user_loader

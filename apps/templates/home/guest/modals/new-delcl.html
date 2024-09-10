@@ -41,7 +41,7 @@
                     </div>
                     <div class="form-group">
                         <label for="type-name" class="col-form-label">Type of declaration:</label>
-                        <select class="custom-select" id="type-name" onchange="updateLabel()">
+                        <select class="custom-select" id="type-name" name="type-name" onchange="updateLabel()">
                             <option selected>Open this select menu</option>
                             <option value="wedding">Wedding</option>
                             <option value="birth">Birth</option>
@@ -51,8 +51,8 @@
                     <div class="form-group">
                         <label for="join-name" id="join-label" class="col-form-label">Join files:</label>
                         <p id="pdf-preview-title" class="text-black-50 z-4 text-sm"> Click on a file to preview after upload </p>
-                        <input type="file" class="form-control" id="join-name" accept="application/pdf" multiple
-                               onchange="previewFiles(event)">
+                        <input type="file" class="form-control" id="join-name" name="join-name" accept="application/pdf" multiple
+                               onchange="previewFiles(event)" />
 
                         <div class="d-flex mt-3">
                             <!-- Container for file list -->
@@ -70,7 +70,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="reset" id="reset-button" class="btn btn-secondary" data-dismiss="modal">Close
-                        </butto  n>
+                        </button>
                         <button type="submit" class="btn btn-primary">Send message</button>
                     </div>
                 </form>

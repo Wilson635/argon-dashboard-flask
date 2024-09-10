@@ -11,7 +11,7 @@ import io
 
 from apps import db
 from apps.authentication.models import Users, Members, Children, Parents, Partners, EmergencyContact, PDFFile, \
-    Declaration
+    Declaration, DeclarationFile
 from apps.home import blueprint
 
 
@@ -131,7 +131,12 @@ def upload_pdf():
             new_file = PDFFile(filename=file.filename, data=file.read(), member_id=member_id)
             db.session.add(new_file)
             db.session.commit()
-            return 'File uploaded successfully!'
+            return notify(
+                BodyText='File uploaded successfully',
+                AppName='Mutuelle FTSL',
+                TitleText='Error',
+                ImagePath="/static/assets/img/brand/favicon.jpg"
+            )
     # If the request method is GET, retrieve all members from the database and render the 'home/upload_pdf.html' template
     members = Members.query.all()
     return render_template('home/upload_pdf.html', members=members, segment='upload_pdf')
@@ -453,79 +458,103 @@ def add_member():
 @login_required
 def add_declaration():
     """
-    This function handles the POST request for creating a new declaration.
-    It retrieves the necessary data from the request form and files,
-    finds the user and member based on the provided name and first name,
-    creates a new declaration, and notifies the user of the result.
+    Handles the creation of a new declaration, including uploading and storing multiple files.
+
+    This function receives a POST request with a recipient name, declaration type, and multiple files.
+    It searches for the user and member based on the recipient name, creates a new declaration,
+    and associates it with the user and member. It then processes each file and stores it in the database.
+    Finally, it notifies the user of the successful addition of the declaration and renders the events page.
 
     Returns:
-        If the request method is POST, it redirects to the 'events' page.
-        Otherwise, it renders the 'new-delcl.html' template.
+        The rendered events page if the request method is GET, otherwise the rendered new-delcl.html page.
     """
+    segment = get_segment(request)
+
     if request.method == 'POST':
-        # Retrieve the recipient name from the request form
+        # Extract recipient name, declaration type, and files from the request
         recipient_name = request.form.get('recipient-name')
-        # user_first_name, user_last_name = recipient_name.split()[:2]
-        # member_first_name, member_name = recipient_name.split()[-2:]
-        # user_first_name, _, user_last_name = recipient_name.partition(' ')
-        # member_name, _, member_first_name = recipient_name.rpartition(' ')
+        declaration_type = request.form.get('type-name')
+        files = request.files.getlist('join-name')
+
+        # Split recipient name into first and last name
         if recipient_name is not None:
-            user_first_name, _, user_last_name = recipient_name.partition(' ')
-            member_name, _, member_first_name = recipient_name.rpartition(' ')
+            names = recipient_name.split()
+            user_first_name = names[0]
+            member_first_name = names[0]
+            user_last_name = names[1]
+            member_name = names[1]
         else:
-            # Handle the case when recipient_name is None
-            # You can raise an exception or handle it in some other way
             raise ValueError("recipient_name is None")
 
-        # Retrieve the declaration type and file name from the request form and files
-        declaration_type = request.form.get('type-name')
-        file_name = request.files['join-name'].filename if 'join-name' in request.files else None
-
-        # Find the user based on the first name and last name
+        # Find user and member based on names
         user = Users.query.filter_by(firstName=user_first_name, lastName=user_last_name).first()
-        if not user:
-            # Notify the user if the user is not found
-            notify(
-                BodyText='Utilisateur non trouvé',
-                AppName='Mutuelle FTSL',
-                TitleText='Erreur',
-                ImagePath="/static/assets/img/brand/favicon.jpg"
-            )
-            return render_template('home/guest/modals/new-delcl.html')
-
-        # Find the member based on the name and first name
         member = Members.query.filter_by(name=member_name, firstName=member_first_name).first()
+
+        # If user or member not found, notify and return
+        if not user:
+            notify_error('Utilisateur non trouvé')
+            return render_template('home/guest/modals/new-delcl.html')
         if not member:
-            # Notify the user if the member is not found
-            notify(
-                BodyText='Membre non trouvé',
-                AppName='Mutuelle FTSL',
-                TitleText='Erreur',
-                ImagePath="/static/assets/img/brand/favicon.jpg"
-            )
+            notify_error('Membre non trouvé')
             return render_template('home/guest/modals/new-delcl.html')
 
-        # Create a new declaration
+        # Create a new declaration and associate it with the user and member
         declaration = Declaration(
             user_id=user.id,
             member_id=member.idMember,
-            declaration_type=declaration_type,
-            file_name=file_name
+            declaration_type=declaration_type
         )
         db.session.add(declaration)
         db.session.commit()
 
-        # Notify the user of the successful declaration
-        notify(
-            BodyText='Déclaration ajoutée avec succès !',
-            AppName='Mutuelle FTSL',
-            TitleText='Succès',
-            ImagePath="/static/assets/img/brand/favicon.jpg"
-        )
+        # Process each file and store it in the database
+        for file in files:
+            if file and file.filename.endswith('.pdf'):
+                declaration_file = DeclarationFile(
+                    declaration_id=declaration.id,
+                    file_name=file.filename,
+                    file_data=file.read()
+                )
+                db.session.add(declaration_file)
 
-        return render_template('home/guest/modals/new-delcl.html')
+        db.session.commit()
 
-    return render_template('home/guest/modals/new-delcl.html')
+        # Notify user of successful addition
+        notify_success('Déclaration ajoutée avec succès !')
+
+        return render_template('home/events.html', segment=segment)
+
+    return render_template('home/events.html', segment=segment)
+
+
+def notify_error(message):
+    """
+    Notifies the user of an error with a given message.
+
+    Args:
+        message (str): The error message to display.
+    """
+    notify(
+        BodyText=message,
+        AppName='Mutuelle FTSL',
+        TitleText='Erreur',
+        ImagePath="/static/assets/img/brand/favicon.jpg"
+    )
+
+
+def notify_success(message):
+    """
+    Notifies the user of a successful action with a given message.
+
+    Args:
+        message (str): The success message to display.
+    """
+    notify(
+        BodyText=message,
+        AppName='Mutuelle FTSL',
+        TitleText='Succès',
+        ImagePath="/static/assets/img/brand/favicon.jpg"
+    )
 
 
 # Helper - Extract the current page name from the request
