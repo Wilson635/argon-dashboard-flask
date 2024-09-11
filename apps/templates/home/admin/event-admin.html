@@ -40,13 +40,13 @@
     </div>
 </div>
 
-<!-- Table Members -->
+<!-- Table Events -->
 <div class="table-responsive">
     <table class="table align-items-center table-flush">
         <thead class="thead-light">
         <tr>
             <th scope="col">#</th>
-            <th scope="col">status</th>
+            <th scope="col">Status</th>
             <th scope="col">Events</th>
             <th scope="col">Events Date</th>
             <th scope="col">Author</th>
@@ -54,16 +54,23 @@
         </tr>
         </thead>
         <tbody>
-        {#                {% for member in members %}#}
-        <tr>
-            <td>1</td>
-            <td>Pending...</td>
-            <td>Naissance....</td>
-            <td>22/08/2024</td>
-            <td>Marie Engome</td>
-            <td>delete | schedule</td>
-        </tr>
-        {#                {% endfor %}#}
+        {% for declaration in declarations %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ declaration.status }}</td>
+                <td>{{ declaration.declaration_type }}</td>
+                <td>{{ declaration.timestamp.strftime('%d/%m/%Y') }}</td>
+                <td>{{ declaration.member.name }} {{ declaration.member.firstName }}</td>
+{#                <td>#}
+{#                    <a href="{{ url_for('blueprint.delete_declaration', id=declaration.id) }}">delete</a> |#}
+{#                    <a href="{{ url_for('blueprint.schedule_declaration', id=declaration.id) }}">schedule</a>#}
+{#                </td>#}
+                <td>
+                    <a href="#">delete</a> |
+                    <a href="#">schedule</a>
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 </div>

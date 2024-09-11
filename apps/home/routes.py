@@ -557,6 +557,17 @@ def notify_success(message):
     )
 
 
+@blueprint.route('/events')
+@login_required
+def events():
+    """
+    Retrieve and display all declarations with their associated members.
+    """
+    segment = get_segment(request)
+    declarations = Declaration.query.all()
+    return render_template('home/events.html', declarations=declarations, segment=segment)
+
+
 # Helper - Extract the current page name from the request
 def get_segment(request):
     try:
