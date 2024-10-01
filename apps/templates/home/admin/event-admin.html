@@ -19,7 +19,7 @@
                     <i class="fa fa-hourglass-half text-white opacity-10"></i>
                 </div>
                 <div class="text-right pt-1">
-                    <p class="text-xl mb-0 text-capitalize font-weight-800">0</p>
+                    <p class="text-xl mb-0 text-capitalize font-weight-800">{{ pending_count }}</p>
                     <h4 class="mb-0">Pending events</h4>
                 </div>
             </div>
@@ -57,21 +57,50 @@
         {% for declaration in declarations %}
             <tr>
                 <td>{{ loop.index }}</td>
-                <td>{{ declaration.status }}</td>
+                <td>{{ declaration.statut }}</td>
                 <td>{{ declaration.declaration_type }}</td>
                 <td>{{ declaration.timestamp.strftime('%d/%m/%Y') }}</td>
                 <td>{{ declaration.member.name }} {{ declaration.member.firstName }}</td>
-{#                <td>#}
-{#                    <a href="{{ url_for('blueprint.delete_declaration', id=declaration.id) }}">delete</a> |#}
-{#                    <a href="{{ url_for('blueprint.schedule_declaration', id=declaration.id) }}">schedule</a>#}
-{#                </td>#}
+                {#                <td>#}
+                {#                    <a href="{{ url_for('blueprint.delete_declaration', id=declaration.id) }}">delete</a> |#}
+                {#                    <a href="{{ url_for('blueprint.schedule_declaration', id=declaration.id) }}">schedule</a>#}
+                {#                </td>#}
                 <td>
-                    <a href="#">delete</a> |
+                    <a href="#" data-toggle="modal" data-target="#rejectModal-{{ declaration.id }}">Reject</a> |
                     <a href="#">schedule</a>
                 </td>
             </tr>
+            <!-- Modal de rejet -->
+            <div class="modal fade" id="rejectModal-{{ declaration.id }}" tabindex="-1" role="dialog"
+                 aria-labelledby="rejectModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="rejectModalLabel">Cancel Declaration</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="{{ url_for('home_blueprint.reject_declaration', id=declaration.id) }}" method="POST" >
+                            <div class="modal-body">
+                                <p>Please fill in the following details to cancel the declaration</p>
+                                <div class="form-group">
+                                    <label for="reason">Reason for cancellation</label>
+                                    <textarea name="reason" class="form-control" id="reason"
+                                              placeholder="Enter your reason here"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger">Cancel Declaration</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
         </tbody>
     </table>
 </div>
 <!-- End of table -->
+

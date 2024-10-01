@@ -593,7 +593,7 @@ Delta.prototype.transform = function (other, priority) {
       var otherOp = otherIter.next(length);
       if (thisOp['delete']) {
         // Our delete either makes their delete redundant or removes their retain
-        continue;
+
       } else if (otherOp['delete']) {
         delta.push(otherOp);
       } else {
@@ -3393,7 +3393,7 @@ var ContainerBlot = /** @class */ (function (_super) {
             }
             catch (err) {
                 if (err instanceof Registry.ParchmentError)
-                    return;
+
                 else
                     throw err;
             }
@@ -3815,7 +3815,7 @@ function Iterator(ops) {
   this.ops = ops;
   this.index = 0;
   this.offset = 0;
-};
+}
 
 Iterator.prototype.hasNext = function () {
   return this.peekLength() < Infinity;
@@ -6736,7 +6736,7 @@ var BlockBlot = /** @class */ (function (_super) {
     };
     BlockBlot.prototype.format = function (name, value) {
         if (Registry.query(name, Registry.Scope.BLOCK) == null) {
-            return;
+
         }
         else if (name === this.statics.blotName && !value) {
             this.replaceWith(BlockBlot.blotName);
@@ -7092,7 +7092,7 @@ function diff_main(text1, text2, cursor_pos) {
   }
   diffs = fix_emoji(diffs);
   return diffs;
-};
+}
 
 
 /**
@@ -7153,7 +7153,7 @@ function diff_compute_(text1, text2) {
   }
 
   return diff_bisect_(text1, text2);
-};
+}
 
 
 /**
@@ -7269,7 +7269,7 @@ function diff_bisect_(text1, text2) {
   // Diff took too long and hit the deadline or
   // number of diffs equals number of characters, no commonality at all.
   return [[DIFF_DELETE, text1], [DIFF_INSERT, text2]];
-};
+}
 
 
 /**
@@ -7292,7 +7292,7 @@ function diff_bisectSplit_(text1, text2, x, y) {
   var diffsb = diff_main(text1b, text2b);
 
   return diffs.concat(diffsb);
-};
+}
 
 
 /**
@@ -7324,7 +7324,7 @@ function diff_commonPrefix(text1, text2) {
     pointermid = Math.floor((pointermax - pointermin) / 2 + pointermin);
   }
   return pointermid;
-};
+}
 
 
 /**
@@ -7356,7 +7356,7 @@ function diff_commonSuffix(text1, text2) {
     pointermid = Math.floor((pointermax - pointermin) / 2 + pointermin);
   }
   return pointermid;
-};
+}
 
 
 /**
@@ -7449,7 +7449,7 @@ function diff_halfMatch_(text1, text2) {
   }
   var mid_common = hm[4];
   return [text1_a, text1_b, text2_a, text2_b, mid_common];
-};
+}
 
 
 /**
@@ -7576,7 +7576,7 @@ function diff_cleanupMerge(diffs) {
   if (changes) {
     diff_cleanupMerge(diffs);
   }
-};
+}
 
 
 var diff = diff_main;
@@ -7774,7 +7774,7 @@ exports = module.exports = supportsArgumentsClass ? supported : unsupported;
 exports.supported = supported;
 function supported(object) {
   return Object.prototype.toString.call(object) == '[object Arguments]';
-};
+}
 
 exports.unsupported = unsupported;
 function unsupported(object){
@@ -7784,7 +7784,7 @@ function unsupported(object){
     Object.prototype.hasOwnProperty.call(object, 'callee') &&
     !Object.prototype.propertyIsEnumerable.call(object, 'callee') ||
     false;
-};
+}
 
 
 /***/ }),

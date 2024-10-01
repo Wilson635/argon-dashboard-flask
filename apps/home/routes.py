@@ -2,12 +2,14 @@
 from datetime import datetime
 
 import httpagentparser
-from flask import render_template, request, redirect, url_for, send_file, abort
+from flask import render_template, request, redirect, url_for, send_file, abort, session
 from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
 from toastify import notify
 from datetime import datetime
 import io
+
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from apps import db
 from apps.authentication.models import Users, Members, Children, Parents, Partners, EmergencyContact, PDFFile, \
@@ -37,10 +39,13 @@ def index():
 
     # Count all members in the database
     member_count = Members.query.count()
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+    paginated_users = Users.query.order_by(Users.username).paginate(page=page, per_page=per_page)
 
     # Render the 'home/index.html' template with the above variables
     return render_template('home/index.html', segment='index', users=users, user_count=user_count,
-                           member_count=member_count)
+                           member_count=member_count, paginated_users=paginated_users)
 
 
 @blueprint.route('/<template>')
@@ -131,13 +136,9 @@ def upload_pdf():
             new_file = PDFFile(filename=file.filename, data=file.read(), member_id=member_id)
             db.session.add(new_file)
             db.session.commit()
-            return notify(
-                BodyText='File uploaded successfully',
-                AppName='Mutuelle FTSL',
-                TitleText='Error',
-                ImagePath="/static/assets/img/brand/favicon.jpg"
-            )
-    # If the request method is GET, retrieve all members from the database and render the 'home/upload_pdf.html' template
+            return notify_success('File uploaded successfully!')
+    # If the request method is GET, retrieve all members from the database and render the 'home/upload_pdf.html'
+    # template
     members = Members.query.all()
     return render_template('home/upload_pdf.html', members=members, segment='upload_pdf')
 
@@ -233,52 +234,27 @@ def new_account():
         # Check if the email already exists
         email_exists = Users.query.filter_by(email=email).first()
         if email_exists:
-            notify(
-                BodyText='Email already registered',
-                AppName='Mutuelle FTSL',
-                TitleText='Error !!!',
-                ImagePath="/static/assets/img/brand/favicon.jpg"
-            )
+            notify_error('Email already exists')
             return render_template('home/newUser.html',
                                    success=False, segment=segment)
 
         if not email:
-            notify(
-                BodyText='Please fill in the blank field',
-                AppName='Mutuelle FTSL',
-                TitleText='Error !!!',
-                ImagePath="/static/assets/img/brand/favicon.jpg"
-            )
+            notify_error('Please fill in the blank field', )
             return render_template('home/newUser.html',
                                    success=False, segment=segment)
 
         if not username:
-            notify(
-                BodyText='Please fill in the blank field',
-                AppName='Mutuelle FTSL',
-                TitleText='Error !!!',
-                ImagePath="/static/assets/img/brand/favicon.jpg"
-            )
+            notify_error('Please fill in the blank field', )
             return render_template('home/newUser.html',
                                    success=False, segment=segment)
 
         if not password:
-            notify(
-                BodyText='Please fill in the blank field',
-                AppName='Mutuelle FTSL',
-                TitleText='Error !!!',
-                ImagePath="/static/assets/img/brand/favicon.jpg"
-            )
+            notify_error('Please fill in the blank field', )
             return render_template('home/newUser.html',
                                    success=False, segment=segment)
 
         if not role:
-            notify(
-                BodyText='Role not registered',
-                AppName='Mutuelle FTSL',
-                TitleText='Error !!!',
-                ImagePath="/static/assets/img/brand/favicon.jpg"
-            )
+            notify_error('Role is required', )
             return render_template('home/newUser.html',
                                    success=False, segment=segment)
 
@@ -287,17 +263,50 @@ def new_account():
         db.session.add(user)
         db.session.commit()
 
-        notify(
-            BodyText='User created, please login',
-            AppName='Mutuelle FTSL',
-            TitleText='Congratulation !!!',
-            ImagePath="/static/assets/img/brand/favicon.jpg"
-        )
+        notify_success('User created successfully, you can now login', )
 
         return render_template('home/newUser.html',
                                success=True, segment=segment)
     else:
         return render_template('home/newUser.html', segment=segment)
+
+
+@blueprint.route('/change_password', methods=['GET', 'POST'])
+def change_password():
+    """
+    Route for changing the user's password.
+
+    If the request method is POST, it validates the form data:
+    - Verifies the current password is correct.
+    - Checks that the new password and confirmation match.
+    - Updates the password in the database if valid.
+    """
+    if request.method == 'POST':
+        current_password = request.form['current_password']
+        new_password = request.form['new_password']
+        new_password_confirmation = request.form['new_password_confirmation']
+
+        # user = current_user
+        user = Users.query.filter_by(username=current_user).first()  # Get the currently logged-in user
+
+        # Verify current password
+        if not check_password_hash(user.password, current_password):
+            notify_error('Current password is incorrect')
+            return render_template('home/settings.html')
+
+        # Validate new password and confirmation
+        if new_password != new_password_confirmation:
+            notify_error('New passwords do not match')
+            return render_template('home/settings.html')
+
+        # Update password
+        user.password = generate_password_hash(new_password)
+        db.session.commit()
+
+        notify_success('Password updated successfully')
+        return redirect(url_for('profile'))
+
+    return render_template('home/settings.html')
 
 
 @blueprint.route('/update_profile', methods=['GET', 'POST'])
@@ -340,12 +349,7 @@ def update_profile():
         db.session.commit()
 
         # Notify the user that the profile was updated successfully
-        notify(
-            BodyText='Profile updated successfully!',
-            AppName='Mutuelle FTSL',
-            TitleText='Success',
-            ImagePath="/static/assets/img/brand/favicon.jpg"
-        )
+        notify_success('Profile updated successfully')
 
     return render_template('home/settings.html', segment=segment)
 
@@ -447,7 +451,7 @@ def add_member():
 
         # Commit all changes
         db.session.commit()
-
+        notify_success('Member added successfully!')
         return render_template('home/newMember.html',
                                segment=segment)  # Redirect to another page after adding the member
 
@@ -527,6 +531,38 @@ def add_declaration():
     return render_template('home/events.html', segment=segment)
 
 
+@blueprint.route('/reject/<string:id>', methods=['GET', 'POST'])
+@login_required
+def reject_declaration(id):
+    if request.method == 'POST':
+        # Fetch the declaration by its ID
+        declaration = Declaration.query.get(id)
+
+        if not declaration:
+            notify_error("Déclaration non trouvée.")
+            return redirect(url_for('blueprint.events'))
+
+        # Get the reason for rejection from the form
+        reason = request.form.get('reason')
+
+        if not reason:
+            notify_error("Veuillez fournir une raison pour le rejet.")
+            return redirect(url_for('blueprint.events'))
+
+        # Update the status of the declaration and save the reason
+        declaration.statut = 'rejected'
+        declaration.declaration_text = reason  # You can store the reason in declaration_text
+
+        # Commit the changes to the database
+        db.session.commit()
+
+        notify_success('Déclaration rejetée avec succès.')
+        return redirect(url_for('blueprint.events'))
+
+    # In case of GET request, render the form page or redirect
+    return render_template('reject_form.html', declaration_id=id)
+
+
 def notify_error(message):
     """
     Notifies the user of an error with a given message.
@@ -537,7 +573,7 @@ def notify_error(message):
     notify(
         BodyText=message,
         AppName='Mutuelle FTSL',
-        TitleText='Erreur',
+        TitleText='Error !',
         ImagePath="/static/assets/img/brand/favicon.jpg"
     )
 
@@ -552,7 +588,7 @@ def notify_success(message):
     notify(
         BodyText=message,
         AppName='Mutuelle FTSL',
-        TitleText='Succès',
+        TitleText='Congratulation !',
         ImagePath="/static/assets/img/brand/favicon.jpg"
     )
 
@@ -562,18 +598,50 @@ def notify_success(message):
 def events():
     """
     Retrieve and display all declarations with their associated members.
+
+    This function retrieves all declarations from the database and renders the events page with the list of declarations.
+    It also counts the number of events 'pending', 'canceled', and 'scheduled'.
+
+    Returns:
+        The rendered events page with the list of declarations.
     """
     segment = get_segment(request)
     declarations = Declaration.query.all()
-    return render_template('home/events.html', declarations=declarations, segment=segment)
+    # count the number of events 'pending'
+    pending_count = Declaration.query.filter_by(statut='pending').count()
+
+    # count the number of events 'canceled'
+    canceled_count = Declaration.query.filter_by(statut='canceled').count()
+
+    # count the number of events 'scheduled'
+    scheduled_count = Declaration.query.filter_by(statut='scheduled').count()
+    return render_template('home/events.html', declarations=declarations, segment=segment, pending_count=pending_count,
+                           canceled_count=canceled_count, scheduled_count=scheduled_count)
 
 
 # Helper - Extract the current page name from the request
 def get_segment(request):
+    """
+    Extracts the last segment of the request path and returns it.
+    If the segment is empty, returns 'index'.
+    If any exception occurs, returns None.
+
+    Args:
+        request (flask.Request): The Flask request object.
+
+    Returns:
+        str: The last segment of the request path or 'index'.
+        None: If any exception occurs.
+    """
     try:
+        # Extract the last segment of the request path
         segment = request.path.split('/')[-1]
+
+        # If the segment is empty, return 'index'
         if segment == '':
             segment = 'index'
+
         return segment
     except:
+        # If any exception occurs, return None
         return None

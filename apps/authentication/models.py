@@ -151,6 +151,7 @@ class Declaration(db.Model):
     member_id = db.Column(db.String(36), db.ForeignKey('Members.idMember'), nullable=False)
     declaration_type = db.Column(db.String(20), nullable=False)
     declaration_text = db.Column(db.Text)
+    statut = db.Column(db.String(20), nullable=False, default='pending')
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     user = db.relationship('Users', backref=db.backref('declarations', lazy=True))

@@ -3014,7 +3014,7 @@ Dropzone.isBrowserSupported = function () {
 
         if (regex.test(navigator.userAgent)) {
           capableBrowser = false;
-          continue;
+
         }
       }
     }

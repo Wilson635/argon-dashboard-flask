@@ -75,13 +75,21 @@
         </div>
     </div>
     <div class="row sm:flex sm:flex-wrap sm: justify-content-end mb-3">
-        <div class="col-lg-6 col-5 text-right ">
-            <a href="/newUser" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#newuser"><i
-                    class="fa fa-plus-circle"></i> | New</a>
-            <a href="#" class="btn btn-white"><i class="fa fa-filter"></i> | Filter</a>
-
+        <div class="col-lg-6 col-5 text-right">
+            <a href="/newUser" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#newuser">
+                <i class="fa fa-plus-circle"></i> | New
+            </a>
+            <button class="btn btn-white" data-bs-toggle="collapse" data-bs-target="#filterCollapse">
+                <i class="fa fa-filter"></i> | Filter
+            </button>
         </div>
     </div>
+
+    <!-- Filter section -->
+    <div id="filterCollapse" class="collapse mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by username"/>
+    </div>
+
     <div class="row">
         <div class="col-xl-12">
             <div class="card">
@@ -95,27 +103,30 @@
                         </div>
                     </div>
                 </div>
+                <!-- Table with pagination and checkboxes -->
                 <div class="table-responsive">
-                    <!-- Projects table -->
                     <table class="table align-items-center table-flush">
                         <thead class="thead-light">
                         <tr>
+                            <th scope="col"><input type="checkbox" id="selectAll"></th>
                             <th scope="col">User Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Role</th>
+                            <th scope="col">Actions</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        {% for user in users %}
+                        <tbody id="userTable">
+                        {% for user in paginated_users.items %}
                             <tr>
-                                <th scope="row">
-                                    {{ user.username }}
-                                </th>
+                                <td><input type="checkbox" class="userCheckbox" data-user-id="{{ user.id }}"></td>
+                                <th scope="row">{{ user.username }}</th>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.role }}</td>
                                 <td>
-                                    {{ user.email }}
-                                </td>
-                                <td>
-                                    {{ user.role }}
+                                    <button class="btn btn-warning btn-sm edit-btn d-none"><i class="fa fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm delete-btn d-none"><i class="fa fa-trash"></i>
+                                    </button>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -126,6 +137,66 @@
         </div>
     </div>
 
+    <!-- Pagination links -->
+    <nav aria-label="User pagination">
+        <ul class="pagination justify-content-end">
+            {% if paginated_users.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ paginated_users.prev_num }}"> <i class="fa fa-arrow-left"></i> </a>
+                </li>
+            {% endif %}
+            {% for page_num in paginated_users.iter_pages() %}
+                <li class="page-item {% if paginated_users.page == page_num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+            {% endfor %}
+            {% if paginated_users.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ paginated_users.next_num }}"> <i class="fa fa-arrow-right"></i> </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+
     {% include "includes/footer.html" %}
 
 </div>
+
+<script>
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function () {
+        let filter = this.value.toUpperCase();
+        let rows = document.getElementById('userTable').getElementsByTagName('tr');
+        for (let i = 0; i < rows.length; i++) {
+            let username = rows[i].getElementsByTagName('th')[0];
+            if (username) {
+                let txtValue = username.textContent || username.innerText;
+                rows[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+            }
+        }
+    });
+
+    // Handle checkbox selection
+    document.getElementById('selectAll').addEventListener('change', function () {
+        let checkboxes = document.getElementsByClassName('userCheckbox');
+        for (let checkbox of checkboxes) {
+            checkbox.checked = this.checked;
+            toggleActions(checkbox);
+        }
+    });
+
+    document.querySelectorAll('.userCheckbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            toggleActions(this);
+        });
+    });
+
+    function toggleActions(checkbox) {
+        let actionButtons = checkbox.closest('tr').querySelectorAll('.edit-btn, .delete-btn');
+        if (checkbox.checked) {
+            actionButtons.forEach(btn => btn.classList.remove('d-none'));
+        } else {
+            actionButtons.forEach(btn => btn.classList.add('d-none'));
+        }
+    }
+</script>
