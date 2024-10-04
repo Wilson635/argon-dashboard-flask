@@ -57,30 +57,30 @@
                                     Sécurité
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link flex gap-2" id="appearance-tab" data-toggle="tab" href="#appearance"
-                                   role="tab"
-                                   aria-controls="appearance" aria-selected="false">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
-                                         viewBox="0 0 24 24">
-                                        <path fill="#2b79d9"
-                                              d="M9 21H5c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2m6 0h4c1.1 0 2-.9 2-2v-5c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v5c0 1.1.9 2 2 2m6-13V5c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3c0 1.1.9 2 2 2h4c1.1 0 2-.9 2-2"/>
-                                    </svg>
-                                    Apparence
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link flex gap-2" id="notification-tab" data-toggle="tab"
-                                   href="#notification"
-                                   role="tab" aria-controls="notification" aria-selected="false">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
-                                         viewBox="0 0 56 56">
-                                        <path fill="#2b79d9"
-                                              d="M28 51.906c13.055 0 23.906-10.851 23.906-23.906c0-13.078-10.875-23.906-23.93-23.906C14.899 4.094 4.095 14.922 4.095 28c0 13.055 10.828 23.906 23.906 23.906m-10.523-15.82c-1.22 0-1.922-.61-1.922-1.547c0-1.336 1.335-2.484 2.484-3.68c.867-.96 1.078-2.859 1.172-4.406c.117-5.039 1.476-8.508 4.969-9.773c.515-1.711 1.898-3.07 3.82-3.07s3.281 1.359 3.82 3.07c3.469 1.265 4.852 4.734 4.946 9.773c.093 1.547.28 3.445 1.195 4.406c1.148 1.172 2.484 2.344 2.484 3.68c0 .938-.726 1.547-1.922 1.547ZM28 41.5c-2.25 0-3.867-1.594-4.031-3.516h8.062C31.867 39.906 30.227 41.5 28 41.5"/>
-                                    </svg>
-                                    Notification
-                                </a>
-                            </li>
+{#                            <li class="nav-item">#}
+{#                                <a class="nav-link flex gap-2" id="appearance-tab" data-toggle="tab" href="#appearance"#}
+{#                                   role="tab"#}
+{#                                   aria-controls="appearance" aria-selected="false">#}
+{#                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"#}
+{#                                         viewBox="0 0 24 24">#}
+{#                                        <path fill="#2b79d9"#}
+{#                                              d="M9 21H5c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2m6 0h4c1.1 0 2-.9 2-2v-5c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v5c0 1.1.9 2 2 2m6-13V5c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3c0 1.1.9 2 2 2h4c1.1 0 2-.9 2-2"/>#}
+{#                                    </svg>#}
+{#                                    Apparence#}
+{#                                </a>#}
+{#                            </li>#}
+{#                            <li class="nav-item">#}
+{#                                <a class="nav-link flex gap-2" id="notification-tab" data-toggle="tab"#}
+{#                                   href="#notification"#}
+{#                                   role="tab" aria-controls="notification" aria-selected="false">#}
+{#                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"#}
+{#                                         viewBox="0 0 56 56">#}
+{#                                        <path fill="#2b79d9"#}
+{#                                              d="M28 51.906c13.055 0 23.906-10.851 23.906-23.906c0-13.078-10.875-23.906-23.93-23.906C14.899 4.094 4.095 14.922 4.095 28c0 13.055 10.828 23.906 23.906 23.906m-10.523-15.82c-1.22 0-1.922-.61-1.922-1.547c0-1.336 1.335-2.484 2.484-3.68c.867-.96 1.078-2.859 1.172-4.406c.117-5.039 1.476-8.508 4.969-9.773c.515-1.711 1.898-3.07 3.82-3.07s3.281 1.359 3.82 3.07c3.469 1.265 4.852 4.734 4.946 9.773c.093 1.547.28 3.445 1.195 4.406c1.148 1.172 2.484 2.344 2.484 3.68c0 .938-.726 1.547-1.922 1.547ZM28 41.5c-2.25 0-3.867-1.594-4.031-3.516h8.062C31.867 39.906 30.227 41.5 28 41.5"/>#}
+{#                                    </svg>#}
+{#                                    Notification#}
+{#                                </a>#}
+{#                            </li>#}
                         </ul>
                     </div>
                     <div class="card-body">
@@ -91,19 +91,18 @@
                                 {% include 'home/settings/profile-tabs.html' %}
                             </div>
                             <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
-                                <h4>Sécurité</h4>
                                 {% include 'home/settings/security-tabs.html' %}
                                 {#<p>You are connected from : {{ device_info[0] }} - {{ device_info[1] }}</p>#}
                             </div>
-                            <div class="tab-pane fade" id="appearance" role="tabpanel" aria-labelledby="appearance-tab">
-                                <h4>Apparence</h4>
-                                <p>Contenu de l'onglet Apparence...</p>
-                            </div>
-                            <div class="tab-pane fade" id="notification" role="tabpanel"
-                                 aria-labelledby="notification-tab">
-                                <h4>Notification</h4>
-                                <p>Contenu de l'onglet Notification...</p>
-                            </div>
+{#                            <div class="tab-pane fade" id="appearance" role="tabpanel" aria-labelledby="appearance-tab">#}
+{#                                <h4>Apparence</h4>#}
+{#                                <p>Contenu de l'onglet Apparence...</p>#}
+{#                            </div>#}
+{#                            <div class="tab-pane fade" id="notification" role="tabpanel"#}
+{#                                 aria-labelledby="notification-tab">#}
+{#                                <h4>Notification</h4>#}
+{#                                {% include 'home/settings/alert-tabs.html' %}#}
+{#                            </div>#}
                         </div>
                     </div>
                 </div>

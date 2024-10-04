@@ -14,6 +14,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from apps import db
 from apps.authentication.models import Users, Members, Children, Parents, Partners, EmergencyContact, PDFFile, \
     Declaration, DeclarationFile
+from apps.authentication.util import verify_pass, hash_pass
 from apps.home import blueprint
 
 
@@ -276,44 +277,69 @@ def new_account():
         return render_template('home/newUser.html', segment=segment)
 
 
-@blueprint.route('/change_password', methods=['GET', 'POST'])
-@login_required
+@blueprint.route('/change-password', methods=['GET', 'POST'])
+@login_required  # Ensure the user is logged in
 def change_password():
     """
-    Route for changing the user's password.
+    Route for changing the password of the logged-in user.
 
-    Validates the form data:
-    - Verifies the current password is correct.
-    - Checks that the new password and confirmation match.
-    - Updates the password in the database if valid.
+    The user must provide their old password, a new password, and confirm it.
+    If all fields are filled and the old password is correct, the new password is hashed
+    and stored in the database. If the new password is not at least 8 characters long,
+    an error message is displayed. If the new password and confirmation do not match,
+    an error message is displayed. If there is an error updating the password, an error
+    message is displayed.
+    Args:
+        None
+    Returns:
+        If the request method is POST, it renders the 'home/settings.html' template with
+        a success message if the password was changed successfully, or an error message
+        if there was an error. If the request method is GET, it renders the
+        'home/settings.html' template.
     """
+    segment = get_segment(request)  # Get the current page segment
+
     if request.method == 'POST':
-        current_password = request.form['current_password']
+        old_password = request.form['old_password']
         new_password = request.form['new_password']
-        new_password_confirmation = request.form['new_password_confirmation']
+        confirm_password = request.form['confirm_password']
 
-        # Get the currently logged-in user using the current_user object
-        user = Users.query.filter_by(username=current_user.username).first()
+        # Check if all fields are filled
+        if not old_password or not new_password or not confirm_password:
+            notify_error('Please fill in all fields.')
+            return render_template('home/settings.html', success=False, segment=segment)
 
-        # Verify current password
-        if not check_password_hash(user.password, current_password):
-            notify_error('Le mot de passe actuel est incorrect')
-            return render_template('home/settings.html')
+        # Verify that the old password is correct
+        if not verify_pass(old_password, current_user.password):
+            notify_error('The old password is incorrect.')
+            return render_template('home/settings.html', success=False, segment=segment)
 
-        # Validate new password and confirmation
-        if new_password != new_password_confirmation:
-            notify_error('Les nouveaux mots de passe ne correspondent pas')
-            return render_template('home/settings.html')
+        # Check if the new password and confirmation match
+        if new_password != confirm_password:
+            notify_error('The new password and confirmation do not match.')
+            return render_template('home/settings.html', success=False, segment=segment)
 
-        # Update password
-        # Make sure to hash the new password before storing it
-        user.password = generate_password_hash(new_password)
-        db.session.commit()
+        # Check that the new password is long enough
+        if len(new_password) < 8:
+            notify_error('The new password must be at least 8 characters long.')
+            return render_template('home/settings.html', success=False, segment=segment)
 
-        notify_success('Mot de passe mis à jour avec succès')
-        return redirect(url_for('profile'))  # Remplacez 'profile' par la route appropriée
+        # Hash the new password and update the user
+        hashed_password = hash_pass(new_password)  # This returns bytes
+        current_user.password = hashed_password.decode('ascii')  # Store it as a string
 
-    return render_template('home/settings.html')
+        # Save changes to the database
+        try:
+            db.session.commit()
+            notify_success('Password changed successfully.')
+            return render_template('home/settings.html', success=True, segment=segment)
+        except Exception as e:
+            db.session.rollback()  # Rollback in case of an error
+            notify_error('Error updating the password.')
+            return render_template('home/settings.html', success=False, segment=segment)
+    else:
+        # Display the form if the method is GET
+        return render_template('home/settings.html', segment=segment)
 
 
 @blueprint.route('/update_profile', methods=['GET', 'POST'])
@@ -607,7 +633,6 @@ def schedule_declaration(id):
 
     notify_success('Déclaration programmée avec succès.')
     return render_template("home/events.html", segment=get_segment(request))
-
 
 
 def notify_error(message):
