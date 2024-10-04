@@ -34,19 +34,19 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-                <div class="card-header rounded-bottom p-3 pt-2">
-                    <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center rounded mt-n4 position-absolute">
-                        <i class="fa fa-chart-pie text-white opacity-10"></i>
-                    </div>
-                    <div class="text-right pt-1">
-                        <p class="text-xl mb-0 text-capitalize font-weight-800">Credit</p>
-                        <h4 class="mb-0">0</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {#        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">#}
+        {#            <div class="card">#}
+        {#                <div class="card-header rounded-bottom p-3 pt-2">#}
+        {#                    <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center rounded mt-n4 position-absolute">#}
+        {#                        <i class="fa fa-chart-pie text-white opacity-10"></i>#}
+        {#                    </div>#}
+        {#                    <div class="text-right pt-1">#}
+        {#                        <p class="text-xl mb-0 text-capitalize font-weight-800">Credit</p>#}
+        {#                        <h4 class="mb-0">0</h4>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div> #}
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-header rounded-bottom p-3 pt-2">
@@ -68,7 +68,7 @@
                     </div>
                     <div class="text-right pt-1">
                         <p class="text-xl mb-0 text-capitalize font-weight-800">Events</p>
-                        <h4 class="mb-0">0</h4>
+                        <h4 class="mb-0">{{ event_count }}</h4>
                     </div>
                 </div>
             </div>
@@ -76,9 +76,11 @@
     </div>
     <div class="row sm:flex sm:flex-wrap sm: justify-content-end mb-3">
         <div class="col-lg-6 col-5 text-right">
-            <a href="/newUser" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#newuser">
-                <i class="fa fa-plus-circle"></i> | New
-            </a>
+            {% if current_user.role == 'dsi' %}
+                <a href="/newUser" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#newuser">
+                    <i class="fa fa-plus-circle"></i> | New
+                </a>
+            {% endif %}
             <button class="btn btn-white" data-bs-toggle="collapse" data-bs-target="#filterCollapse">
                 <i class="fa fa-filter"></i> | Filter
             </button>
@@ -108,26 +110,36 @@
                     <table class="table align-items-center table-flush">
                         <thead class="thead-light">
                         <tr>
-                            <th scope="col"><input type="checkbox" id="selectAll"></th>
+                            {% if current_user.role == 'dsi' %}
+                                <th scope="col"><input type="checkbox" id="selectAll"></th>
+                            {% endif %}
                             <th scope="col">User Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Role</th>
-                            <th scope="col">Actions</th>
+                            {% if current_user.role == 'dsi' %}
+                                <th scope="col">Actions</th>
+                            {% endif %}
                         </tr>
                         </thead>
                         <tbody id="userTable">
                         {% for user in paginated_users.items %}
                             <tr>
-                                <td><input type="checkbox" class="userCheckbox" data-user-id="{{ user.id }}"></td>
+                                {% if current_user.role == 'dsi' %}
+                                    <td><input type="checkbox" class="userCheckbox" data-user-id="{{ user.id }}"></td>
+                                {% endif %}
                                 <th scope="row">{{ user.username }}</th>
                                 <td>{{ user.email }}</td>
                                 <td>{{ user.role }}</td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm edit-btn d-none"><i class="fa fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-danger btn-sm delete-btn d-none"><i class="fa fa-trash"></i>
-                                    </button>
-                                </td>
+                                {% if current_user.role == 'dsi' %}
+                                    <td>
+                                        <button class="btn btn-warning btn-sm edit-btn d-none"><i
+                                                class="fa fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm delete-btn d-none"><i
+                                                class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                {% endif %}
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -142,7 +154,8 @@
         <ul class="pagination justify-content-end">
             {% if paginated_users.has_prev %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ paginated_users.prev_num }}"> <i class="fa fa-arrow-left"></i> </a>
+                    <a class="page-link" href="?page={{ paginated_users.prev_num }}"> <i class="fa fa-arrow-left"></i>
+                    </a>
                 </li>
             {% endif %}
             {% for page_num in paginated_users.iter_pages() %}
@@ -152,7 +165,8 @@
             {% endfor %}
             {% if paginated_users.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ paginated_users.next_num }}"> <i class="fa fa-arrow-right"></i> </a>
+                    <a class="page-link" href="?page={{ paginated_users.next_num }}"> <i class="fa fa-arrow-right"></i>
+                    </a>
                 </li>
             {% endif %}
         </ul>

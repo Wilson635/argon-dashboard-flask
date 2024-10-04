@@ -39,13 +39,18 @@ def index():
 
     # Count all members in the database
     member_count = Members.query.count()
+
+    # Count all events in the database
+    event_count = Declaration.query.count()
+
+    # Paginate the users
     page = request.args.get('page', 1, type=int)
-    per_page = 10
+    per_page = 6
     paginated_users = Users.query.order_by(Users.username).paginate(page=page, per_page=per_page)
 
     # Render the 'home/index.html' template with the above variables
     return render_template('home/index.html', segment='index', users=users, user_count=user_count,
-                           member_count=member_count, paginated_users=paginated_users)
+                           member_count=member_count, event_count=event_count, paginated_users=paginated_users)
 
 
 @blueprint.route('/<template>')
@@ -272,11 +277,12 @@ def new_account():
 
 
 @blueprint.route('/change_password', methods=['GET', 'POST'])
+@login_required
 def change_password():
     """
     Route for changing the user's password.
 
-    If the request method is POST, it validates the form data:
+    Validates the form data:
     - Verifies the current password is correct.
     - Checks that the new password and confirmation match.
     - Updates the password in the database if valid.
@@ -286,25 +292,26 @@ def change_password():
         new_password = request.form['new_password']
         new_password_confirmation = request.form['new_password_confirmation']
 
-        # user = current_user
-        user = Users.query.filter_by(username=current_user).first()  # Get the currently logged-in user
+        # Get the currently logged-in user using the current_user object
+        user = Users.query.filter_by(username=current_user.username).first()
 
         # Verify current password
         if not check_password_hash(user.password, current_password):
-            notify_error('Current password is incorrect')
+            notify_error('Le mot de passe actuel est incorrect')
             return render_template('home/settings.html')
 
         # Validate new password and confirmation
         if new_password != new_password_confirmation:
-            notify_error('New passwords do not match')
+            notify_error('Les nouveaux mots de passe ne correspondent pas')
             return render_template('home/settings.html')
 
         # Update password
+        # Make sure to hash the new password before storing it
         user.password = generate_password_hash(new_password)
         db.session.commit()
 
-        notify_success('Password updated successfully')
-        return redirect(url_for('profile'))
+        notify_success('Mot de passe mis à jour avec succès')
+        return redirect(url_for('profile'))  # Remplacez 'profile' par la route appropriée
 
     return render_template('home/settings.html')
 
@@ -534,6 +541,16 @@ def add_declaration():
 @blueprint.route('/reject/<string:id>', methods=['GET', 'POST'])
 @login_required
 def reject_declaration(id):
+    """
+    Reject a declaration with the given ID.
+
+    Args:
+        id (str): The ID of the declaration to reject.
+
+    Returns:
+        The rendered events page if the request method is POST,
+        otherwise the rendered reject_form.html page.
+    """
     if request.method == 'POST':
         # Fetch the declaration by its ID
         declaration = Declaration.query.get(id)
@@ -547,7 +564,7 @@ def reject_declaration(id):
 
         if not reason:
             notify_error("Veuillez fournir une raison pour le rejet.")
-            return redirect(url_for('blueprint.events'))
+            return render_template("home/events.html", segment=get_segment(request))
 
         # Update the status of the declaration and save the reason
         declaration.statut = 'rejected'
@@ -557,10 +574,40 @@ def reject_declaration(id):
         db.session.commit()
 
         notify_success('Déclaration rejetée avec succès.')
-        return redirect(url_for('blueprint.events'))
+        return render_template("home/events.html", segment=get_segment(request))
 
     # In case of GET request, render the form page or redirect
     return render_template('reject_form.html', declaration_id=id)
+
+
+@blueprint.route('/schedule/<string:id>', methods=['POST'])
+@login_required
+def schedule_declaration(id):
+    """
+    Schedule a declaration by updating its status to 'scheduled'.
+
+    Args:
+        id (str): The ID of the declaration to schedule.
+
+    Returns:
+        Redirects to the events page after scheduling the declaration.
+    """
+    # Fetch the declaration by its ID
+    declaration = Declaration.query.get(id)
+
+    if not declaration:
+        notify_error("Déclaration non trouvée.")
+        return render_template("home/events.html", segment=get_segment(request))
+
+    # Update the status of the declaration to 'scheduled'
+    declaration.statut = 'scheduled'
+
+    # Commit the changes to the database
+    db.session.commit()
+
+    notify_success('Déclaration programmée avec succès.')
+    return render_template("home/events.html", segment=get_segment(request))
+
 
 
 def notify_error(message):
@@ -611,7 +658,7 @@ def events():
     pending_count = Declaration.query.filter_by(statut='pending').count()
 
     # count the number of events 'canceled'
-    canceled_count = Declaration.query.filter_by(statut='canceled').count()
+    canceled_count = Declaration.query.filter_by(statut='rejected').count()
 
     # count the number of events 'scheduled'
     scheduled_count = Declaration.query.filter_by(statut='scheduled').count()

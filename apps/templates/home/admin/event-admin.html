@@ -1,3 +1,37 @@
+<style>
+    /* Scheduled badge - green */
+    .badge-scheduled {
+        background-color: rgba(0, 128, 0, 0.1);
+        color: rgba(0, 128, 0, 0.8);
+        padding: 0.5em 1em;
+        border-radius: 6rem;
+        text-transform: capitalize;
+        font-size: 12px;
+    }
+
+    /* Rejected badge - red */
+    .badge-rejected {
+        background-color: rgba(255, 0, 0, 0.1);
+        color: rgba(255, 0, 0, 0.8);
+        padding: 0.5em 1em;
+        border-radius: 6rem;
+        text-transform: capitalize;
+        font-size: 12px;
+    }
+
+    /* Pending badge - blue */
+    .badge-pending {
+        background-color: rgba(0, 0, 255, 0.1);
+        color: rgba(0, 0, 255, 0.8);
+        padding: 0.5em 1em;
+        border-radius: 6rem;
+        text-transform: capitalize;
+        font-size: 12px;
+    }
+
+</style>
+
+
 <div class="row">
     <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <div class="card">
@@ -6,7 +40,7 @@
                     <i class="fa fa-check-circle text-white opacity-10"></i>
                 </div>
                 <div class="text-right pt-1">
-                    <p class="text-xl mb-0 text-capitalize font-weight-800">0</p>
+                    <p class="text-xl mb-0 text-capitalize font-weight-800">{{ scheduled_count }}</p>
                     <h4 class="mb-0">Scheduled events</h4>
                 </div>
             </div>
@@ -32,7 +66,7 @@
                     <i class="fa fa-exclamation-triangle text-white opacity-10"></i>
                 </div>
                 <div class="text-right pt-1">
-                    <p class="text-xl mb-0 text-capitalize font-weight-800">0</p>
+                    <p class="text-xl mb-0 text-capitalize font-weight-800">{{ canceled_count }}</p>
                     <h4 class="mb-0">Cancelled events</h4>
                 </div>
             </div>
@@ -50,27 +84,45 @@
             <th scope="col">Events</th>
             <th scope="col">Events Date</th>
             <th scope="col">Author</th>
-            <th scope="col">Action</th>
+            {% if current_user.role == 'admin' %}
+                <th scope="col">Action</th>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
         {% for declaration in declarations %}
             <tr>
                 <td>{{ loop.index }}</td>
-                <td>{{ declaration.statut }}</td>
+                <td>
+                    {% if declaration.statut == 'scheduled' %}
+                        <span class="badge badge-scheduled">Scheduled</span>
+                    {% elif declaration.statut == 'rejected' %}
+                        <span class="badge badge-rejected">Rejected</span>
+                    {% elif declaration.statut == 'pending' %}
+                        <span class="badge badge-pending">Pending</span>
+                    {% endif %}
+                </td>
                 <td>{{ declaration.declaration_type }}</td>
-                <td>{{ declaration.timestamp.strftime('%d/%m/%Y') }}</td>
+                <td>{{ declaration.timestamp.strftime('%d-%m-%Y') }}</td>
                 <td>{{ declaration.member.name }} {{ declaration.member.firstName }}</td>
                 {#                <td>#}
                 {#                    <a href="{{ url_for('blueprint.delete_declaration', id=declaration.id) }}">delete</a> |#}
                 {#                    <a href="{{ url_for('blueprint.schedule_declaration', id=declaration.id) }}">schedule</a>#}
                 {#                </td>#}
-                <td>
-                    <a href="#" data-toggle="modal" data-target="#rejectModal-{{ declaration.id }}">Reject</a> |
-                    <a href="#">schedule</a>
-                </td>
+                {% if current_user.role == 'admin' %}
+                    <td>
+                        <a href="#" data-toggle="modal"
+                           class="m-2 bg-gradient-red font-weight-bold px-5 py-2 text-white rounded"
+                           data-target="#rejectModal-{{ declaration.id }}"> <i
+                                class="fa fa-door-closed text-white font-weight-bold"></i> Reject</a> |
+                        <a href="#" data-toggle="modal"
+                           class="m-2 bg-gradient-green px-5 py-2 text-black-50 rounded font-weight-bold"
+                           data-target="#scheduleModal-{{ declaration.id }}"> <i
+                                class="fa fa-check-circle"></i> Schedule</a>
+                    </td>
+                {% endif %}
             </tr>
-            <!-- Modal de rejet -->
+            <!-- Modal reject -->
             <div class="modal fade" id="rejectModal-{{ declaration.id }}" tabindex="-1" role="dialog"
                  aria-labelledby="rejectModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -81,7 +133,8 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form action="{{ url_for('home_blueprint.reject_declaration', id=declaration.id) }}" method="POST" >
+                        <form action="{{ url_for('home_blueprint.reject_declaration', id=declaration.id) }}"
+                              method="POST">
                             <div class="modal-body">
                                 <p>Please fill in the following details to cancel the declaration</p>
                                 <div class="form-group">
@@ -98,9 +151,36 @@
                     </div>
                 </div>
             </div>
+            <!-- Modal Schedule -->
+            <div class="modal fade" id="scheduleModal-{{ declaration.id }}" tabindex="-1" role="dialog"
+                 aria-labelledby="scheduleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="scheduleModalLabel">Schedule Event for Declaration</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Event Type:</strong> {{ declaration.declaration_type }}</p>
+                            <p><strong>Event Date:</strong> {{ declaration.timestamp.strftime('%d-%m-%Y') }}</p>
+                            <p><strong>Author:</strong> {{ declaration.member.name }} {{ declaration.member.firstName }}
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <form action="{{ url_for('home_blueprint.schedule_declaration', id=declaration.id) }}"
+                                  method="POST">
+                                <button type="submit" class="btn btn-success">Schedule Event</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         {% endfor %}
         </tbody>
     </table>
 </div>
 <!-- End of table -->
-
