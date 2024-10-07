@@ -18,6 +18,33 @@
             </form>
             <!-- Navbar links -->
             <ul class="navbar-nav align-items-center  ml-md-auto ">
+                <!-- Fullscreen icon -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="toggleFullscreen()" data-toggle="tooltip" title="Fullscreen">
+                        <i class="fas fa-expand"></i>
+                    </a>
+                </li>
+                <!-- Text size icon -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="increaseTextSize()" data-toggle="tooltip"
+                       title="Increase Text Size">
+                        <i class="fas fa-text-height"></i>
+                    </a>
+                </li>
+                <!-- Language Selector as Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="/static/assets/img/brand/united-kingdom.png" alt="English" style="width: 24px; height: 24px;"> English
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#" id="lang-en-btn">
+                            <img src="/static/assets/img/brand/united-kingdom.png" alt="English" style="width: 24px; height: 24px;"> English
+                        </a>
+                        <a class="dropdown-item" href="#" id="lang-fr-btn">
+                            <img src="/static/assets/img/brand/france.png" alt="Français" style="width: 24px; height: 24px;"> Français
+                        </a>
+                    </div>
+                </li>
                 <li class="nav-item d-xl-none">
                     <!-- Sidenav toggler -->
                     <div class="pr-3 sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin"
@@ -40,20 +67,20 @@
                     <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
                        aria-expanded="false">
                         <div class="media align-items-center">
-              <span class="avatar avatar-sm rounded-circle bg-white">
-                <img alt="Image placeholder" src="/static/assets/img/theme/profile.jpg">
-              </span>
+                            <span class="avatar avatar-sm rounded-circle bg-white">
+                                <img alt="Image placeholder" src="/static/assets/img/theme/profile.jpg">
+                            </span>
                             <div class="media-body ml-2 d-flex flex-lg-column flex-sm-column">
-                <span class="mb-0 text-sm  font-weight-bold">
-                  {{ current_user.username }}
-                </span>
+                                <span class="mb-0 text-sm font-weight-bold">
+                                    {{ current_user.username }}
+                                </span>
                                 <span class="mb-0 text-sm">
-                  {{ current_user.role }}
-                </span>
+                                    {{ current_user.role }}
+                                </span>
                             </div>
                         </div>
                     </a>
-                    <div class="dropdown-menu  dropdown-menu-right ">
+                    <div class="dropdown-menu dropdown-menu-right">
                         <div class="dropdown-header noti-title">
                             <h6 class="text-overflow m-0">Welcome!</h6>
                         </div>
@@ -66,7 +93,8 @@
                             <span>Documentation</span>
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="{{ url_for('authentication_blueprint.logout') }}" class="dropdown-item bg-gradient-danger">
+                        <a href="{{ url_for('authentication_blueprint.logout') }}"
+                           class="dropdown-item bg-gradient-danger">
                             <i class="ni ni-button-power text-white"></i>
                             <span class="text-white">Logout</span>
                         </a>
@@ -76,3 +104,41 @@
         </div>
     </div>
 </nav>
+
+<script>
+    /**
+     * Toggles the fullscreen mode of the current document.
+     */
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+
+    /**
+     * Increases the font size of all elements on the page by 1 pixel.
+     */
+    function increaseTextSize() {
+        const elements = document.querySelectorAll('body, body *');
+        elements.forEach(el => {
+            const currentSize = window.getComputedStyle(el).fontSize;
+            const newSize = parseFloat(currentSize) + 1;
+            el.style.fontSize = `${newSize}px`;
+        });
+    }
+
+    /**
+     * Language switcher to toggle between English and French.
+     */
+    document.getElementById('lang-en-btn').addEventListener('click', function() {
+        // Your logic to switch to English
+        alert('Switched to English');
+    });
+
+    document.getElementById('lang-fr-btn').addEventListener('click', function() {
+        // Your logic to switch to French
+        alert('Passé au Français');
+    });
+</script>

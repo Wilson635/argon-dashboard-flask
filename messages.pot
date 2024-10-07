@@ -1,0 +1,475 @@
+# Translations template for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-10-07 12:47+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: venv/Lib/site-packages/click/_termui_impl.py:518
+msgid "{editor}: Editing failed"
+msgstr "{editor} : Échec de l'édition"
+
+#: venv/Lib/site-packages/click/_termui_impl.py:522
+msgid "{editor}: Editing failed: {e}"
+msgstr "{editor} : Échec de l'édition : {e}"
+
+#: venv/Lib/site-packages/click/core.py:1120
+msgid "Aborted!"
+msgstr "Abandonné !"
+
+#: venv/Lib/site-packages/click/core.py:1309
+#: venv/Lib/site-packages/click/decorators.py:559
+msgid "Show this message and exit."
+msgstr "Afficher ce message et quitter."
+
+#: venv/Lib/site-packages/click/core.py:1340
+#: venv/Lib/site-packages/click/core.py:1370
+msgid "(Deprecated) {text}"
+msgstr "(Obsolète) {text}"
+
+#: venv/Lib/site-packages/click/core.py:1387
+msgid "Options"
+msgstr "Options"
+
+#: venv/Lib/site-packages/click/core.py:1415
+msgid "Got unexpected extra argument ({args})"
+msgid_plural "Got unexpected extra arguments ({args})"
+msgstr[0] "Argument supplémentaire inattendu ({args})"
+msgstr[1] "Arguments supplémentaires inattendus ({args})"
+
+#: venv/Lib/site-packages/click/core.py:1428
+msgid "DeprecationWarning: The command {name!r} is deprecated."
+msgstr "Avertissement de dépréciation : La commande {name!r} est obsolète."
+
+#: venv/Lib/site-packages/click/core.py:1636
+msgid "Commands"
+msgstr "Commandes"
+
+#: venv/Lib/site-packages/click/core.py:1668
+msgid "Missing command."
+msgstr "Commande manquante."
+
+#: venv/Lib/site-packages/click/core.py:1746
+msgid "No such command {name!r}."
+msgstr "Aucune commande {name!r} trouvée."
+
+#: venv/Lib/site-packages/click/core.py:2310
+msgid "Value must be an iterable."
+msgstr "La valeur doit être un itérable."
+
+#: venv/Lib/site-packages/click/core.py:2333
+msgid "Takes {nargs} values but 1 was given."
+msgid_plural "Takes {nargs} values but {len} were given."
+msgstr[0] "Attend {nargs} valeurs mais 1 a été donnée."
+msgstr[1] "Attend {nargs} valeurs mais {len} ont été données."
+
+#: venv/Lib/site-packages/click/core.py:2778
+msgid "env var: {var}"
+msgstr "var d'environnement : {var}"
+
+#: venv/Lib/site-packages/click/core.py:2808
+msgid "(dynamic)"
+msgstr "(dynamique)"
+
+#: venv/Lib/site-packages/click/core.py:2821
+msgid "default: {default}"
+msgstr "par défaut : {default}"
+
+#: venv/Lib/site-packages/click/core.py:2834
+msgid "required"
+msgstr "requis"
+
+#: venv/Lib/site-packages/click/decorators.py:465
+#, python-format
+msgid "%(prog)s, version %(version)s"
+msgstr "%(prog)s, version %(version)s"
+
+#: venv/Lib/site-packages/click/decorators.py:528
+msgid "Show the version and exit."
+msgstr "Afficher la version et quitter."
+
+#: venv/Lib/site-packages/click/exceptions.py:44
+#: venv/Lib/site-packages/click/exceptions.py:80
+msgid "Error: {message}"
+msgstr "Erreur : {message}"
+
+#: venv/Lib/site-packages/click/exceptions.py:72
+msgid "Try '{command} {option}' for help."
+msgstr "Essayez '{command} {option}' pour obtenir de l'aide."
+
+#: venv/Lib/site-packages/click/exceptions.py:121
+msgid "Invalid value: {message}"
+msgstr "Valeur invalide : {message}"
+
+#: venv/Lib/site-packages/click/exceptions.py:123
+msgid "Invalid value for {param_hint}: {message}"
+msgstr "Valeur invalide pour {param_hint} : {message}"
+
+#: venv/Lib/site-packages/click/exceptions.py:179
+msgid "Missing argument"
+msgstr "Argument manquant"
+
+#: venv/Lib/site-packages/click/exceptions.py:181
+msgid "Missing option"
+msgstr "Option manquante"
+
+#: venv/Lib/site-packages/click/exceptions.py:183
+msgid "Missing parameter"
+msgstr "Paramètre manquant"
+
+#: venv/Lib/site-packages/click/exceptions.py:185
+msgid "Missing {param_type}"
+msgstr "{param_type} manquant"
+
+#: venv/Lib/site-packages/click/exceptions.py:192
+msgid "Missing parameter: {param_name}"
+msgstr "Paramètre manquant : {param_name}"
+
+#: venv/Lib/site-packages/click/exceptions.py:212
+msgid "No such option: {name}"
+msgstr "Aucune option nommée {name}."
+
+#: venv/Lib/site-packages/click/exceptions.py:226
+msgid "Did you mean {possibility}?"
+msgid_plural "(Possible options: {possibilities})"
+msgstr[0] "Vouliez-vous dire {possibility} ?"
+msgstr[1] "(Options possibles : {possibilities})"
+
+#: venv/Lib/site-packages/click/exceptions.py:262
+msgid "unknown error"
+msgstr "erreur inconnue"
+
+#: venv/Lib/site-packages/click/exceptions.py:269
+msgid "Could not open file {filename!r}: {message}"
+msgstr "Impossible d'ouvrir le fichier {filename!r} : {message}"
+
+#: venv/Lib/site-packages/click/formatting.py:156
+msgid "Usage:"
+msgstr "Utilisation :"
+
+#: venv/Lib/site-packages/click/parser.py:231
+msgid "Argument {name!r} takes {nargs} values."
+msgstr "L'argument {name!r} attend {nargs} valeurs."
+
+#: venv/Lib/site-packages/click/parser.py:413
+msgid "Option {name!r} does not take a value."
+msgstr "L'option {name!r} n'accepte pas de valeur."
+
+#: venv/Lib/site-packages/click/parser.py:473
+msgid "Option {name!r} requires an argument."
+msgid_plural "Option {name!r} requires {nargs} arguments."
+msgstr[0] "L'option {name!r} requiert un argument."
+msgstr[1] "L'option {name!r} requiert {nargs} arguments."
+
+#: venv/Lib/site-packages/click/shell_completion.py:318
+msgid "Shell completion is not supported for Bash versions older than 4.4."
+msgstr "L'auto-complétion n'est pas supportée pour les versions de Bash antérieures à 4.4."
+
+#: venv/Lib/site-packages/click/shell_completion.py:326
+msgid "Couldn't detect Bash version, shell completion is not supported."
+msgstr "Impossible de détecter la version de Bash, l'auto-complétion n'est pas supportée."
+
+#: venv/Lib/site-packages/click/termui.py:158
+msgid "Repeat for confirmation"
+msgstr "Répétez pour confirmer"
+
+#: venv/Lib/site-packages/click/termui.py:174
+msgid "Error: The value you entered was invalid."
+msgstr "Erreur : La valeur saisie est invalide."
+
+#: venv/Lib/site-packages/click/termui.py:176
+msgid "Error: {e.message}"
+msgstr "Erreur : {e.message}"
+
+#: venv/Lib/site-packages/click/termui.py:187
+msgid "Error: The two entered values do not match."
+msgstr "Erreur : Les deux valeurs saisies ne correspondent pas."
+
+#: venv/Lib/site-packages/click/termui.py:243
+msgid "Error: invalid input"
+msgstr "Erreur : entrée invalide"
+
+#: venv/Lib/site-packages/click/termui.py:773
+msgid "Press any key to continue..."
+msgstr "Appuyez sur une touche pour continuer..."
+
+#: venv/Lib/site-packages/click/types.py:266
+msgid "Choose from:\n\t{choices}"
+msgstr "Choisissez parmi :\n\t{choices}"
+
+#: venv/Lib/site-packages/click/types.py:300
+msgid "{value!r} is not {choice}."
+msgid_plural "{value!r} is not one of {choices}."
+msgstr[0] "{value!r} n'est pas {choice}."
+msgstr[1] "{value!r} n'est pas l'un des {choices}."
+
+#: venv/Lib/site-packages/click/types.py:394
+msgid "{value!r} does not match the format {format}."
+msgid_plural "{value!r} does not match the formats {formats}."
+msgstr[0] "{value!r} ne correspond pas au format {format}."
+msgstr[1] "{value!r} ne correspond pas aux formats {formats}."
+
+#: venv/Lib/site-packages/click/types.py:414
+msgid "{value!r} is not a valid {number_type}."
+msgstr "{value!r} n'est pas un {number_type} valide."
+
+#: venv/Lib/site-packages/click/types.py:470
+msgid "{value} is not in the range {range}."
+msgstr "{value} n'est pas dans la plage {range}."
+
+#: venv/Lib/site-packages/click/types.py:611
+msgid "{value!r} is not a valid boolean."
+msgstr "{value!r} n'est pas un booléen valide."
+
+#: venv/Lib/site-packages/click/types.py:635
+msgid "{value!r} is not a valid UUID."
+msgstr "{value!r} n'est pas un UUID valide."
+
+#: venv/Lib/site-packages/click/types.py:822
+msgid "file"
+msgstr "fichier"
+
+#: venv/Lib/site-packages/click/types.py:824
+msgid "directory"
+msgstr "répertoire"
+
+#: venv/Lib/site-packages/click/types.py:826
+msgid "path"
+msgstr "chemin"
+
+#: venv/Lib/site-packages/click/types.py:877
+msgid "{name} {filename!r} does not exist."
+msgstr "{name} {filename!r} n'existe pas."
+
+#: venv/Lib/site-packages/click/types.py:886
+msgid "{name} {filename!r} is a file."
+msgstr "{name} {filename!r} est un fichier."
+
+#: venv/Lib/site-packages/click/types.py:894
+msgid "{name} '{filename}' is a directory."
+msgstr "{name} '{filename}' est un répertoire."
+
+#: venv/Lib/site-packages/click/types.py:903
+msgid "{name} {filename!r} is not readable."
+msgstr "{name} {filename!r} n'est pas lisible."
+
+#: venv/Lib/site-packages/click/types.py:912
+msgid "{name} {filename!r} is not writable."
+msgstr "{name} {filename!r} n'est pas modifiable."
+
+#: venv/Lib/site-packages/click/types.py:921
+msgid "{name} {filename!r} is not executable."
+msgstr "{name} {filename!r} n'est pas exécutable."
+
+#: venv/Lib/site-packages/click/types.py:987
+msgid "{len_type} values are required, but {len_value} was given."
+msgid_plural "{len_type} values are required, but {len_value} were given."
+msgstr[0] "{len_type} valeurs sont requises, mais {len_value} a été donnée."
+msgstr[1] "{len_type} valeurs sont requises, mais {len_value} ont été données."
+
+#: venv/Lib/site-packages/flask_wtf/file.py:50
+#: venv/Lib/site-packages/wtforms/validators.py:218
+#: venv/Lib/site-packages/wtforms/validators.py:258
+msgid "This field is required."
+msgstr "Ce champ est obligatoire."
+
+#: venv/Lib/site-packages/flask_wtf/file.py:83
+msgid "File does not have an approved extension: {extensions}"
+msgstr "Le fichier n'a pas une extension approuvée : {extensions}"
+
+#: venv/Lib/site-packages/flask_wtf/file.py:88
+msgid "File does not have an approved extension."
+msgstr "Le fichier n'a pas une extension approuvée."
+
+#: venv/Lib/site-packages/flask_wtf/file.py:121
+msgid "File must be between {min_size} and {max_size} bytes."
+msgstr "Le fichier doit être compris entre {min_size} et {max_size} octets."
+
+#: venv/Lib/site-packages/wtforms/validators.py:68
+#, python-format
+msgid "Invalid field name '%s'."
+msgstr "Nom de champ invalide '%s'."
+
+#: venv/Lib/site-packages/wtforms/validators.py:76
+#, python-format
+msgid "Field must be equal to %(other_name)s."
+msgstr "Le champ doit être égal à %(other_name)s."
+
+#: venv/Lib/site-packages/wtforms/validators.py:109
+#, python-format
+msgid "Field must be at least %(min)d character long."
+msgid_plural "Field must be at least %(min)d characters long."
+msgstr[0] "Le champ doit contenir au moins %(min)d caractère."
+msgstr[1] "Le champ doit contenir au moins %(min)d caractères."
+
+#: venv/Lib/site-packages/wtforms/validators.py:112
+#, python-format
+msgid "Field cannot be longer than %(max)d character."
+msgid_plural "Field cannot be longer than %(max)d characters."
+msgstr[0] "Le champ ne peut pas dépasser %(max)d caractère."
+msgstr[1] "Le champ ne peut pas dépasser %(max)d caractères."
+
+#: venv/Lib/site-packages/wtforms/validators.py:115
+#, python-format
+msgid "Field must be exactly %(max)d character long."
+msgid_plural "Field must be exactly %(max)d characters long."
+msgstr[0] "Le champ doit contenir exactement %(max)d caractère."
+msgstr[1] "Le champ doit contenir exactement %(max)d caractères."
+
+#: venv/Lib/site-packages/wtforms/validators.py:118
+#, python-format
+msgid "Field must be between %(min)d and %(max)d characters long."
+msgstr "Le champ doit contenir entre %(min)d et %(max)d caractères."
+
+#: venv/Lib/site-packages/wtforms/validators.py:154
+#, python-format
+msgid "Number must be at least %(min)s."
+msgstr "Le nombre doit être au moins %(min)s."
+
+#: venv/Lib/site-packages/wtforms/validators.py:156
+#, python-format
+msgid "Number must be at most %(max)s."
+msgstr "Le nombre doit être au plus %(max)s."
+
+#: venv/Lib/site-packages/wtforms/validators.py:158
+#, python-format
+msgid "Number must be between %(min)s and %(max)s."
+msgstr "Le nombre doit être compris entre %(min)s et %(max)s."
+
+#: venv/Lib/site-packages/wtforms/validators.py:290
+msgid "Invalid input."
+msgstr "Entrée invalide."
+
+#: venv/Lib/site-packages/wtforms/validators.py:355
+msgid "Invalid email address."
+msgstr "Adresse e-mail invalide."
+
+#: venv/Lib/site-packages/wtforms/validators.py:388
+msgid "Invalid IP address."
+msgstr "Adresse IP invalide."
+
+#: venv/Lib/site-packages/wtforms/validators.py:430
+msgid "Invalid Mac address."
+msgstr "Adresse Mac invalide."
+
+#: venv/Lib/site-packages/wtforms/validators.py:465
+msgid "Invalid URL."
+msgstr "URL invalide."
+
+#: venv/Lib/site-packages/wtforms/validators.py:485
+msgid "Invalid UUID."
+msgstr "UUID invalide."
+
+#: venv/Lib/site-packages/wtforms/validators.py:515
+#, python-format
+msgid "Invalid value, must be one of: %(values)s."
+msgstr "Valeur invalide, doit être l'une de : %(values)s."
+
+#: venv/Lib/site-packages/wtforms/validators.py:547
+#, python-format
+msgid "Invalid value, can't be any of: %(values)s."
+msgstr "Valeur invalide, ne peut pas être l'une de : %(values)s."
+
+#: venv/Lib/site-packages/wtforms/csrf/core.py:98
+#: venv/Lib/site-packages/wtforms/ext/csrf/form.py:47
+msgid "Invalid CSRF Token"
+msgstr "Jeton CSRF invalide"
+
+#: venv/Lib/site-packages/wtforms/csrf/session.py:61
+#: venv/Lib/site-packages/wtforms/ext/csrf/session.py:58
+msgid "CSRF token missing"
+msgstr "Jeton CSRF manquant"
+
+#: venv/Lib/site-packages/wtforms/csrf/session.py:69
+#: venv/Lib/site-packages/wtforms/ext/csrf/session.py:66
+msgid "CSRF failed"
+msgstr "Échec du CSRF"
+
+#: venv/Lib/site-packages/wtforms/csrf/session.py:74
+#: venv/Lib/site-packages/wtforms/ext/csrf/session.py:71
+msgid "The CSRF session token is missing."
+msgstr "Le jeton de session CSRF est manquant."
+
+#: venv/Lib/site-packages/wtforms/csrf/session.py:77
+#: venv/Lib/site-packages/wtforms/ext/csrf/session.py:74
+msgid "The CSRF token is incorrect."
+msgstr "Le jeton CSRF est incorrect."
+
+#: venv/Lib/site-packages/wtforms/ext/appengine/fields.py:87
+#: venv/Lib/site-packages/wtforms/ext/appengine/fields.py:164
+#: venv/Lib/site-packages/wtforms/ext/appengine/fields.py:166
+#: venv/Lib/site-packages/wtforms/ext/django/fields.py:95
+#: venv/Lib/site-packages/wtforms/ext/sqlalchemy/fields.py:125
+#: venv/Lib/site-packages/wtforms/ext/sqlalchemy/fields.py:127
+#: venv/Lib/site-packages/wtforms/ext/sqlalchemy/fields.py:180
+#: venv/Lib/site-packages/wtforms/ext/sqlalchemy/fields.py:185
+#: venv/Lib/site-packages/wtforms/fields/core.py:513
+msgid "Not a valid choice"
+msgstr "Choix non valide"
+
+#: venv/Lib/site-packages/wtforms/ext/appengine/fields.py:185
+msgid "Not a valid list"
+msgstr "Liste non valide"
+
+#: venv/Lib/site-packages/wtforms/ext/appengine/fields.py:204
+msgid "Not a valid integer list"
+msgstr "Liste d'entiers non valide"
+
+#: venv/Lib/site-packages/wtforms/ext/dateutil/fields.py:63
+msgid "Please input a date/time value"
+msgstr "Veuillez saisir une valeur de date/heure"
+
+#: venv/Lib/site-packages/wtforms/ext/dateutil/fields.py:75
+#: venv/Lib/site-packages/wtforms/ext/dateutil/fields.py:83
+msgid "Invalid date/time input"
+msgstr "Entrée de date/heure invalide"
+
+#: venv/Lib/site-packages/wtforms/fields/core.py:505
+msgid "Invalid Choice: could not coerce"
+msgstr "Choix invalide : conversion impossible"
+
+#: venv/Lib/site-packages/wtforms/fields/core.py:539
+msgid "Invalid choice(s): one or more data inputs could not be coerced"
+msgstr "Choix invalide(s) : une ou plusieurs entrées de données n'ont pas pu être converties"
+
+#: venv/Lib/site-packages/wtforms/fields/core.py:546
+#, python-format
+msgid "'%(value)s' is not a valid choice for this field"
+msgstr "'%(value)s' n'est pas un choix valide pour ce champ"
+
+#: venv/Lib/site-packages/wtforms/fields/core.py:629
+#: venv/Lib/site-packages/wtforms/fields/core.py:639
+msgid "Not a valid integer value"
+msgstr "Valeur entière non valide"
+
+#: venv/Lib/site-packages/wtforms/fields/core.py:705
+msgid "Not a valid decimal value"
+msgstr "Valeur décimale non valide"
+
+#: venv/Lib/site-packages/wtforms/fields/core.py:732
+msgid "Not a valid float value"
+msgstr "Valeur flottante non valide"
+
+#: venv/Lib/site-packages/wtforms/fields/core.py:793
+msgid "Not a valid datetime value"
+msgstr "Valeur de date/heure non valide"
+
+#: venv/Lib/site-packages/wtforms/fields/core.py:810
+msgid "Not a valid date value"
+msgstr "Valeur de date non valide"
+
+#: venv/Lib/site-packages/wtforms/fields/core.py:827
+msgid "Not a valid time value"
+msgstr "Valeur de temps non valide"
