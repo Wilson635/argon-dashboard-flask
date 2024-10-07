@@ -320,9 +320,9 @@ def change_password():
             return render_template('home/settings.html', success=False, segment=segment)
 
         # Check that the new password is long enough
-        if len(new_password) < 8:
-            notify_error('The new password must be at least 8 characters long.')
-            return render_template('home/settings.html', success=False, segment=segment)
+        # if len(new_password) < 8:
+        #     notify_error('The new password must be at least 8 characters long.')
+        #     return render_template('home/settings.html', success=False, segment=segment)
 
         # Hash the new password and update the user
         hashed_password = hash_pass(new_password)  # This returns bytes
@@ -689,6 +689,73 @@ def events():
     scheduled_count = Declaration.query.filter_by(statut='scheduled').count()
     return render_template('home/events.html', declarations=declarations, segment=segment, pending_count=pending_count,
                            canceled_count=canceled_count, scheduled_count=scheduled_count)
+
+
+@blueprint.route('/search_autocomplete', methods=['GET'])
+def search_autocomplete():
+    """
+    Route for searching users, members, and declarations based on input query.
+
+    When a user types in the search box, this route is called with a GET request
+    to retrieve matching results for users, members, or declarations.
+    The query is passed as a parameter 'q'. It renders the 'search_results.html'
+    template with the matched results.
+
+    The results are displayed in a dropdown menu on the frontend.
+    """
+    segment = get_segment(request)  # Detect the current page
+
+    query = request.args.get('q', '')
+
+    # If no query is provided, render the search results page with no results
+    if not query:
+        return render_template('home/search_results.html', results=[], segment=segment)
+
+    # Search in Users, Members, and Declarations tables
+    user_results = Users.query.filter(Users.username.ilike(f'%{query}%')).all()
+    member_results = Members.query.filter(Members.name.ilike(f'%{query}%')).all()
+    declaration_results = Declaration.query.filter(Declaration.declaration_type.ilike(f'%{query}%')).all()
+
+    # Combine results into a single list
+    results = []
+
+    # Append user results
+    if user_results:
+        for user in user_results:
+            results.append({'name': user.username, 'type': 'User', 'url': f'/user/{user.id}'})
+
+    # Append member results
+    if member_results:
+        for member in member_results:
+            results.append({'name': member.name, 'type': 'Member', 'url': f'/member/{member.id}'})
+
+    # Append declaration results
+    if declaration_results:
+        for declaration in declaration_results:
+            results.append({'name': declaration.title, 'type': 'Declaration', 'url': f'/declaration/{declaration.id}'})
+
+    # If no results found, return an empty list
+    if not results:
+        notify_error('No results found for your query.')
+        return render_template('home/search_results.html', results=[], segment=segment)
+
+    # Render the results in the search_results.html template
+    return render_template('home/search_results.html', results=results, segment=segment)
+
+
+def search_users(query):
+    # Replace with actual search logic
+    return Users.query.filter(Users.username.ilike(f'%{query}%')).all()
+
+
+def search_members(query):
+    # Replace with actual search logic
+    return Members.query.filter(Members.name.ilike(f'%{query}%')).all()
+
+
+def search_declarations(query):
+    # Replace with actual search logic
+    return Declaration.query.filter(Declaration.declaration_type.ilike(f'%{query}%')).all()
 
 
 # Helper - Extract the current page name from the request
