@@ -1,7 +1,7 @@
 <!-- Header -->
 <div class="header bg-primary pb-6" style="background-image: url(/static/assets/img/theme/bg1.jpg);">
     <div class="container-fluid">
-        <div class="header-body">
+        <div class="header-body d-flex flex-column">
             <h1 class="text-white d-inline-block mt-3 display-2 text-[150px] font-weight-800">Dashboard</h1>
             <div class="row align-items-center py-4">
                 <div class="col-lg-6 col-7">
@@ -132,12 +132,17 @@
                                 <td>{{ user.role }}</td>
                                 {% if current_user.role == 'dsi' %}
                                     <td>
-                                        <button class="btn btn-warning btn-sm edit-btn d-none"><i
-                                                class="fa fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-danger btn-sm delete-btn d-none"><i
-                                                class="fa fa-trash"></i>
-                                        </button>
+                                        <a href="{{ url_for('home_blueprint.edit_user', id=user.id) }}"
+                                           class="btn btn-warning edit-btn btn-sm"> Edit </a>
+                                        <form action="{{ url_for('home_blueprint.delete_user', id=user.id) }}"
+                                              method="POST"
+                                              style="display:inline;">
+                                            <button type="submit"
+                                                    class="btn btn-danger delete-btn btn-sm"
+                                                    onclick="return confirm('Are you sure you want to delete this user?');">
+                                                Delete
+                                            </button>
+                                        </form>
                                     </td>
                                 {% endif %}
                             </tr>
@@ -205,8 +210,18 @@
         });
     });
 
+    /**
+     * Toggles the visibility of edit and delete buttons based on the state of a checkbox.
+     * @param {HTMLInputElement} checkbox - The checkbox element.
+     */
     function toggleActions(checkbox) {
-        let actionButtons = checkbox.closest('tr').querySelectorAll('.edit-btn, .delete-btn');
+        // Get the table row containing the checkbox
+        let row = checkbox.closest('tr');
+
+        // Get the edit and delete buttons within the row
+        let actionButtons = row.querySelectorAll('.edit-btn, .delete-btn');
+
+        // Toggle the visibility of the buttons based on the checkbox state
         if (checkbox.checked) {
             actionButtons.forEach(btn => btn.classList.remove('d-none'));
         } else {

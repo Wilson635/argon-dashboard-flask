@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} New Account {% endblock title %}
+{% block title %} Edit User {% endblock title %}
 
 {% block content %}
 
@@ -192,13 +192,12 @@
             <div class="header-body d-flex flex-column">
                 <div class="row align-items-center py-4">
                     <div class="col-lg-6 col-7 d-flex flex-lg-column">
-                        <h1 class="display-2 text-[150px] font-weight-800 text-white d-inline-block mb-5">New
-                            Account</h1>
+                        <h1 class="display-2 text-[150px] font-weight-800 text-white d-inline-block mb-5">Edit User</h1>
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                 <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
                                 <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">New Account</li>
+                                <li class="breadcrumb-item active" aria-current="page">Edit User</li>
                             </ol>
                         </nav>
                     </div>
@@ -211,46 +210,47 @@
     <div class="container-fluid mt--6">
 
         <div class="container">
-            <header>Create a new account</header>
+            <header>Edit User</header>
             {% if msg %}
                 <span class="text-danger">{{ msg | safe }}</span>
-
             {% endif %}
-            <form role="form" method="post" action="">
+            <form role="form" method="post" action="{{ url_for('home_blueprint.edit_user', id=user.id) }}">
                 <div class="form first">
                     <div class="details personal">
 
                         <div class="fields">
                             <div class="input-field">
                                 <label>Username</label>
-                                <input type="text" name="username" placeholder="Enter an username" required>
+                                <input type="text" name="username" value="{{ user.username }}"
+                                       placeholder="Enter username" required>
                             </div>
 
                             <div class="input-field">
                                 <label>Email address</label>
-                                <input type="email" name="email" placeholder="Enter an email address" required>
+                                <input type="email" name="email" value="{{ user.email }}"
+                                       placeholder="Enter email address" required>
                             </div>
 
                             <div class="input-field">
-                                <label>Password</label>
-                                <input type="password" name="password" placeholder="Enter a password" required>
+                                <label>Password (leave empty to keep current password)</label>
+                                <input type="password" name="password" placeholder="Enter a new password">
                             </div>
 
                             <div class="input-field">
                                 <label>Role</label>
                                 <select name="role">
-                                    <option disabled selected>Select your role</option>
-                                    <option value="guest">Guest</option>
-                                    <option value="admin">Admin</option>
-                                    {#<option value="rh">RH</option>#}
-                                    <option value="dsi">DSI</option>
+                                    <option value="guest" {% if user.role == 'guest' %}selected{% endif %}>Guest
+                                    </option>
+                                    <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin
+                                    </option>
+                                    <option value="dsi" {% if user.role == 'dsi' %}selected{% endif %}>DSI</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    <button class="nextBtn mb-5" type="submit" name="register">
-                        <span class="btnText">Create an account</span>
+                    <button type="submit" class="nextBtn mb-5">
+                        <span class="btnText">Save Changes</span>
                         <i class="uil uil-navigator"></i>
                     </button>
                 </div>

@@ -277,6 +277,94 @@ def new_account():
         return render_template('home/newUser.html', segment=segment)
 
 
+from flask import flash
+
+
+@blueprint.route('/edit_user/<string:id>', methods=['GET', 'POST'])
+@login_required
+def edit_user(id):
+    """
+    Edit user details based on the user ID.
+
+    Args:
+        id (str): The ID of the user to edit.
+
+    Returns:
+        If the request method is GET, renders the 'home/edit_user.html' template with the user object.
+        If the request method is POST, updates the user details and redirects to the home page.
+
+    Raises:
+        NotFound: If the user with the given ID does not exist.
+    """
+    # Get the user object based on the ID
+    user = Users.query.get_or_404(id)
+
+    # Get the current segment
+    segment = get_segment(request)
+
+    if request.method == 'POST':
+        # Update the user's username and email
+        user.username = request.form['username']
+        user.email = request.form['email']
+
+        # Optionally update the password if provided
+        password = request.form.get('password')
+        if password:
+            user.password = generate_password_hash(password)
+
+        # Update the user's role if provided
+        user.role = request.form.get('role', user.role)
+
+        try:
+            # Commit the changes to the database
+            db.session.commit()
+            notify_success('User updated successfully!')
+            return redirect(url_for('home_blueprint.index'))
+        except Exception as e:
+            # Rollback the changes if an error occurs
+            db.session.rollback()
+            notify_error(f'Error updating user: {str(e)}')
+            return redirect(url_for('home_blueprint.edit_user', id=id))
+
+    # Render the 'home/edit_user.html' template with the user object
+    return render_template('home/edit_user.html', user=user, segment=segment)
+
+
+@blueprint.route('/delete_user/<string:id>', methods=['POST'])
+@login_required
+def delete_user(id):
+    """
+    This route is used to delete a user based on the user ID.
+
+    Args:
+        id (str): The ID of the user to be deleted.
+
+    Returns:
+        redirect: Redirects to the home page after successful deletion.
+
+    Raises:
+        Exception: If there is an error during the deletion process.
+    """
+    # Get the user object based on the provided ID
+    user = Users.query.get_or_404(id)
+
+    try:
+        # Delete the user from the database
+        db.session.delete(user)
+        # Commit the changes to the database
+        db.session.commit()
+        # Notify the user that the deletion was successful
+        notify_success('User deleted successfully!')
+    except Exception as e:
+        # If there is an error during the deletion process, rollback the changes
+        db.session.rollback()
+        # Notify the user about the error
+        notify_error(f'Error deleting user: {str(e)}')
+
+    # Redirect the user to the home page
+    return redirect(url_for('home_blueprint.index'))
+
+
 @blueprint.route('/change-password', methods=['GET', 'POST'])
 @login_required  # Ensure the user is logged in
 def change_password():
