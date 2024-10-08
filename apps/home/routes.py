@@ -149,7 +149,7 @@ def upload_pdf():
     return render_template('home/upload_pdf.html', members=members, segment='upload_pdf')
 
 
-@blueprint.route('/view_pdf/<int:file_id>')
+@blueprint.route('/view_pdf/<string:file_id>')
 @login_required
 def view_pdf(file_id):
     """
@@ -175,7 +175,7 @@ def view_pdf(file_id):
     )
 
 
-@blueprint.route('/download_pdf/<int:file_id>')
+@blueprint.route('/download_pdf/<string:file_id>')
 @login_required
 def download_pdf(file_id):
     """

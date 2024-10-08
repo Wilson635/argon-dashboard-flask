@@ -37,7 +37,8 @@
                 <form method="POST" action="/newDeclaration">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Sender:</label>
-                        <input type="text" name="recipient-name" class="form-control" id="recipient-name" value="{{ current_user.firstName }} {{ current_user.lastName }} ">
+                        <input type="text" name="recipient-name" class="form-control" id="recipient-name"
+                               value="{{ current_user.firstName }} {{ current_user.lastName }} ">
                     </div>
                     <div class="form-group">
                         <label for="type-name" class="col-form-label">Type of declaration:</label>
@@ -50,9 +51,11 @@
                     </div>
                     <div class="form-group">
                         <label for="join-name" id="join-label" class="col-form-label">Join files:</label>
-                        <p id="pdf-preview-title" class="text-black-50 z-4 text-sm"> Click on a file to preview after upload </p>
-                        <input type="file" class="form-control" id="join-name" name="join-name" accept="application/pdf" multiple
-                               onchange="previewFiles(event)" />
+                        <p id="pdf-preview-title" class="text-black-50 z-4 text-sm"> Click on a file to preview after
+                            upload </p>
+                        <input type="file" class="form-control" id="join-name" name="join-name" accept="application/pdf"
+                               multiple
+                               onchange="previewFiles(event)"/>
 
                         <div class="d-flex mt-3">
                             <!-- Container for file list -->
@@ -147,6 +150,9 @@
             }
         }
 
+        /**
+         * Resets the fields in the declaration modal when it is shown.
+         */
         function resetFields() {
             // Get the modal element
             const modal = document.getElementById('declmodal');
