@@ -7,15 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="547deb67-374e-45f1-9c19-e1429dc96920" name="Changes" comment="updates somes files">
-      <change afterPath="$PROJECT_DIR$/apps/static/assets/img/brand/france.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/static/assets/img/brand/united-kingdom.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/babel.cfg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/messages.pot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/translations/en/LC_MESSAGES/messages.mo" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/translations/en/LC_MESSAGES/messages.po" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/translations/fr/LC_MESSAGES/messages.mo" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/translations/fr/LC_MESSAGES/messages.po" afterDir="false" />
+    <list default="true" id="547deb67-374e-45f1-9c19-e1429dc96920" name="Changes" comment="updates somes files and make translation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/templates/includes/navigation.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/includes/navigation.html" afterDir="false" />
     </list>
@@ -202,7 +194,8 @@
       <workItem from="1727968203210" duration="1607000" />
       <workItem from="1728020578599" duration="22664000" />
       <workItem from="1728285564781" duration="9321000" />
-      <workItem from="1728300573723" duration="3104000" />
+      <workItem from="1728300573723" duration="5415000" />
+      <workItem from="1728314745889" duration="5904000" />
     </task>
     <task id="LOCAL-00001" summary="updates">
       <option name="closed" value="true" />
@@ -364,7 +357,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728293934394</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="updates somes files and make translation">
+      <option name="closed" value="true" />
+      <created>1728303768567</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1728303768567</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -388,10 +389,11 @@
     <MESSAGE value="updates files and add declaration model, modify datasource in config.py, add query to push data on database" />
     <MESSAGE value="updates files" />
     <MESSAGE value="updates somes files" />
-    <option name="LAST_COMMIT_MESSAGE" value="updates somes files" />
+    <MESSAGE value="updates somes files and make translation" />
+    <option name="LAST_COMMIT_MESSAGE" value="updates somes files and make translation" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/argon_dashboard_flask_master$argon_dashboard_flask_master.coverage" NAME="argon-dashboard-flask-master Coverage Results" MODIFIED="1715328871665" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/argon_dashboard_flask$argon_dashboard_flask_master.coverage" NAME="argon-dashboard-flask-master Coverage Results" MODIFIED="1728302193915" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/argon_dashboard_flask$argon_dashboard_flask_master.coverage" NAME="argon-dashboard-flask-master Coverage Results" MODIFIED="1728314837262" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

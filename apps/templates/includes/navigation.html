@@ -31,20 +31,24 @@
                         <i class="fas fa-text-height"></i>
                     </a>
                 </li>
-                <!-- Language Selector as Dropdown -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="/static/assets/img/brand/united-kingdom.png" alt="English" style="width: 24px; height: 24px;"> English
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#" id="lang-en-btn">
-                            <img src="/static/assets/img/brand/united-kingdom.png" alt="English" style="width: 24px; height: 24px;"> English
-                        </a>
-                        <a class="dropdown-item" href="#" id="lang-fr-btn">
-                            <img src="/static/assets/img/brand/france.png" alt="Français" style="width: 24px; height: 24px;"> Français
-                        </a>
-                    </div>
-                </li>
+
+{#                <li class="nav-item dropdown">#}
+{#                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"#}
+{#                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                        <img src="/static/assets/img/brand/united-kingdom.png" alt="English"#}
+{#                             style="width: 24px; height: 24px;"> English#}
+{#                    </a>#}
+{#                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">#}
+{#                        <a class="dropdown-item" href="#" id="lang-en-btn">#}
+{#                            <img src="/static/assets/img/brand/united-kingdom.png" alt="English"#}
+{#                                 style="width: 24px; height: 24px;"> English#}
+{#                        </a>#}
+{#                        <a class="dropdown-item" href="#" id="lang-fr-btn">#}
+{#                            <img src="/static/assets/img/brand/france.png" alt="Français"#}
+{#                                 style="width: 24px; height: 24px;"> Français#}
+{#                        </a>#}
+{#                    </div>#}
+{#                </li>#}
                 <li class="nav-item d-xl-none">
                     <!-- Sidenav toggler -->
                     <div class="pr-3 sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin"
@@ -132,12 +136,12 @@
     /**
      * Language switcher to toggle between English and French.
      */
-    document.getElementById('lang-en-btn').addEventListener('click', function() {
+    document.getElementById('lang-en-btn').addEventListener('click', function () {
         // Your logic to switch to English
         alert('Switched to English');
     });
 
-    document.getElementById('lang-fr-btn').addEventListener('click', function() {
+    document.getElementById('lang-fr-btn').addEventListener('click', function () {
         // Your logic to switch to French
         alert('Passé au Français');
     });
