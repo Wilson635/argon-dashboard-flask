@@ -214,52 +214,119 @@ def download_pdf(file_id):
 @login_required
 def export_user_excel():
     """
-    This route generates an Excel file containing user, member, and event data,
+    This route generates an Excel file containing user data
     and sends it for download.
 
     Returns:
         A downloadable Excel file containing user data.
     """
-    # Retrieve data from the database
+    # Retrieve user data from the database
     users = Users.query.all()
-    # members = Members.query.all()
-    # declarations = Declaration.query.all()
 
-    # Create DataFrames from the data
+    # Create DataFrames from the user data
     user_data = [{
         "Username": user.username,
         "Email": user.email,
         "Role": user.role
     } for user in users]
 
-    # member_data = [{
-    #     "Member Name": member.name,
-    #     "Member First Name": member.firstName,
-    #     "Joined Date": member.dateBirth.strftime("%Y-%m-%d")
-    # } for member in members]
-
-    # declaration_data = [{
-    #     "Declaration Type": declaration.declaration_type,
-    #     "Text": declaration.declaration_text,
-    #     "Status": declaration.statut,
-    #     "Timestamp": declaration.timestamp.strftime("%Y-%m-%d %H:%M:%S")
-    # } for declaration in declarations]
-
     df_users = pd.DataFrame(user_data)
-    # df_members = pd.DataFrame(member_data)
-    # df_declarations = pd.DataFrame(declaration_data)
 
     # Create a Pandas Excel writer using an in-memory buffer
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        # Write the user data to the Excel file
         df_users.to_excel(writer, sheet_name='Users', index=False)
-        # df_members.to_excel(writer, sheet_name='Members', index=False)
-        # df_declarations.to_excel(writer, sheet_name='Declarations', index=False)
 
+    # Reset the buffer position to the beginning
     output.seek(0)
 
     # Send the Excel file as a downloadable attachment
     return send_file(output, as_attachment=True, download_name="usersList.xlsx",
+                     mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+
+@blueprint.route('/export_member_excel')
+@login_required
+def export_member_excel():
+    """
+    This route generates an Excel file containing member data along with their related entities
+    (children, parents, partners, and emergency contacts) and sends it for download.
+
+    Returns:
+        A downloadable Excel file containing member data, children, parents, partners, and emergency contacts.
+    """
+    # Retrieve data from the database
+    members = Members.query.all()
+
+    # Create a dictionary to map member IDs to their full names
+    member_name_map = {member.idMember: f"{member.name} {member.firstName}" for member in members}
+
+    # Create DataFrames for each entity
+    member_data = [{
+        "Member Name": member.name,
+        "Member First Name": member.firstName,
+        "Member Birthday": member.dateBirth.strftime("%Y-%m-%d"),
+        "Member Local": member.local,
+        "Member Occupation": member.occupation,
+        "Member Family Situation": member.familySituation
+    } for member in members]
+
+    # Retrieve children, parents, partners, and emergency contacts for each member
+    children_data = [{
+        "Member Name": member_name_map.get(child.member_id),
+        "Child Name": child.name,
+        "Child First Name": child.firstName,
+        "Child Birthday": child.dateBirth.strftime("%Y-%m-%d")
+    } for child in Children.query.all()]
+
+    parents_data = [{
+        "Member Name": member_name_map.get(parent.member_id),
+        "Parent Name": parent.name,
+        "Parent First Name": parent.firstName,
+        "Parent Mobile Number": parent.mobileNumber
+    } for parent in Parents.query.all()]
+
+    partners_data = [{
+        "Member Name": member_name_map.get(partner.member_id),
+        "Partner Name": partner.name,
+        "Partner First Name": partner.firstName,
+        "Partner Birthday": partner.dateBirth.strftime("%Y-%m-%d")
+    } for partner in Partners.query.all()]
+
+    emergency_contacts_data = [{
+        "Member Name": member_name_map.get(contact.member_id),
+        "Emergency Contact Name": contact.name,
+        "Emergency Contact First Name": contact.firstName,
+        "Emergency Contact Address": contact.address,
+        "Emergency Contact Mobile Number": contact.mobileNumber,
+        "Emergency Contact Quality": contact.quality,
+        "Emergency Contact Others": contact.others
+    } for contact in EmergencyContact.query.all()]
+
+    # Create DataFrames using pandas
+    df_members = pd.DataFrame(member_data)
+    df_children = pd.DataFrame(children_data)
+    df_parents = pd.DataFrame(parents_data)
+    df_partners = pd.DataFrame(partners_data)
+    df_emergency_contacts = pd.DataFrame(emergency_contacts_data)
+
+    # Create an in-memory buffer for the Excel file
+    output = io.BytesIO()
+
+    # Write each DataFrame to a separate sheet in the Excel file
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df_members.to_excel(writer, sheet_name='Members', index=False)
+        df_children.to_excel(writer, sheet_name='Children', index=False)
+        df_parents.to_excel(writer, sheet_name='Parents', index=False)
+        df_partners.to_excel(writer, sheet_name='Partners', index=False)
+        df_emergency_contacts.to_excel(writer, sheet_name='Emergency Contacts', index=False)
+
+    # Move the pointer back to the beginning of the stream
+    output.seek(0)
+
+    # Send the Excel file as a downloadable attachment
+    return send_file(output, as_attachment=True, download_name="members_and_related_data.xlsx",
                      mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 
@@ -268,6 +335,13 @@ def export_user_excel():
 def show_members():
     members = Members.query.all()  # Get all members
     return render_template('home/members.html', members=members, segment='members')
+
+
+@blueprint.route('/settings')
+@login_required
+def settings():
+    segment = get_segment(request)
+    return render_template('home/settings.html', segment=segment)
 
 
 @blueprint.route('/newUser', methods=['GET', 'POST'])
@@ -447,17 +521,17 @@ def change_password():
         # Check if all fields are filled
         if not old_password or not new_password or not confirm_password:
             notify_error('Please fill in all fields.')
-            return render_template('home/settings.html', success=False, segment=segment)
+            return redirect(url_for('home_blueprint.settings'))
 
         # Verify that the old password is correct
         if not verify_pass(old_password, current_user.password):
             notify_error('The old password is incorrect.')
-            return render_template('home/settings.html', success=False, segment=segment)
+            return redirect(url_for('home_blueprint.settings'))
 
         # Check if the new password and confirmation match
         if new_password != confirm_password:
             notify_error('The new password and confirmation do not match.')
-            return render_template('home/settings.html', success=False, segment=segment)
+            return redirect(url_for('home_blueprint.settings'))
 
         # Check that the new password is long enough
         # if len(new_password) < 8:
@@ -472,14 +546,14 @@ def change_password():
         try:
             db.session.commit()
             notify_success('Password changed successfully.')
-            return render_template('home/settings.html', success=True, segment=segment)
+            return redirect(url_for('home_blueprint.settings'))
         except Exception as e:
             db.session.rollback()  # Rollback in case of an error
             notify_error('Error updating the password.')
-            return render_template('home/settings.html', success=False, segment=segment)
+            return redirect(url_for('home_blueprint.settings'))
     else:
         # Display the form if the method is GET
-        return render_template('home/settings.html', segment=segment)
+        return redirect(url_for('home_blueprint.settings'))
 
 
 @blueprint.route('/update_profile', methods=['GET', 'POST'])
@@ -524,7 +598,7 @@ def update_profile():
         # Notify the user that the profile was updated successfully
         notify_success('Profile updated successfully')
 
-    return render_template('home/settings.html', segment=segment)
+    return redirect(url_for('home_blueprint.settings'))
 
 
 @blueprint.route('/newMember', methods=['GET', 'POST'])
@@ -628,7 +702,7 @@ def add_member():
         return render_template('home/newMember.html',
                                segment=segment)  # Redirect to another page after adding the member
 
-    return render_template('home/newMember.html', segment=segment)  # Replace with your template
+    return redirect(url_for('home_blueprint.show_members'))  # Replace with your template
 
 
 @blueprint.route('/newDeclaration', methods=['GET', 'POST'])
@@ -699,9 +773,9 @@ def add_declaration():
         # Notify user of successful addition
         notify_success('Déclaration ajoutée avec succès !')
 
-        return render_template('home/events.html', segment=segment)
+        return redirect(url_for('home_blueprint.events'))
 
-    return render_template('home/events.html', segment=segment)
+    return redirect(url_for('home_blueprint.events'))
 
 
 @blueprint.route('/reject/<string:id>', methods=['GET', 'POST'])
@@ -730,7 +804,7 @@ def reject_declaration(id):
 
         if not reason:
             notify_error("Veuillez fournir une raison pour le rejet.")
-            return render_template("home/events.html", segment=get_segment(request))
+            return redirect(url_for('home_blueprint.events'))
 
         # Update the status of the declaration and save the reason
         declaration.statut = 'rejected'
@@ -740,10 +814,10 @@ def reject_declaration(id):
         db.session.commit()
 
         notify_success('Déclaration rejetée avec succès.')
-        return render_template("home/events.html", segment=get_segment(request))
+        return redirect(url_for('home_blueprint.events'))
 
     # In case of GET request, render the form page or redirect
-    return render_template('reject_form.html', declaration_id=id)
+    return redirect(url_for('home_blueprint.events'))
 
 
 @blueprint.route('/schedule/<string:id>', methods=['POST'])
@@ -763,7 +837,7 @@ def schedule_declaration(id):
 
     if not declaration:
         notify_error("Déclaration non trouvée.")
-        return render_template("home/events.html", segment=get_segment(request))
+        return redirect(url_for('home_blueprint.events'))
 
     # Update the status of the declaration to 'scheduled'
     declaration.statut = 'scheduled'
@@ -772,7 +846,7 @@ def schedule_declaration(id):
     db.session.commit()
 
     notify_success('Déclaration programmée avec succès.')
-    return render_template("home/events.html", segment=get_segment(request))
+    return redirect(url_for('home_blueprint.events'))
 
 
 def notify_error(message):
