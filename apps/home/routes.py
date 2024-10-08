@@ -2,6 +2,7 @@
 from datetime import datetime
 
 import httpagentparser
+import pandas as pd
 from flask import render_template, request, redirect, url_for, send_file, abort, session
 from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
@@ -142,7 +143,8 @@ def upload_pdf():
             new_file = PDFFile(filename=file.filename, data=file.read(), member_id=member_id)
             db.session.add(new_file)
             db.session.commit()
-            return notify_success('File uploaded successfully!')
+            notify_success('File uploaded successfully!')
+            return redirect(url_for('home_blueprint.show_members'))
     # If the request method is GET, retrieve all members from the database and render the 'home/upload_pdf.html'
     # template
     members = Members.query.all()
@@ -206,6 +208,59 @@ def download_pdf(file_id):
         attachment_filename=file_data.filename,
         as_attachment=True
     )
+
+
+@blueprint.route('/export_user_excel')
+@login_required
+def export_user_excel():
+    """
+    This route generates an Excel file containing user, member, and event data,
+    and sends it for download.
+
+    Returns:
+        A downloadable Excel file containing user data.
+    """
+    # Retrieve data from the database
+    users = Users.query.all()
+    # members = Members.query.all()
+    # declarations = Declaration.query.all()
+
+    # Create DataFrames from the data
+    user_data = [{
+        "Username": user.username,
+        "Email": user.email,
+        "Role": user.role
+    } for user in users]
+
+    # member_data = [{
+    #     "Member Name": member.name,
+    #     "Member First Name": member.firstName,
+    #     "Joined Date": member.dateBirth.strftime("%Y-%m-%d")
+    # } for member in members]
+
+    # declaration_data = [{
+    #     "Declaration Type": declaration.declaration_type,
+    #     "Text": declaration.declaration_text,
+    #     "Status": declaration.statut,
+    #     "Timestamp": declaration.timestamp.strftime("%Y-%m-%d %H:%M:%S")
+    # } for declaration in declarations]
+
+    df_users = pd.DataFrame(user_data)
+    # df_members = pd.DataFrame(member_data)
+    # df_declarations = pd.DataFrame(declaration_data)
+
+    # Create a Pandas Excel writer using an in-memory buffer
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df_users.to_excel(writer, sheet_name='Users', index=False)
+        # df_members.to_excel(writer, sheet_name='Members', index=False)
+        # df_declarations.to_excel(writer, sheet_name='Declarations', index=False)
+
+    output.seek(0)
+
+    # Send the Excel file as a downloadable attachment
+    return send_file(output, as_attachment=True, download_name="usersList.xlsx",
+                     mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 
 @blueprint.route('/members')
@@ -275,9 +330,6 @@ def new_account():
                                success=True, segment=segment)
     else:
         return render_template('home/newUser.html', segment=segment)
-
-
-from flask import flash
 
 
 @blueprint.route('/edit_user/<string:id>', methods=['GET', 'POST'])

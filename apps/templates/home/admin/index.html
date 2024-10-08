@@ -102,6 +102,10 @@
                         </div>
                         <div class="col text-right">
                             <a href="#" class="btn btn-primary"><i class="fa fa-eye"></i> | See All</a>
+                            {% if current_user.role == 'dsi' %}
+                                <a href="{{ url_for('home_blueprint.export_user_excel') }}" class="btn btn-danger" data-toggle="tooltip"
+                                   title="Export users data"><i class="fa fa-upload"></i></a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

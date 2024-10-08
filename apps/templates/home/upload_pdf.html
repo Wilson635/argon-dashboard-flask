@@ -216,7 +216,7 @@
                 <span class="text-danger">{{ msg | safe }}</span>
 
             {% endif %}
-            <form role="form" action="{{ url_for('home_blueprint.upload_pdf') }}" method="post"
+            <form role="form" action="/upload_pdf" method="post"
                   enctype="multipart/form-data">
                 <div class="form first">
                     <div class="details personal">
