@@ -7,15 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="547deb67-374e-45f1-9c19-e1429dc96920" name="Changes" comment="updated some files">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/home/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/home/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/templates/home/admin/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/home/admin/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/templates/home/events.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/home/events.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/templates/home/members.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/home/members.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/templates/home/upload_pdf.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/home/upload_pdf.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/templates/includes/navigation.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/includes/navigation.html" afterDir="false" />
-    </list>
+    <list default="true" id="547deb67-374e-45f1-9c19-e1429dc96920" name="Changes" comment="updated some files" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -200,7 +192,7 @@
       <workItem from="1728020578599" duration="22664000" />
       <workItem from="1728285564781" duration="9321000" />
       <workItem from="1728300573723" duration="5415000" />
-      <workItem from="1728314745889" duration="19402000" />
+      <workItem from="1728314745889" duration="19709000" />
     </task>
     <task id="LOCAL-00001" summary="updates">
       <option name="closed" value="true" />
@@ -394,7 +386,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728383738637</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="updated some files">
+      <option name="closed" value="true" />
+      <created>1728390704619</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1728390704619</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
