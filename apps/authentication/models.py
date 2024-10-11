@@ -144,13 +144,12 @@ class PDFFile(db.Model):
 
 
 class Declaration(db.Model):
-    __tablename__ = 'Declarations'
-
+    __tablename__ = 'declarations'
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = db.Column(db.String(36), db.ForeignKey('Users.id'), nullable=False)
     member_id = db.Column(db.String(36), db.ForeignKey('Members.idMember'), nullable=False)
-    declaration_type = db.Column(db.String(20), nullable=False)
-    declaration_text = db.Column(db.Text)
+    declaration_type = db.Column(db.String(20), nullable=False)  # e.g., "death", "birth", "marriage", "divorce"
+    declaration_text = db.Column(db.Text, nullable=True)
     statut = db.Column(db.String(20), nullable=False, default='pending')
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -158,8 +157,62 @@ class Declaration(db.Model):
     member = db.relationship('Members', backref=db.backref('declarations', lazy=True))
     files = db.relationship('DeclarationFile', backref=db.backref('declarations', lazy=True))
 
+    __mapper_args__ = {
+        'polymorphic_identity': 'declaration',
+        'polymorphic_on': declaration_type
+    }
+
     def __repr__(self):
         return f'<Declaration {self.id}>'
+
+
+class DeathDeclaration(Declaration):
+    __tablename__ = 'death_declarations'
+    id = db.Column(db.String(36), db.ForeignKey('declarations.id'), primary_key=True)
+    loss_type = db.Column(db.String(20), nullable=True)  # e.g., "father", "mother", "child", "spouse"
+    deceased_name = db.Column(db.String(64), nullable=True)
+    deceased_first_name = db.Column(db.String(64), nullable=True)
+    date_of_death = db.Column(db.DateTime, nullable=True)
+    cause_of_death = db.Column(db.Text, nullable=True)
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'death'
+    }
+
+    def __repr__(self):
+        return f'<DeathDeclaration {self.id}>'
+
+
+class BirthDeclaration(Declaration):
+    __tablename__ = 'birth_declarations'
+    id = db.Column(db.String(36), db.ForeignKey('declarations.id'), primary_key=True)
+    child_name = db.Column(db.String(64), nullable=True)
+    child_first_name = db.Column(db.String(64), nullable=True)
+    birth_date = db.Column(db.DateTime, nullable=True)
+    birth_place = db.Column(db.String(128), nullable=True)
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'birth'
+    }
+
+    def __repr__(self):
+        return f'<BirthDeclaration {self.id}>'
+
+
+class WeddingDeclaration(Declaration):
+    __tablename__ = 'wedding_declarations'
+    id = db.Column(db.String(36), db.ForeignKey('declarations.id'), primary_key=True)
+    spouse_name = db.Column(db.String(64), nullable=True)
+    spouse_first_name = db.Column(db.String(64), nullable=True)
+    wedding_date = db.Column(db.DateTime, nullable=True)
+    wedding_place = db.Column(db.String(128), nullable=True)
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'wedding'
+    }
+
+    def __repr__(self):
+        return f'<WeddingDeclaration {self.id}>'
 
 
 class DeclarationFile(db.Model):
