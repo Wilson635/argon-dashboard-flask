@@ -259,53 +259,105 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">New Déclaration</h5>
+                <h5 class="modal-title" id="exampleModalLabel">New Declaration</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
             <div class="modal-body">
                 <form method="POST" action="/newDeclaration">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Sender:</label>
                         <input type="text" name="recipient-name" class="form-control" id="recipient-name"
-                               value="{{ current_user.firstName }} {{ current_user.lastName }} ">
+                               value="{{ current_user.firstName }} {{ current_user.lastName }}">
                     </div>
                     <div class="form-group">
                         <label for="type-name" class="col-form-label">Type of declaration:</label>
-                        <select class="custom-select" id="type-name" name="type-name" onchange="updateLabel()">
+                        <select class="custom-select" id="type-name" name="type-name" onchange="updateFields()">
                             <option selected>Open this select menu</option>
                             <option value="wedding">Wedding</option>
                             <option value="birth">Birth</option>
                             <option value="death">Death</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="join-name" id="join-label" class="col-form-label">Join files:</label>
-                        <p id="pdf-preview-title" class="text-black-50 z-4 text-sm"> Click on a file to preview after
-                            upload </p>
-                        <input type="file" class="form-control" id="join-name" name="join-name" accept="application/pdf"
-                               multiple
-                               onchange="previewFiles(event)"/>
 
-                        <div class="d-flex mt-3">
-                            <!-- Container for file list -->
-                            <div id="file-list" class="mr-3" style="width: 30%; max-height: 500px; overflow-y: auto;">
-                                <!-- File names will be inserted here -->
+                    <!-- Additional fields for wedding -->
+                    <div class="form-group" id="wedding-fields" style="display: none;">
+                        <label for="wedding-location" class="col-form-label">Wedding Location:</label>
+                        <input type="text" name="wedding-location" class="form-control" id="wedding-location">
+                        <label for="wedding-date" class="col-form-label">Wedding Date:</label>
+                        <input type="date" name="wedding-date" class="form-control" id="wedding-date">
+                    </div>
+
+                    <!-- Additional fields for birth -->
+                    <div class="form-group" id="birth-fields" style="display: none;">
+                        <label for="child-name" class="col-form-label">Child's Name:</label>
+                        <input type="text" name="child-name" class="form-control" id="child-name">
+                        <label for="birth-date" class="col-form-label">Birth Date:</label>
+                        <input type="date" name="birth-date" class="form-control" id="birth-date">
+                    </div>
+
+                    <!-- Additional fields for death -->
+                    <div class="form-group" id="death-fields" style="display: none;">
+                        <label for="lost-person" class="col-form-label">Who did you lose?</label>
+                        <select class="custom-select" id="lost-person" name="lost-person"
+                                onchange="updateLostPersonFields()">
+                            <option selected>Select one</option>
+                            <option value="father">Father</option>
+                            <option value="mother">Mother</option>
+                            <option value="child">Child</option>
+                            <option value="partner">Partner</option>
+                        </select>
+
+                        <!-- Fields for the details of the lost person -->
+                        <div id="lost-person-details" style="display: none;">
+                            <div id="father-details" style="display: none;">
+                                <label for="father-name" class="col-form-label">Father's Name:</label>
+                                <input type="text" name="father-name" class="form-control" id="father-name">
+                                <label for="father-death-date" class="col-form-label">Date of Death:</label>
+                                <input type="date" name="father-death-date" class="form-control" id="father-death-date">
+                                <label for="father-cause" class="col-form-label">Cause:</label>
+                                <input type="text" name="father-cause" class="form-control" id="father-cause">
                             </div>
 
-                            <!-- Container for PDF preview -->
-                            <div id="pdf-preview-container"
-                                 style="width: 70%; border: 1px solid #ddd; height: 500px; display: none;">
-                                <!-- PDF preview will be shown here -->
-                                <embed id="pdf-preview" src="" type="application/pdf" width="100%" height="100%"/>
+                            <div id="mother-details" style="display: none;">
+                                <label for="mother-name" class="col-form-label">Mother's Name:</label>
+                                <input type="text" name="mother-name" class="form-control" id="mother-name">
+                                <label for="mother-death-date" class="col-form-label">Date of Death:</label>
+                                <input type="date" name="mother-death-date" class="form-control" id="mother-death-date">
+                                <label for="mother-cause" class="col-form-label">Cause:</label>
+                                <input type="text" name="mother-cause" class="form-control" id="mother-cause">
+                            </div>
+
+                            <div id="child-details" style="display: none;">
+                                <label for="child-name" class="col-form-label">Child's Name:</label>
+                                <input type="text" name="child-name" class="form-control" id="child-name-death">
+                                <label for="child-death-date" class="col-form-label">Date of Death:</label>
+                                <input type="date" name="child-death-date" class="form-control" id="child-death-date">
+                                <label for="child-cause" class="col-form-label">Cause:</label>
+                                <input type="text" name="child-cause" class="form-control" id="child-cause">
+                            </div>
+
+                            <div id="partner-details" style="display: none;">
+                                <label for="partner-name" class="col-form-label">Partner's Name:</label>
+                                <input type="text" name="partner-name" class="form-control" id="partner-name">
+                                <label for="partner-death-date" class="col-form-label">Date of Death:</label>
+                                <input type="date" name="partner-death-date" class="form-control"
+                                       id="partner-death-date">
+                                <label for="partner-cause" class="col-form-label">Cause:</label>
+                                <input type="text" name="partner-cause" class="form-control" id="partner-cause">
                             </div>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label for="join-name" class="col-form-label">Join files:</label>
+                        <input type="file" class="form-control" id="join-name" name="join-name" accept="application/pdf"
+                               multiple onchange="previewFiles(event)">
+                    </div>
+
                     <div class="modal-footer">
-                        <button type="reset" id="reset-button" class="btn btn-secondary" data-dismiss="modal">Close
-                        </button>
+                        <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Send message</button>
                     </div>
                 </form>
@@ -313,7 +365,6 @@
         </div>
     </div>
 </div>
-
 
 {% block javascripts %}
     <script>
@@ -424,6 +475,71 @@
 
         const resetButton = document.querySelector('#reset-button');
         resetButton.addEventListener('click', resetFields);
+
+        /**
+         * Updates the display of certain fields based on the selected type.
+         * Hides the 'lost-person-details' field for 'death' type.
+         */
+        function updateFields() {
+            // Get the selected type from the 'type-name' input
+            const type = document.getElementById('type-name').value;
+
+            // Update the display of 'wedding-fields' based on the selected type
+            document.getElementById('wedding-fields').style.display = type === 'wedding' ? 'block' : 'none';
+
+            // Update the display of 'birth-fields' based on the selected type
+            document.getElementById('birth-fields').style.display = type === 'birth' ? 'block' : 'none';
+
+            // Update the display of 'death-fields' based on the selected type
+            document.getElementById('death-fields').style.display = type === 'death' ? 'block' : 'none';
+
+            // Hide the 'lost-person-details' field for 'death' type
+            document.getElementById('lost-person-details').style.display = 'none';
+        }
+
+        /**
+         * Updates the display of the 'lost-person-details' field based on the selected value in the 'lost-person' input.
+         * Hides all other lost person details.
+         */
+        function updateLostPersonFields() {
+            // Get the selected value from the 'lost-person' input
+            const lostPerson = document.getElementById('lost-person').value;
+
+            // Set the display of the 'lost-person-details' field based on the selected value
+            document.getElementById('lost-person-details').style.display = lostPerson ? 'block' : 'none';
+
+            // Hide all other lost person details
+            hideAllLostPersonDetails();
+
+            // Show the details of the selected lost person
+            if (lostPerson === 'father') {
+                document.getElementById('father-details').style.display = 'block';
+            } else if (lostPerson === 'mother') {
+                document.getElementById('mother-details').style.display = 'block';
+            } else if (lostPerson === 'child') {
+                document.getElementById('child-details').style.display = 'block';
+            } else if (lostPerson === 'partner') {
+                document.getElementById('partner-details').style.display = 'block';
+            }
+        }
+
+        /**
+         * Hides all the lost person details.
+         * This function sets the display property of the elements with the given IDs to 'none'.
+         */
+        function hideAllLostPersonDetails() {
+            // Hide the father details
+            document.getElementById('father-details').style.display = 'none';
+
+            // Hide the mother details
+            document.getElementById('mother-details').style.display = 'none';
+
+            // Hide the child details
+            document.getElementById('child-details').style.display = 'none';
+
+            // Hide the partner details
+            document.getElementById('partner-details').style.display = 'none';
+        }
     </script>
 {% endblock javascripts %}
 
