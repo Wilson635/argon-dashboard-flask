@@ -156,7 +156,7 @@ class Declaration(db.Model):
 
     user = db.relationship('Users', backref=db.backref('declarations', lazy=True))
     member = db.relationship('Members', backref=db.backref('declarations', lazy=True))
-    files = db.relationship('DeclarationFile', backref='declaration', lazy=True)
+    files = db.relationship('DeclarationFile', backref=db.backref('declarations', lazy=True))
 
     def __repr__(self):
         return f'<Declaration {self.id}>'

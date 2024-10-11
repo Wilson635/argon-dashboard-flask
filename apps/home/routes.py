@@ -699,10 +699,10 @@ def add_member():
         # Commit all changes
         db.session.commit()
         notify_success('Member added successfully!')
-        return render_template('home/newMember.html',
-                               segment=segment)  # Redirect to another page after adding the member
+        return redirect(url_for('home_blueprint.show_members'))  # Redirect to another page after adding the member
 
-    return redirect(url_for('home_blueprint.show_members'))  # Replace with your template
+    return render_template('home/newMember.html',
+                           segment=segment)  # Replace with your template
 
 
 @blueprint.route('/newDeclaration', methods=['GET', 'POST'])

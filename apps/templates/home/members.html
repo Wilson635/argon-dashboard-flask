@@ -19,7 +19,8 @@
                     </div>
                     <div class="col-lg-6 col-5 text-right">
                         <a href="/newMember" class="btn btn-info"><i class="fa fa-plus-circle"></i> | New</a>
-                        <a href="{{ url_for('home_blueprint.export_member_excel') }}" class="btn btn-danger"><i class="fa fa-upload"></i> | Export</a>
+                        <a href="{{ url_for('home_blueprint.export_member_excel') }}" class="btn btn-danger"><i
+                                class="fa fa-upload"></i> | Export</a>
                         <a href="/upload_pdf" class="btn btn-success"><i class="fa fa-download"></i> | Import</a>
                         <a href="#" class="btn btn-dark"><i class="fa fa-filter"></i> | Filter</a>
                     </div>
@@ -59,25 +60,22 @@
                                     <td>{{ loop.index }}</td>
                                     <td>{{ member.name }}</td>
                                     <td>{{ member.firstName }}</td>
-                                    <td>{{ member.dateBirth.strftime('%Y-%m-%d') }}</td>
+                                    <td>{{ member.dateBirth.strftime('%d-%m-%Y') }}</td>
                                     <td>{{ member.local }}</td>
                                     <td>{{ member.familySituation }}</td>
                                     <td>{{ member.occupation }}</td>
                                     <td>
-                                        <ul>
-                                            {% for pdf in member.pdf_files %}
-                                                <li>
-                                                    {{ pdf.filename }}
-                                                    <a href="{{ url_for('home_blueprint.view_pdf', file_id=pdf.id) }}"
-                                                       data-toggle="tooltip" data-original-title="View"> <i
-                                                            class="fa fa-eye"></i> </a>
-                                                    |
-                                                    <a href="{{ url_for('home_blueprint.download_pdf', file_id=pdf.id) }}"
-                                                       data-toggle="tooltip" data-original-title="Download"> <i
-                                                            class="fa fa-download"></i> </a>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
+                                        {% for pdf in member.pdf_files %}
+                                            {{ pdf.filename }}
+                                            <a href="{{ url_for('home_blueprint.view_pdf', file_id=pdf.id) }}"
+                                               data-toggle="tooltip" data-original-title="View"> <i
+                                                    class="fa fa-eye"></i> </a>
+                                            |
+                                            <a href="{{ url_for('home_blueprint.download_pdf', file_id=pdf.id) }}"
+                                               data-toggle="tooltip" data-original-title="Download"> <i
+                                                    class="fa fa-download"></i> </a>
+                                            <br>
+                                        {% endfor %}
                                     </td>
                                     {#                                    <td>#}
                                     {#                                        <a href="{{ url_for('home_blueprint.edit_member', member_id=member.id) }}"#}

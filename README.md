@@ -1,4 +1,4 @@
-# Argon Dashboard Flask
+# Mutual Dashboard Flask
 <br />
 
 > Free product - **Flask Dashboard** starter project - Features:
