@@ -2,7 +2,7 @@
 """
 Copyright (c) 2024 - present Wilson635
 """
-from datetime import datetime
+from datetime import datetime, timezone
 
 from flask_login import UserMixin
 import uuid
@@ -148,15 +148,17 @@ class Declaration(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = db.Column(db.String(36), db.ForeignKey('Users.id'), nullable=False)
     member_id = db.Column(db.String(36), db.ForeignKey('Members.idMember'), nullable=False)
-    declaration_type = db.Column(db.String(20), nullable=False)  # e.g., "death", "birth", "marriage", "divorce"
+    declaration_type = db.Column(db.String(20), nullable=False)  # Détermine le type spécifique de déclaration
     declaration_text = db.Column(db.Text, nullable=True)
-    statut = db.Column(db.String(20), nullable=False, default='pending')
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    statut = db.Column(db.String(20), nullable=False, default='pending')  # Statut par défaut : "pending"
+    timestamp = db.Column(db.DateTime, default=datetime.now(timezone.utc))
 
+    # Relations
     user = db.relationship('Users', backref=db.backref('declarations', lazy=True))
     member = db.relationship('Members', backref=db.backref('declarations', lazy=True))
     files = db.relationship('DeclarationFile', backref=db.backref('declarations', lazy=True))
 
+    # Définir l'héritage avec le champ polymorphic_on
     __mapper_args__ = {
         'polymorphic_identity': 'declaration',
         'polymorphic_on': declaration_type
@@ -166,10 +168,11 @@ class Declaration(db.Model):
         return f'<Declaration {self.id}>'
 
 
+# Déclaration pour décès
 class DeathDeclaration(Declaration):
     __tablename__ = 'death_declarations'
     id = db.Column(db.String(36), db.ForeignKey('declarations.id'), primary_key=True)
-    loss_type = db.Column(db.String(20), nullable=True)  # e.g., "father", "mother", "child", "spouse"
+    loss_type = db.Column(db.String(20), nullable=True)  # Type de perte (ex : "father", "spouse")
     deceased_name = db.Column(db.String(64), nullable=True)
     deceased_first_name = db.Column(db.String(64), nullable=True)
     date_of_death = db.Column(db.DateTime, nullable=True)
@@ -183,6 +186,7 @@ class DeathDeclaration(Declaration):
         return f'<DeathDeclaration {self.id}>'
 
 
+# Déclaration pour naissance
 class BirthDeclaration(Declaration):
     __tablename__ = 'birth_declarations'
     id = db.Column(db.String(36), db.ForeignKey('declarations.id'), primary_key=True)
@@ -199,6 +203,7 @@ class BirthDeclaration(Declaration):
         return f'<BirthDeclaration {self.id}>'
 
 
+# Déclaration pour mariage
 class WeddingDeclaration(Declaration):
     __tablename__ = 'wedding_declarations'
     id = db.Column(db.String(36), db.ForeignKey('declarations.id'), primary_key=True)
@@ -215,11 +220,12 @@ class WeddingDeclaration(Declaration):
         return f'<WeddingDeclaration {self.id}>'
 
 
+# Fichier associé à une déclaration
 class DeclarationFile(db.Model):
     __tablename__ = 'DeclarationFiles'
 
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    declaration_id = db.Column(db.String(36), db.ForeignKey('Declarations.id'), nullable=False)
+    declaration_id = db.Column(db.String(36), db.ForeignKey('declarations.id'), nullable=False)
     file_name = db.Column(db.String(255), nullable=False)
     file_data = db.Column(db.LargeBinary)
 
