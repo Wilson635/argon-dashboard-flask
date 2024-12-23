@@ -1,6 +1,6 @@
 # Import necessary modules and models
 import pandas as pd
-from flask import render_template, request, redirect, url_for, send_file, abort
+from flask import render_template, request, redirect, url_for, send_file, abort, current_app
 from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
 from toastify import notify
@@ -712,145 +712,122 @@ def add_declaration():
     segment = get_segment(request)
 
     if request.method == 'POST':
-        # Extract recipient name, declaration type, and files from the request
-        recipient_name = request.form.get('recipient-name')
-        declaration_type = request.form.get('type-name')
-        files = request.files.getlist('join-name')
+        try:
+            # Récupérer les données du formulaire
+            recipient_name = request.form.get('recipient-name')
+            declaration_type = request.form.get('type-name')
+            files = request.files.getlist('join-name')
+            lost_person = request.form.get('lost-person')  # Par exemple: 'father', 'mother', 'child', 'spouse'
 
-        lost_person = request.form.get('lost-person')  # E.g., 'father', 'mother', 'child', 'spouse'
-        # Get deceased details from the form
-        deceased_name = request.form.get(f'{lost_person}-name')
-        deceased_first_name = request.form.get(f'{lost_person}-first-name')
-        death_date_str = request.form.get(f'{lost_person}-death-date')
-        death_cause = request.form.get(f'{lost_person}-cause')
-        # For birth declarations, just capture the child's name and first name
-        child_name = request.form.get('child-name')
-        child_first_name = request.form.get('child-first-name')
-        child_birth_date_str = request.form.get('birth-date')
-        wedding_date_str = request.form.get('wedding-date')
+            # Détails du défunt
+            deceased_name = request.form.get(f'{lost_person}-name')
+            deceased_first_name = request.form.get(f'{lost_person}-first-name')
+            death_date_str = request.form.get(f'{lost_person}-death-date')
+            death_cause = request.form.get(f'{lost_person}-cause')
 
-        # Split recipient name into first and last name
-        if recipient_name:
-            names = recipient_name.split()
-            user_first_name = names[0]
-            member_first_name = names[0]
-            user_last_name = names[1]
-            member_name = names[1]
-        else:
-            notify_error("Le nom du destinataire est requis.")
-            return redirect(url_for('home_blueprint.events'))
+            # Détails de naissance
+            child_name = request.form.get('child-name')
+            child_first_name = request.form.get('child-first-name')
+            child_birth_date_str = request.form.get('birth-date')
 
-        # Find user and member based on names
-        user = Users.query.filter_by(firstName=user_first_name, lastName=user_last_name).first()
-        member = Members.query.filter_by(name=member_name, firstName=member_first_name).first()
+            # Détails de mariage
+            wedding_date_str = request.form.get('wedding-date')
 
-        # If user or member not found, notify and return
-        if not user:
-            notify_error('Utilisateur non trouvé')
-            return render_template('home/guest/modals/new-delcl.html')
-        if not member:
-            notify_error('Membre non trouvé')
-            return render_template('home/guest/modals/new-delcl.html')
-
-        # Add additional fields based on declaration type
-        if declaration_type == 'death':
-            if lost_person == 'Select one':
-                notify_error("Please select who you lost.")
+            # Séparer le prénom et le nom du destinataire
+            if recipient_name:
+                names = recipient_name.split()
+                if len(names) < 2:
+                    notify_error("Le nom complet du destinataire est requis.")
+                    return redirect(request.referrer)
+                user_first_name, user_last_name = names[0], names[1]
+            else:
+                notify_error("Le nom du destinataire est requis.")
                 return redirect(request.referrer)
 
-            # Verify that deceased details match the corresponding family information
-            if lost_person == 'father' or lost_person == 'mother':
-                parent = Parents.query.filter_by(
-                    member_id=member.idMember,
-                    name=deceased_name,
-                    firstName=deceased_first_name
-                ).first()
-                if not parent:
-                    notify_error(f"Le parent {deceased_name} {deceased_first_name} n'a pas été trouvé.")
-                    return redirect(url_for('home_blueprint.events'))
+            # Récupérer l'utilisateur et le membre associés
+            user = Users.query.filter_by(firstName=user_first_name, lastName=user_last_name).first()
+            member = Members.query.filter_by(name=user_last_name, firstName=user_first_name).first()
 
-            elif lost_person == 'child':
-                child = Children.query.filter_by(
-                    member_id=member.idMember,
-                    name=deceased_name,
-                    firstName=deceased_first_name
-                ).first()
-                if not child:
-                    notify_error(f"L'enfant {deceased_name} {deceased_first_name} n'a pas été trouvé.")
-                    return redirect(url_for('home_blueprint.events'))
+            if not user or not member:
+                notify_error("Utilisateur ou membre introuvable.")
+                return redirect(request.referrer)
 
-            elif lost_person == 'partner':
-                partner = Partners.query.filter_by(
-                    member_id=member.idMember,
-                    name=deceased_name,
-                    firstName=deceased_first_name
-                ).first()
-                if not partner:
-                    notify_error(f"Le conjoint {deceased_name} {deceased_first_name} n'a pas été trouvé.")
-                    return redirect(url_for('home_blueprint.events'))
+            # Convertir les dates
+            wedding_date = datetime.strptime(wedding_date_str, '%Y-%m-%d') if wedding_date_str else None
+            death_date = datetime.strptime(death_date_str, '%Y-%m-%d') if death_date_str else None
+            child_birth_date = datetime.strptime(child_birth_date_str, '%Y-%m-%d') if child_birth_date_str else None
 
-        # Parse dates, using default of current date if not provided
-        wedding_date = datetime.strptime(wedding_date_str, '%Y-%m-%d') if wedding_date_str else datetime.now()
-        death_date = datetime.strptime(death_date_str, '%Y-%m-%d') if death_date_str else datetime.now()
-        child_birth_date = datetime.strptime(child_birth_date_str,
-                                             '%Y-%m-%d') if child_birth_date_str else datetime.now()
-
-        # Create a new declaration and associate it with the user and member
-        declaration = Declaration(
-            user_id=user.id,
-            member_id=member.idMember,
-            declaration_type=declaration_type,
-            statut='pending'
-        )
-        db.session.add(declaration)
-        db.session.commit()
-
-        # Assign spouse details from the member's information
-        declaration_wedding = WeddingDeclaration(
-            id=declaration.id,
-            spouse_name=member.name,
-            spouse_first_name=member.firstName,
-            wedding_date=wedding_date,
-            wedding_place=request.form['wedding-location']
-        )
-        db.session.add(declaration_wedding)
-
-        # Assign the details of the deceased
-        declaration_death = DeathDeclaration(
-            id=declaration.id,
-            loss_type=lost_person,
-            deceased_name=deceased_name,
-            deceased_first_name=deceased_first_name,
-            date_of_death=death_date,
-            cause_of_death=death_cause,
-        )
-        db.session.add(declaration_death)
-
-        # Assign child's details to the declaration
-        declaration_birth = BirthDeclaration(
-            id=declaration.id,
-            child_name=child_name,
-            child_first_name=child_first_name,
-            birth_date=child_birth_date,
-        )
-        db.session.add(declaration_birth)
-
-    # Process each file and store it in the database
-    for file in files:
-        if file and file.filename.endswith('.pdf'):
-            declaration_file = DeclarationFile(
-                declaration_id=declaration.id,
-                file_name=file.filename,
-                file_data=file.read()
+            # Créer une nouvelle déclaration
+            declaration = Declaration(
+                user_id=user.id,
+                member_id=member.idMember,
+                declaration_type=declaration_type,
+                statut='pending'
             )
-            db.session.add(declaration_file)
+            db.session.add(declaration)
+            # db.session.flush()  # S'assurer que `declaration.id` est généré avant utilisation
 
-    db.session.commit()
+            # Ajouter des données spécifiques au type de déclaration
+            if declaration_type == 'wedding':
+                declaration_wedding = WeddingDeclaration(
+                    id=declaration.id,
+                    spouse_name=member.name,
+                    spouse_first_name=member.firstName,
+                    wedding_date=wedding_date,
+                    wedding_place=request.form['wedding-location']
+                )
+                db.session.add(declaration_wedding)
 
-    # Notify user of successful addition
-    notify_success('Déclaration ajoutée avec succès !')
+            elif declaration_type == 'death':
+                if not lost_person:
+                    notify_error("Veuillez sélectionner la personne perdue.")
+                    return redirect(request.referrer)
 
-    return redirect(url_for('home_blueprint.events'))
+                declaration_death = DeathDeclaration(
+                    id=declaration.id,
+                    loss_type=lost_person,
+                    deceased_name=deceased_name,
+                    deceased_first_name=deceased_first_name,
+                    date_of_death=death_date,
+                    cause_of_death=death_cause,
+                )
+                db.session.add(declaration_death)
+
+            elif declaration_type == 'birth':
+                declaration_birth = BirthDeclaration(
+                    id=declaration.id,
+                    child_name=child_name,
+                    child_first_name=child_first_name,
+                    birth_date=child_birth_date,
+                )
+                db.session.add(declaration_birth)
+
+            # Traiter et ajouter les fichiers joints
+            for file in files:
+                if file and file.filename.endswith('.pdf'):
+                    declaration_file = DeclarationFile(
+                        declaration_id=declaration.id,
+                        file_name=file.filename,
+                        file_data=file.read()
+                    )
+                    db.session.add(declaration_file)
+
+            # Sauvegarder toutes les modifications
+            db.session.commit()
+
+            # Notifier l'utilisateur
+            notify_success('Déclaration ajoutée avec succès !')
+            return redirect(url_for('home_blueprint.events'))
+
+        except Exception as e:
+            # Gestion des erreurs
+            current_app.logger.error(f"Erreur lors de l'ajout de la déclaration : {e}")
+            db.session.rollback()
+            notify_error("Une erreur s'est produite lors de l'ajout de la déclaration.")
+            return redirect(request.referrer)
+
+    # Si méthode GET, afficher le formulaire
+    return render_template('home/guest/modals/new-delcl.html', segment=segment)
 
 
 @blueprint.route('/reject/<string:id>', methods=['GET', 'POST'])

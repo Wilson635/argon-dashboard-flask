@@ -7,12 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="547deb67-374e-45f1-9c19-e1429dc96920" name="Changes" comment="updated some files and export data to excel">
+    <list default="true" id="547deb67-374e-45f1-9c19-e1429dc96920" name="Changes" comment="updated some files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/authentication/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/authentication/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/home/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/home/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/templates/home/admin/event-admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/templates/home/admin/event-admin.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -220,7 +218,8 @@
       <workItem from="1734099542919" duration="35000" />
       <workItem from="1734352473833" duration="4576000" />
       <workItem from="1734418802168" duration="4500000" />
-      <workItem from="1734589820854" duration="508000" />
+      <workItem from="1734589820854" duration="10211000" />
+      <workItem from="1734711472652" duration="1920000" />
     </task>
     <task id="LOCAL-00001" summary="updates">
       <option name="closed" value="true" />
@@ -438,7 +437,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728401805856</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="updated some files">
+      <option name="closed" value="true" />
+      <created>1734590661463</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1734590661463</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -465,12 +472,12 @@
     <MESSAGE value="updates somes files and make translation" />
     <MESSAGE value="make translation on platform" />
     <MESSAGE value="Add edit and delete functions" />
-    <MESSAGE value="updated some files" />
     <MESSAGE value="updated some files and export data to excel" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated some files and export data to excel" />
+    <MESSAGE value="updated some files" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated some files" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/argon_dashboard_flask_master$argon_dashboard_flask_master.coverage" NAME="argon-dashboard-flask-master Coverage Results" MODIFIED="1715328871665" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/argon_dashboard_flask$argon_dashboard_flask_master.coverage" NAME="argon-dashboard-flask-master Coverage Results" MODIFIED="1734529879392" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/argon_dashboard_flask$argon_dashboard_flask_master.coverage" NAME="argon-dashboard-flask-master Coverage Results" MODIFIED="1734603676983" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>
